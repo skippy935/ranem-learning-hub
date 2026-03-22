@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ranem's Learning Hub — Arabic & Maths Tutoring</title>
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --red: #E8294C;
+  --red-light: rgba(232,41,76,0.08);
+  --red-dark: #c41e3a;
+  --bg: #ffffff;
+  --bg-alt: #f9f9f9;
+  --text: #1a1a1a;
+  --text-muted: #555555;
+  --text-light: #666666;
+  --border: #e5e5e5;
+  --shadow: 0 4px 20px rgba(0,0,0,0.08);
+  --shadow-hover: 0 8px 32px rgba(0,0,0,0.14);
+  --radius: 16px;
+  --radius-sm: 8px;
+  --green: #22c55e;
+  --orange: #f97316;
+  --blue: #3b82f6;
+  --purple: #8b5cf6;
+}
+html { scroll-behavior: smooth; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif; color: var(--text); background: var(--bg); line-height: 1.6; overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { cursor: pointer; font-family: inherit; }
+ul { list-style: none; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.section { padding: 80px 0; }
+.section-alt { background: var(--bg-alt); }
+h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; line-height: 1.2; }
+h2 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 700; line-height: 1.3; }
+h3 { font-size: 1.2rem; font-weight: 700; }
+
+/* Arabic subtitle global rule */
+.arabic-subtitle, [lang="ar"].subtitle {
+  font-size: 0.85em;
+  color: var(--text-light);
+  line-height: 1.8;
+  direction: rtl;
+  text-align: right;
+  margin-top: 4px;
+  display: block;
+}
+.section-header { text-align: center; margin-bottom: 56px; }
+.section-header h2 { margin-bottom: 8px; }
+
+/* ===== NAV ===== */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+}
+.nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 68px; }
+.nav-logo { font-size: 1.25rem; font-weight: 800; color: var(--red); }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-links a { font-size: 0.95rem; font-weight: 500; color: var(--text-muted); transition: color 0.2s; }
+.nav-links a:hover, .nav-links a:focus { color: var(--red); outline: 2px solid var(--red); outline-offset: 4px; border-radius: 4px; }
+.nav-cta { background: var(--red); color: #fff !important; padding: 10px 20px; border-radius: 8px; font-weight: 600 !important; }
+.nav-cta:hover { background: var(--red-dark) !important; color: #fff !important; }
+.nav-hamburger { display: none; background: none; border: none; padding: 8px; }
+.nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--text); margin: 5px 0; border-radius: 2px; transition: 0.3s; }
+.nav-mobile { display: none; background: #fff; border-top: 1px solid var(--border); padding: 16px 24px; flex-direction: column; gap: 16px; }
+.nav-mobile a { font-size: 1rem; font-weight: 500; color: var(--text-muted); padding: 8px 0; }
+.nav-mobile a:hover { color: var(--red); }
+@media(max-width:768px){
+  .nav-links{display:none;}
+  .nav-hamburger{display:block;}
+  .nav-mobile.open{display:flex;}
+}
+
+/* ===== BUTTONS ===== */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 28px; border-radius: 10px; font-size: 1rem; font-weight: 600; border: none; transition: all 0.2s; cursor: pointer; }
+.btn:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
+.btn-primary { background: var(--red); color: #fff; }
+.btn-primary:hover { background: var(--red-dark); transform: translateY(-1px); }
+.btn-secondary { background: transparent; color: var(--red); border: 2px solid var(--red); }
+.btn-secondary:hover { background: var(--red-light); }
+.btn-full { width: 100%; }
+
+/* ===== HERO ===== */
+.hero { background: linear-gradient(135deg, #fff 0%, #fef2f4 100%); padding: 80px 0 60px; }
+.hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.hero-tag { display: inline-block; background: var(--red-light); color: var(--red); font-size: 0.85rem; font-weight: 600; padding: 6px 14px; border-radius: 20px; margin-bottom: 20px; }
+.hero-title { margin-bottom: 16px; }
+.hero-subtitle { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 24px; line-height: 1.7; }
+
+/* Stats bar */
+.hero-stats { display: flex; gap: 0; border-top: 1px solid var(--border); padding-top: 20px; margin-bottom: 32px; flex-wrap: wrap; }
+.hero-stat { flex: 1; min-width: 100px; padding: 12px 16px 12px 0; }
+.hero-stat + .hero-stat { border-left: 1px solid var(--border); padding-left: 16px; }
+.hero-stat-num { font-size: 1.4rem; font-weight: 800; color: var(--red); display: block; }
+.hero-stat-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
+.hero-stat-ar { font-size: 0.72rem; color: var(--text-light); direction: rtl; display: block; margin-top: 2px; }
+
+.hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+.hero-image { position: relative; }
+.hero-image-card { background: #fff; border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow-hover); text-align: center; }
+.hero-image-card .emoji { font-size: 5rem; display: block; margin-bottom: 16px; }
+.hero-image-card p { color: var(--text-muted); font-size: 0.95rem; }
+.hero-image-badge { position: absolute; bottom: -16px; right: -16px; background: var(--red); color: #fff; border-radius: 12px; padding: 12px 20px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 16px rgba(232,41,76,0.4); }
+
+@media(max-width:768px){
+  .hero-inner{grid-template-columns:1fr; gap:40px;}
+  .hero-image{display:none;}
+  .hero-stats{gap:0;}
+  .hero-stat{min-width:calc(50% - 16px);}
+}
+
+/* ===== VIDEO SECTION ===== */
+.video-section { background: var(--bg-alt); }
+.video-section .section-header { margin-bottom: 36px; }
+.video-embed-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  aspect-ratio: 16/9;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+}
+.video-embed-wrapper iframe { width: 100%; height: 100%; border: 0; }
+.video-placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 16px; color: #fff; cursor: pointer;
+}
+.video-placeholder .play-btn {
+  width: 72px; height: 72px; background: var(--red); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem; transition: transform 0.2s;
+}
+.video-placeholder:hover .play-btn { transform: scale(1.1); }
+.video-placeholder p { font-size: 1.1rem; opacity: 0.9; }
+.video-placeholder .arabic-subtitle { text-align: center; }
+
+/* ===== ABOUT ===== */
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.about-points { display: flex; flex-direction: column; gap: 20px; margin-top: 28px; }
+.about-point { display: flex; gap: 16px; align-items: flex-start; }
+.about-point-icon { width: 44px; height: 44px; background: var(--red-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+.about-point-text h4 { font-weight: 700; margin-bottom: 4px; }
+.about-point-text p { font-size: 0.9rem; color: var(--text-muted); }
+.about-image-card { background: var(--bg-alt); border-radius: var(--radius); padding: 40px; text-align: center; }
+.about-image-card .avatar { width: 120px; height: 120px; background: linear-gradient(135deg, var(--red), var(--red-dark)); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: #fff; }
+.about-image-card h3 { font-size: 1.3rem; margin-bottom: 4px; }
+.about-image-card p { color: var(--text-muted); font-size: 0.9rem; }
+.about-image-card .badge { display: inline-block; background: var(--red-light); color: var(--red); border-radius: 20px; padding: 4px 12px; font-size: 0.8rem; font-weight: 600; margin: 8px 4px 0; }
+@media(max-width:768px){ .about-grid{grid-template-columns:1fr;} }
+
+/* ===== COURSES ===== */
+.courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 28px; }
+.course-card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex; flex-direction: column;
+}
+.course-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+.course-card-image { position: relative; aspect-ratio: 16/9; overflow: hidden; }
+.course-card-image-bg { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 4rem; }
+.bg-arabic { background: linear-gradient(135deg, #fef2f4, #fce7eb); }
+.bg-maths { background: linear-gradient(135deg, #eff6ff, #dbeafe); }
+.level-badge { position: absolute; top: 12px; left: 12px; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; color: #fff; }
+.badge-beginner { background: var(--green); }
+.badge-intermediate { background: var(--orange); }
+.badge-kids { background: var(--blue); }
+.badge-teens { background: var(--purple); }
+.course-card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+.course-card-body h3 { font-size: 1.1rem; margin-bottom: 4px; }
+.course-card-body .course-title-ar { font-size: 0.85em; color: var(--text-light); direction: rtl; text-align: right; display: block; margin-bottom: 10px; }
+.course-desc { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px; line-height: 1.6; }
+.course-learn { margin-bottom: 16px; }
+.course-learn li { font-size: 0.85rem; color: var(--text-muted); padding: 3px 0; display: flex; gap: 8px; align-items: flex-start; }
+.course-learn li::before { content: '✓'; color: var(--red); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.course-meta { display: flex; gap: 16px; margin-bottom: 16px; }
+.course-meta span { font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+.course-footer { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.course-price { font-size: 1.3rem; font-weight: 800; color: var(--text); }
+.course-price span { font-size: 0.8rem; font-weight: 400; color: var(--text-muted); }
+
+/* ===== TESTIMONIALS ===== */
+.testimonials-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+.testimonial-card { background: #fff; border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); }
+.testimonial-stars { color: #f59e0b; font-size: 1.1rem; margin-bottom: 16px; }
+.testimonial-text { font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+.testimonial-author { display: flex; align-items: center; gap: 12px; }
+.testimonial-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; background: var(--red-light); flex-shrink: 0; }
+.testimonial-name { font-weight: 700; font-size: 0.9rem; }
+.testimonial-meta { font-size: 0.8rem; color: var(--text-muted); }
+
+/* ===== STUDENT RESULTS ===== */
+.results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.result-card { background: #fff; border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); border-left: 4px solid var(--red); position: relative; }
+.result-quote-icon { font-size: 4rem; color: var(--red); line-height: 1; position: absolute; top: 12px; left: 20px; opacity: 0.15; font-family: Georgia, serif; }
+.result-text { font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; font-style: italic; margin-bottom: 20px; padding-top: 8px; }
+.result-author { font-weight: 700; font-size: 0.9rem; margin-bottom: 4px; }
+.result-course { font-size: 0.8rem; color: var(--text-muted); }
+@media(max-width:900px){ .results-grid{grid-template-columns:1fr;} }
+@media(min-width:600px) and (max-width:900px){ .results-grid{grid-template-columns:1fr 1fr;} }
+
+/* ===== FAQ ===== */
+.faq-list { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+.faq-item { background: #fff; border-radius: var(--radius-sm); box-shadow: var(--shadow); overflow: hidden; }
+.faq-question {
+  width: 100%; background: none; border: none; padding: 20px 24px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 1rem; font-weight: 600; color: var(--text);
+  text-align: left; gap: 16px; transition: color 0.2s;
+}
+.faq-question:hover, .faq-question.active { color: var(--red); }
+.faq-question:focus-visible { outline: 2px solid var(--red); outline-offset: -2px; }
+.faq-icon { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: var(--text-muted); flex-shrink: 0; transition: all 0.2s; }
+.faq-question.active .faq-icon { border-color: var(--red); color: var(--red); transform: rotate(45deg); }
+.faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+.faq-answer-inner { padding: 0 24px 20px; font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; }
+.faq-answer-inner .arabic-subtitle { margin-top: 12px; }
+.faq-item.open .faq-answer { max-height: 300px; }
+
+/* ===== FOOTER ===== */
+.footer { background: #1a1a1a; color: #fff; padding: 60px 0 32px; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.footer-brand p { color: #999; font-size: 0.9rem; line-height: 1.7; margin-top: 12px; }
+.footer-col h4 { font-size: 0.9rem; font-weight: 700; color: #fff; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.05em; }
+.footer-col ul { display: flex; flex-direction: column; gap: 10px; }
+.footer-col ul li a { color: #999; font-size: 0.9rem; transition: color 0.2s; }
+.footer-col ul li a:hover { color: var(--red); }
+.footer-bottom { border-top: 1px solid #333; padding-top: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+.footer-bottom p { color: #666; font-size: 0.85rem; }
+@media(max-width:768px){ .footer-grid{grid-template-columns:1fr 1fr;} }
+@media(max-width:480px){ .footer-grid{grid-template-columns:1fr;} }
+
+/* ===== FLOATING BUTTONS ===== */
+.whatsapp-fab {
+  position: fixed; bottom: 24px; left: 24px; z-index: 999;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: #25D366; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(37,211,102,0.4);
+  animation: pulse-green 1s ease-in-out 3;
+  transition: transform 0.2s;
+}
+.whatsapp-fab:hover { transform: scale(1.1); }
+.whatsapp-fab:focus-visible { outline: 3px solid #25D366; outline-offset: 3px; }
+.whatsapp-fab svg { width: 28px; height: 28px; fill: #fff; }
+@keyframes pulse-green {
+  0%, 100% { box-shadow: 0 4px 16px rgba(37,211,102,0.4); }
+  50% { box-shadow: 0 4px 32px rgba(37,211,102,0.7); transform: scale(1.05); }
+}
+
+.call-fab {
+  position: fixed; bottom: 24px; right: 24px; z-index: 999;
+  background: var(--red); color: #fff; border: none;
+  border-radius: 50px; padding: 14px 22px;
+  font-weight: 700; font-size: 0.9rem;
+  box-shadow: 0 4px 16px rgba(232,41,76,0.4);
+  display: flex; align-items: center; gap: 8px;
+  transition: transform 0.2s, background 0.2s;
+}
+.call-fab:hover { background: var(--red-dark); transform: translateY(-2px); }
+.call-fab:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
+@media(max-width:768px){ .whatsapp-fab,.call-fab{ bottom: 80px; } }
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+  align-items: center; justify-content: center; padding: 24px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: #fff; border-radius: var(--radius);
+  padding: 32px; max-width: 440px; width: 100%;
+  position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  animation: modal-in 0.25s ease;
+}
+@keyframes modal-in { from { opacity: 0; transform: translateY(20px) scale(0.97); } to { opacity: 1; transform: none; } }
+.modal-close {
+  position: absolute; top: 16px; right: 16px;
+  background: none; border: none; font-size: 1.4rem; color: var(--text-muted);
+  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; transition: background 0.2s;
+}
+.modal-close:hover { background: var(--bg-alt); }
+.modal-close:focus-visible { outline: 2px solid var(--red); }
+.modal h3 { margin-bottom: 8px; }
+.modal p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px; }
+.modal-options { display: flex; flex-direction: column; gap: 12px; }
+.modal-option {
+  display: flex; align-items: center; gap: 16px;
+  padding: 16px 20px; border-radius: var(--radius-sm);
+  border: 2px solid var(--border); background: #fff;
+  font-weight: 600; font-size: 0.95rem; transition: all 0.2s;
+  text-decoration: none; color: var(--text);
+}
+.modal-option:hover { border-color: var(--red); background: var(--red-light); color: var(--red); }
+.modal-option:focus-visible { outline: 2px solid var(--red); }
+.modal-option-icon { font-size: 1.5rem; }
+
+/* ===== PAGE SYSTEM ===== */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ===== COURSE DETAIL PAGE ===== */
+.course-hero { background: linear-gradient(135deg, #fff 0%, #fef2f4 100%); padding: 60px 0; }
+.course-hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 1fr 360px; gap: 48px; }
+.course-hero-content .back-btn { display: inline-flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px; background: none; border: none; padding: 0; }
+.course-hero-content .back-btn:hover { color: var(--red); }
+.course-hero-content .back-btn:focus-visible { outline: 2px solid var(--red); border-radius: 4px; }
+.course-hero-tag { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+.course-hero-content h1 { margin-bottom: 8px; }
+.course-hero-content .course-hero-ar { font-size: 1.5rem; color: var(--text-light); direction: rtl; text-align: right; display: block; margin-bottom: 16px; }
+.course-stats-row { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 28px; padding-top: 28px; border-top: 1px solid var(--border); }
+.course-stat-item { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: var(--text-muted); }
+.course-sidebar { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow-hover); padding: 28px; align-self: start; position: sticky; top: 84px; }
+.course-sidebar .price { font-size: 2rem; font-weight: 800; margin-bottom: 4px; }
+.course-sidebar .price-sub { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; }
+.course-sidebar-features { margin-bottom: 24px; display: flex; flex-direction: column; gap: 10px; }
+.course-sidebar-features li { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text-muted); }
+.course-sidebar-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+.secure-badge { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--text-muted); margin-top: 16px; }
+
+@media(max-width:768px){ .course-hero-inner{grid-template-columns:1fr;} .course-sidebar{position:static;} }
+
+/* Course page body */
+.course-body { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 1fr 360px; gap: 48px; align-items: start; padding-top: 48px; padding-bottom: 80px; }
+.course-main { min-width: 0; }
+.course-section-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
+@media(max-width:768px){ .course-body{grid-template-columns:1fr;} }
+
+/* Accordion curriculum */
+.curriculum { margin-bottom: 48px; }
+.curriculum-month { border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 8px; }
+.curriculum-month-btn { width: 100%; background: none; border: none; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; font-weight: 600; text-align: left; transition: background 0.2s; }
+.curriculum-month-btn:hover { background: var(--bg-alt); }
+.curriculum-month-btn:focus-visible { outline: 2px solid var(--red); outline-offset: -2px; }
+.curriculum-month-btn .cm-icon { transition: transform 0.2s; }
+.curriculum-month.open .cm-icon { transform: rotate(180deg); }
+.curriculum-month-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+.curriculum-month-body.open { max-height: 300px; }
+.curriculum-month-body ul { padding: 8px 20px 16px; display: flex; flex-direction: column; gap: 8px; }
+.curriculum-month-body ul li { font-size: 0.9rem; color: var(--text-muted); padding-left: 20px; position: relative; }
+.curriculum-month-body ul li::before { content: '→'; position: absolute; left: 0; color: var(--red); }
+
+/* Outcomes */
+.outcomes { margin-bottom: 48px; }
+.outcomes-list { display: flex; flex-direction: column; gap: 14px; }
+.outcome-item { display: flex; gap: 14px; align-items: flex-start; }
+.outcome-icon { width: 36px; height: 36px; background: var(--red-light); color: var(--red); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+.outcome-text { font-size: 0.95rem; color: var(--text-muted); padding-top: 8px; }
+
+/* Free preview */
+.free-preview { background: var(--bg-alt); border-radius: var(--radius); padding: 28px; margin-bottom: 48px; position: relative; overflow: hidden; }
+.free-preview-label { display: inline-block; background: var(--green); color: #fff; font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; margin-bottom: 16px; }
+.preview-blurred { filter: blur(4px); user-select: none; pointer-events: none; margin-top: 16px; }
+.preview-unlock { position: absolute; inset: auto 0 0 0; background: linear-gradient(to top, #f9f9f9 60%, transparent); padding: 40px 28px 28px; text-align: center; }
+.preview-unlock .btn { margin: 0 auto; }
+
+/* ===== INTERACTIVE EXERCISES ===== */
+.exercises { margin-bottom: 48px; }
+.exercise-card { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; margin-bottom: 20px; border-top: 3px solid var(--red); }
+.exercise-header { padding: 20px 24px 0; }
+.exercise-progress { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-bottom: 12px; }
+.exercise-type-label { display: inline-block; background: var(--red-light); color: var(--red); font-size: 0.75rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; }
+.question-text { font-size: 1.05rem; font-weight: 600; margin-bottom: 20px; padding: 0 24px; }
+.options { padding: 0 24px 24px; display: flex; flex-direction: column; gap: 10px; }
+.option {
+  padding: 14px 18px; border-radius: var(--radius-sm); border: 2px solid var(--border);
+  background: #fff; font-size: 0.95rem; text-align: left; font-weight: 500; transition: all 0.2s;
+}
+.option:hover:not(:disabled) { border-color: var(--red); background: var(--red-light); }
+.option:focus-visible { outline: 2px solid var(--red); }
+.option.correct { background: #e8f5e9; border-color: #4CAF50; color: #2e7d32; }
+.option.incorrect { background: #fdecea; border-color: var(--red); color: var(--red-dark); }
+.option:disabled { cursor: default; }
+.feedback { padding: 0 24px 20px; font-size: 0.9rem; font-weight: 600; min-height: 24px; }
+.feedback.correct { color: #2e7d32; }
+.feedback.incorrect { color: var(--red-dark); }
+.next-btn { margin: 0 24px 24px; }
+
+/* Fill in the blank */
+.fill-blank-wrap { padding: 0 24px 24px; }
+.fill-blank-wrap p { font-size: 1rem; margin-bottom: 12px; color: var(--text-muted); }
+.fill-blank { border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 1rem; font-family: inherit; width: 100%; max-width: 300px; transition: border-color 0.2s; }
+.fill-blank:focus { outline: none; border-color: var(--red); }
+.fill-blank.correct { border-color: #4CAF50; background: #e8f5e9; }
+.fill-blank.incorrect { border-color: var(--red); background: #fdecea; }
+
+/* Drag and drop */
+.dnd-wrap { padding: 0 24px 24px; }
+.dnd-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 16px; }
+.dnd-col-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+.dnd-list { display: flex; flex-direction: column; gap: 8px; min-height: 180px; }
+.dnd-item {
+  padding: 10px 14px; background: #fff; border: 2px solid var(--border); border-radius: var(--radius-sm);
+  font-size: 0.9rem; cursor: grab; user-select: none; transition: all 0.15s;
+}
+.dnd-item:active { cursor: grabbing; opacity: 0.7; }
+.dnd-item.dragging { opacity: 0.4; }
+.dnd-drop { padding: 10px 14px; border: 2px dashed var(--border); border-radius: var(--radius-sm); min-height: 44px; transition: all 0.15s; font-size: 0.9rem; }
+.dnd-drop.over { border-color: var(--red); background: var(--red-light); }
+.dnd-drop.matched { border-color: #4CAF50; background: #e8f5e9; border-style: solid; color: #2e7d32; font-weight: 600; }
+.dnd-drop.wrong { border-color: var(--red); background: #fdecea; border-style: solid; color: var(--red-dark); font-weight: 600; }
+.dnd-score { font-size: 1rem; font-weight: 700; text-align: center; min-height: 28px; }
+.dnd-arabic-item { direction: rtl; font-size: 1.1rem; }
+
+/* ===== CHECKOUT ===== */
+.checkout-page { background: var(--bg-alt); min-height: 100vh; padding: 40px 0 80px; }
+.checkout-inner { max-width: 1000px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: 1fr 360px; gap: 40px; align-items: start; }
+@media(max-width:768px){ .checkout-inner{grid-template-columns:1fr;} }
+
+/* Checkout steps */
+.checkout-steps { display: flex; align-items: center; gap: 0; margin-bottom: 32px; }
+.checkout-step { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; font-weight: 600; color: var(--text-muted); }
+.checkout-step.active { color: var(--red); }
+.checkout-step.done { color: var(--green); }
+.step-num { width: 32px; height: 32px; border-radius: 50%; border: 2px solid currentColor; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; }
+.checkout-step.done .step-num { background: var(--green); border-color: var(--green); color: #fff; }
+.checkout-step.active .step-num { background: var(--red); border-color: var(--red); color: #fff; }
+.step-divider { flex: 1; height: 1px; background: var(--border); margin: 0 12px; }
+
+.checkout-form { background: #fff; border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow); }
+.checkout-form h3 { margin-bottom: 24px; }
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.form-group input, .form-group select { width: 100%; border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; font-size: 0.95rem; font-family: inherit; transition: border-color 0.2s; }
+.form-group input:focus, .form-group select:focus { outline: none; border-color: var(--red); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media(max-width:480px){ .form-row{grid-template-columns:1fr;} }
+.form-note { font-size: 0.8rem; color: var(--text-muted); margin-top: 8px; }
+.checkout-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border); }
+.checkout-back { background: none; border: none; color: var(--text-muted); font-size: 0.9rem; display: flex; align-items: center; gap: 6px; }
+.checkout-back:hover { color: var(--red); }
+
+/* Checkout sidebar - ALWAYS shown */
+.checkout-sidebar { background: #fff; border-radius: var(--radius); box-shadow: var(--shadow-hover); overflow: hidden; position: sticky; top: 84px; }
+.checkout-sidebar-header { background: var(--red); color: #fff; padding: 20px 24px; }
+.checkout-sidebar-header h4 { font-size: 1rem; margin-bottom: 4px; }
+.checkout-sidebar-header p { font-size: 0.85rem; opacity: 0.85; }
+.checkout-sidebar-body { padding: 24px; }
+.checkout-sidebar-course { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+.checkout-sidebar-course-icon { width: 52px; height: 52px; background: var(--red-light); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; flex-shrink: 0; }
+.checkout-sidebar-course-info h5 { font-size: 0.95rem; margin-bottom: 4px; }
+.checkout-sidebar-course-info p { font-size: 0.8rem; color: var(--text-muted); }
+.checkout-sidebar-features { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
+.checkout-sidebar-features li { font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
+.checkout-sidebar-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+.checkout-price-breakdown { margin-bottom: 16px; }
+.checkout-price-row { display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 8px; }
+.checkout-price-total { display: flex; justify-content: space-between; font-size: 1.1rem; font-weight: 800; padding-top: 12px; border-top: 2px solid var(--border); }
+.secure-note { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--text-muted); margin-top: 16px; }
+.confirm-summary { background: var(--bg-alt); border-radius: var(--radius-sm); padding: 16px; font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 16px; }
+
+/* complete state */
+.checkout-complete { text-align: center; padding: 48px 32px; }
+.checkout-complete .success-icon { width: 80px; height: 80px; background: #e8f5e9; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 24px; }
+.checkout-complete h3 { font-size: 1.5rem; margin-bottom: 12px; }
+.checkout-complete p { color: var(--text-muted); margin-bottom: 28px; }
+
+/* Mobile checkout summary toggle */
+.checkout-mobile-summary { display: none; background: #fff; border-radius: var(--radius-sm); box-shadow: var(--shadow); overflow: hidden; margin-bottom: 20px; }
+.checkout-mobile-summary-btn { width: 100%; background: none; border: none; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 0.95rem; }
+.checkout-mobile-summary-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+.checkout-mobile-summary-body.open { max-height: 400px; }
+.checkout-mobile-summary .checkout-sidebar-body { padding: 0 20px 20px; }
+@media(max-width:768px){ .checkout-mobile-summary{display:block;} }
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: #1a1a1a; color: #fff; border-radius: 10px; padding: 12px 24px;
+  font-size: 0.9rem; font-weight: 500; z-index: 2000;
+  opacity: 0; transition: all 0.3s; pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" onclick="showPage('home'); return false;">Ranem's Learning Hub</a>
+    <div class="nav-links" role="menubar">
+      <a href="#" role="menuitem" onclick="showPage('home'); scrollToSection('courses-section'); return false;">Courses</a>
+      <a href="#" role="menuitem" onclick="showPage('home'); scrollToSection('about-section'); return false;">About</a>
+      <a href="#" role="menuitem" onclick="showPage('home'); scrollToSection('faq-section'); return false;">FAQ</a>
+      <a href="#" role="menuitem" onclick="openCallModal(); return false;">Contact</a>
+      <a href="#" class="btn btn-primary nav-cta" role="menuitem" onclick="openCallModal(); return false;">Free Trial</a>
+    </div>
+    <button class="nav-hamburger" aria-label="Open menu" onclick="toggleMobileNav()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-mobile" id="nav-mobile" role="menu">
+    <a href="#" role="menuitem" onclick="showPage('home'); scrollToSection('courses-section'); toggleMobileNav(); return false;">Courses</a>
+    <a href="#" role="menuitem" onclick="showPage('home'); scrollToSection('about-section'); toggleMobileNav(); return false;">About</a>
+    <a href="#" role="menuitem" onclick="showPage('home'); scrollToSection('faq-section'); toggleMobileNav(); return false;">FAQ</a>
+    <a href="#" role="menuitem" onclick="openCallModal(); toggleMobileNav(); return false;">Contact</a>
+    <a href="#" class="btn btn-primary" role="menuitem" onclick="openCallModal(); toggleMobileNav(); return false;">Free Trial</a>
+  </div>
+</nav>
+
+<!-- ======================== HOME PAGE ======================== -->
+<div id="page-home" class="page active">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <span class="hero-tag">🌟 Native Arabic Speaker from Syria</span>
+      <h1 class="hero-title">Learn Arabic & Maths with a Dedicated Tutor</h1>
+      <span class="arabic-subtitle" lang="ar">تعلّم العربية والرياضيات مع معلمة متخصصة</span>
+      <p class="hero-subtitle">Personalised one-on-one online sessions for all ages. Build real skills, real confidence — guided by Ranem, a native Arabic speaker with a passion for teaching.</p>
+
+      <!-- Stats Bar -->
+      <div class="hero-stats" role="list">
+        <div class="hero-stat" role="listitem">
+          <span class="hero-stat-num">150+</span>
+          <span class="hero-stat-label">Students</span>
+          <span class="hero-stat-ar">طالب</span>
+        </div>
+        <div class="hero-stat" role="listitem">
+          <span class="hero-stat-num">4.9★</span>
+          <span class="hero-stat-label">Rating</span>
+          <span class="hero-stat-ar">تقييم</span>
+        </div>
+        <div class="hero-stat" role="listitem">
+          <span class="hero-stat-num">3</span>
+          <span class="hero-stat-label">Countries</span>
+          <span class="hero-stat-ar">دول</span>
+        </div>
+        <div class="hero-stat" role="listitem">
+          <span class="hero-stat-num">2</span>
+          <span class="hero-stat-label">Subjects</span>
+          <span class="hero-stat-ar">مواد</span>
+        </div>
+      </div>
+
+      <div class="hero-ctas">
+        <button class="btn btn-primary" onclick="openCallModal()">Contact for Free Trial</button>
+        <button class="btn btn-secondary" onclick="scrollToSection('courses-section')">Explore Tutoring Programs</button>
+      </div>
+    </div>
+    <div class="hero-image" aria-hidden="true">
+      <div class="hero-image-card">
+        <span class="emoji">👩‍🏫</span>
+        <p>"Learning a language opens a door to a new world"</p>
+        <p class="arabic-subtitle" lang="ar">"تعلّم لغة يفتح بابًا لعالم جديد"</p>
+      </div>
+      <div class="hero-image-badge">🇸🇾 Native Speaker</div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO INTRO -->
+<section class="section video-section" id="video-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Meet Ranem</h2>
+      <span class="arabic-subtitle" lang="ar">تعرّفي على رانم</span>
+      <p style="color:var(--text-muted);margin-top:12px;max-width:560px;margin-left:auto;margin-right:auto;">Watch a short introduction and find out why students love learning with Ranem.</p>
+      <span class="arabic-subtitle" lang="ar" style="text-align:center;">شاهد مقطعًا قصيرًا واكتشف لماذا يحب الطلاب التعلم مع رانم.</span>
+    </div>
+    <div class="video-embed-wrapper" role="region" aria-label="Intro video">
+      <!-- TODO: Replace YOUR_VIDEO_ID_HERE with the actual YouTube video ID -->
+      <div class="video-placeholder" onclick="alert('Replace YOUR_VIDEO_ID_HERE in the code with a real YouTube video ID')">
+        <div class="play-btn" aria-hidden="true">▶</div>
+        <p>Watch Introduction</p>
+        <span class="arabic-subtitle" lang="ar" style="text-align:center;">شاهد التعريف</span>
+      </div>
+      <!-- Uncomment and replace ID when ready:
+      <iframe
+        src="https://www.youtube.com/embed/YOUR_VIDEO_ID_HERE"
+        title="Meet Ranem – Arabic & Maths Tutor"
+        allowfullscreen
+        loading="lazy"
+      ></iframe>
+      -->
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section" id="about-section">
+  <div class="container">
+    <div class="about-grid">
+      <div>
+        <h2>Teaching With Heart & Expertise</h2>
+        <span class="arabic-subtitle" lang="ar">التدريس بقلب وخبرة</span>
+        <p style="color:var(--text-muted);margin-top:16px;line-height:1.8;">
+          Ranem is a native Arabic speaker from Syria with years of experience teaching Arabic language and Mathematics to students of all ages and backgrounds. Every lesson is crafted to match your pace, your goals, and your learning style.
+        </p>
+        <span class="arabic-subtitle" lang="ar" style="margin-top:12px;">رانم متحدثة عربية أصيلة من سوريا، لديها سنوات من الخبرة في تدريس اللغة العربية والرياضيات لطلاب من مختلف الأعمار والخلفيات.</span>
+        <div class="about-points">
+          <div class="about-point">
+            <div class="about-point-icon">🎓</div>
+            <div class="about-point-text">
+              <h4>Qualified & Experienced</h4>
+              <p>Formal teaching background with a deep understanding of Arabic linguistics and modern Maths curricula.</p>
+            </div>
+          </div>
+          <div class="about-point">
+            <div class="about-point-icon">🌍</div>
+            <div class="about-point-text">
+              <h4>Students Across 3 Countries</h4>
+              <p>UK, Germany, Netherlands — all sessions online, flexible to your timezone.</p>
+            </div>
+          </div>
+          <div class="about-point">
+            <div class="about-point-icon">💬</div>
+            <div class="about-point-text">
+              <h4>Bilingual Teaching</h4>
+              <p>Sessions in English and Arabic so learners are comfortable from day one.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="about-image-card">
+        <div class="avatar" aria-hidden="true">👩‍🏫</div>
+        <h3>Ranem</h3>
+        <!-- TODO: Add Ranem's full name -->
+        <p>Arabic & Maths Tutor</p>
+        <span class="arabic-subtitle" lang="ar">معلمة عربية ورياضيات</span>
+        <div>
+          <span class="badge">Native Arabic</span>
+          <span class="badge">Maths</span>
+          <span class="badge">All Ages</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COURSES -->
+<section class="section section-alt" id="courses-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Tutoring Programs</h2>
+      <span class="arabic-subtitle" lang="ar">برامج التدريس</span>
+      <p style="color:var(--text-muted);margin-top:12px;">One-on-one sessions tailored to your level and goals.</p>
+    </div>
+    <div class="courses-grid" id="courses-grid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section" id="testimonials-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>What Students Say</h2>
+      <span class="arabic-subtitle" lang="ar">ماذا يقول الطلاب</span>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-stars" aria-label="5 stars">★★★★★</div>
+        <p class="testimonial-text">"Ranem's patience and clear explanations made learning Arabic feel natural. I went from zero to reading simple texts in just 3 months."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" aria-hidden="true">👩</div>
+          <div>
+            <p class="testimonial-name">Sarah M.</p>
+            <p class="testimonial-meta">Arabic for Beginners · UK</p>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars" aria-label="5 stars">★★★★★</div>
+        <p class="testimonial-text">"My son's maths grades improved from a C to an A in one term. Ranem has a gift for breaking down problems in a way kids actually understand."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" aria-hidden="true">👨</div>
+          <div>
+            <p class="testimonial-name">Yusuf A.</p>
+            <p class="testimonial-meta">Magic Maths for Kids · Netherlands</p>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="testimonial-stars" aria-label="5 stars">★★★★★</div>
+        <p class="testimonial-text">"I wanted to reconnect with my heritage language. Ranem understood exactly what I needed and made every session interesting and encouraging."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" aria-hidden="true">👩</div>
+          <div>
+            <p class="testimonial-name">Fatima K.</p>
+            <p class="testimonial-meta">Intermediate Arabic · Germany</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STUDENT RESULTS -->
+<section class="section section-alt" id="results-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Real Results</h2>
+      <span class="arabic-subtitle" lang="ar">نتائج حقيقية</span>
+    </div>
+    <div class="results-grid">
+      <div class="result-card">
+        <span class="result-quote-icon" aria-hidden="true">"</span>
+        <!-- TODO: Replace with real student story -->
+        <p class="result-text">"Sara came with zero Arabic knowledge. After 4 months of Arabic for Beginners, she can read the Quran and write full sentences independently."</p>
+        <p class="result-author">Sara · Germany</p>
+        <p class="result-course">Arabic for Beginners · 4 months</p>
+      </div>
+      <div class="result-card">
+        <span class="result-quote-icon" aria-hidden="true">"</span>
+        <!-- TODO: Replace with real student story -->
+        <p class="result-text">"Ahmed struggled with multiplication and division. After 3 months of Magic Maths for Kids, he moved up a full grade level in school maths."</p>
+        <p class="result-author">Ahmed · Netherlands</p>
+        <p class="result-course">Magic Maths for Kids · 3 months</p>
+      </div>
+      <div class="result-card">
+        <span class="result-quote-icon" aria-hidden="true">"</span>
+        <!-- TODO: Replace with real student story -->
+        <p class="result-text">"Fatima wanted to reconnect with her heritage language. In 6 months she went from hesitant to holding full conversations with her grandparents."</p>
+        <p class="result-author">Fatima · UK</p>
+        <p class="result-course">Intermediate Arabic · 6 months</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Frequently Asked Questions</h2>
+      <span class="arabic-subtitle" lang="ar">الأسئلة الشائعة</span>
+    </div>
+    <div class="faq-list" id="faq-list">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div style="font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:12px;">Ranem's Learning Hub</div>
+        <p>Personalised Arabic and Maths tutoring for all ages. Online, one-on-one, and tailored to you.</p>
+        <p class="arabic-subtitle" lang="ar" style="margin-top:8px;color:#666;">تدريس مخصص للغة العربية والرياضيات لجميع الأعمار.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Courses</h4>
+        <ul>
+          <li><a href="#" onclick="openCourse('arabic-beginners');return false;">Arabic for Beginners</a></li>
+          <li><a href="#" onclick="openCourse('arabic-intermediate');return false;">Intermediate Arabic</a></li>
+          <li><a href="#" onclick="openCourse('maths-kids');return false;">Magic Maths for Kids</a></li>
+          <li><a href="#" onclick="openCourse('maths-teens');return false;">Maths for Teens</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Information</h4>
+        <ul>
+          <li><a href="#" onclick="scrollToSection('about-section');return false;">About Ranem</a></li>
+          <li><a href="#" onclick="scrollToSection('faq-section');return false;">FAQ</a></li>
+          <li><a href="#" onclick="openCallModal();return false;">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get Started</h4>
+        <ul>
+          <li><a href="#" onclick="openCallModal();return false;">Free Trial Session</a></li>
+          <li><a href="#" onclick="scrollToSection('courses-section');return false;">View Programs</a></li>
+          <!-- TODO: Add WhatsApp link -->
+          <li><a href="https://wa.me/YOUR_WHATSAPP_NUMBER" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Ranem's Learning Hub. All rights reserved.</p>
+      <p style="direction:rtl;lang:ar;">© ٢٠٢٦ مركز رانم التعليمي. جميع الحقوق محفوظة.</p>
+    </div>
+  </div>
+</footer>
+
+</div><!-- end page-home -->
+
+<!-- ======================== COURSE DETAIL PAGE ======================== -->
+<div id="page-course" class="page">
+  <div class="course-hero">
+    <div class="course-hero-inner">
+      <div class="course-hero-content">
+        <button class="back-btn" onclick="showPage('home')" aria-label="Back to home">← Back to courses</button>
+        <div class="course-hero-tag">
+          <span id="course-level-badge" class="level-badge">Beginner</span>
+        </div>
+        <h1 id="course-title">Course Title</h1>
+        <span id="course-title-ar" class="course-hero-ar" lang="ar">عنوان الدورة</span>
+        <p id="course-description" style="color:var(--text-muted);font-size:1.05rem;line-height:1.7;margin-top:12px;"></p>
+        <div class="course-stats-row">
+          <div class="course-stat-item">📅 <span id="cs-monthly">8 sessions/month</span></div>
+          <div class="course-stat-item">⏱ <span id="cs-duration">60 min/session</span></div>
+          <div class="course-stat-item">🌐 <span id="cs-lang">English + Arabic</span></div>
+          <div class="course-stat-item">👤 <span>One-on-one</span></div>
+        </div>
+      </div>
+      <div class="course-sidebar">
+        <div id="cs-price" class="price">£149</div>
+        <div class="price-sub">per month · cancel anytime</div>
+        <ul class="course-sidebar-features" id="cs-features">
+          <li>8 live one-on-one sessions</li>
+          <li>Personalised lesson plan</li>
+          <li>Session recordings</li>
+          <li>Practice materials included</li>
+          <li>Direct messaging with Ranem</li>
+        </ul>
+        <button class="btn btn-primary btn-full" onclick="openCheckout()">Subscribe Now</button>
+        <div class="secure-badge">🔒 Secure checkout powered by Stripe</div>
+      </div>
+    </div>
+  </div>
+  <div class="course-body">
+    <div class="course-main">
+
+      <!-- Free Preview -->
+      <div class="free-preview">
+        <span class="free-preview-label">Free Preview — try before you subscribe</span>
+        <h3 id="fp-title">Sample Exercise</h3>
+        <div id="fp-exercise"></div>
+        <div class="preview-blurred" aria-hidden="true">
+          <p style="color:var(--text-muted);font-size:0.9rem;">Lorem ipsum dolor sit amet consectetur. Unlock the full course to access all exercises, curriculum, and live sessions.</p>
+        </div>
+        <div class="preview-unlock">
+          <button class="btn btn-primary" onclick="openCheckout()">Unlock Full Course</button>
+        </div>
+      </div>
+
+      <!-- Interactive Exercises -->
+      <div class="exercises">
+        <h2 class="course-section-title">Interactive Exercises</h2>
+        <div id="exercises-container"></div>
+      </div>
+
+      <!-- Curriculum -->
+      <div class="curriculum">
+        <h2 class="course-section-title">Curriculum</h2>
+        <div id="curriculum-container"></div>
+      </div>
+
+      <!-- Outcomes -->
+      <div class="outcomes">
+        <h2 class="course-section-title">What You'll Achieve</h2>
+        <span class="arabic-subtitle" lang="ar" style="margin-bottom:20px;display:block;">ما ستحققه</span>
+        <ul class="outcomes-list" id="outcomes-list"></ul>
+      </div>
+
+    </div>
+    <!-- Sticky sidebar (desktop) -->
+    <div>
+      <div class="course-sidebar" style="margin-top:0;">
+        <div id="cs-price-2" class="price">£149</div>
+        <div class="price-sub">per month · cancel anytime</div>
+        <ul class="course-sidebar-features" id="cs-features-2">
+          <li>8 live one-on-one sessions</li>
+          <li>Personalised lesson plan</li>
+          <li>Session recordings</li>
+          <li>Practice materials included</li>
+          <li>Direct messaging with Ranem</li>
+        </ul>
+        <button class="btn btn-primary btn-full" onclick="openCheckout()">Subscribe Now</button>
+        <div class="secure-badge">🔒 Secure checkout powered by Stripe</div>
+      </div>
+    </div>
+  </div>
+</div><!-- end page-course -->
+
+<!-- ======================== CHECKOUT PAGE ======================== -->
+<div id="page-checkout" class="page">
+  <div class="checkout-page">
+    <div class="container">
+      <div style="max-width:1000px;margin:0 auto;padding:0 0 24px;">
+        <button class="back-btn" onclick="checkoutBack()" style="background:none;border:none;color:var(--text-muted);font-size:0.9rem;display:flex;align-items:center;gap:6px;cursor:pointer;">← Back</button>
+        <h2 style="margin-top:16px;">Subscribe to Your Course</h2>
+        <span class="arabic-subtitle" lang="ar">اشترك في دورتك</span>
+      </div>
+    </div>
+    <div class="checkout-inner container">
+      <div>
+        <!-- Steps -->
+        <div class="checkout-steps" role="list" id="checkout-steps-bar">
+          <div class="checkout-step active" id="step-1-indicator" role="listitem">
+            <span class="step-num">1</span><span>Information</span>
+          </div>
+          <div class="step-divider" aria-hidden="true"></div>
+          <div class="checkout-step" id="step-2-indicator" role="listitem">
+            <span class="step-num">2</span><span>Payment</span>
+          </div>
+          <div class="step-divider" aria-hidden="true"></div>
+          <div class="checkout-step" id="step-3-indicator" role="listitem">
+            <span class="step-num">3</span><span>Complete</span>
+          </div>
+        </div>
+
+        <!-- Mobile summary toggle -->
+        <div class="checkout-mobile-summary">
+          <button class="checkout-mobile-summary-btn" onclick="toggleMobileSummary()" aria-expanded="false" aria-controls="mobile-summary-body">
+            <span>Order Summary</span><span id="mobile-summary-price">£149/mo</span>
+          </button>
+          <div class="checkout-mobile-summary-body" id="mobile-summary-body">
+            <div class="checkout-sidebar-body" id="mobile-sidebar-content"></div>
+          </div>
+        </div>
+
+        <!-- Step 1: Info -->
+        <div id="checkout-step-1" class="checkout-form">
+          <h3>Your Information</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="first-name">First Name</label>
+              <input type="text" id="first-name" placeholder="Sara" autocomplete="given-name" required>
+            </div>
+            <div class="form-group">
+              <label for="last-name">Last Name</label>
+              <input type="text" id="last-name" placeholder="Al-Hassan" autocomplete="family-name" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="sara@example.com" autocomplete="email" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone / WhatsApp</label>
+            <input type="tel" id="phone" placeholder="+44 7700 900000" autocomplete="tel">
+          </div>
+          <div class="form-group">
+            <label for="student-age">Student Age</label>
+            <select id="student-age">
+              <option value="">Select age range</option>
+              <option>Under 10</option>
+              <option>10–14</option>
+              <option>15–18</option>
+              <option>Adult (18+)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="level-note">Current Level (optional)</label>
+            <input type="text" id="level-note" placeholder="e.g. Complete beginner / I can read but not write">
+          </div>
+          <div class="checkout-actions">
+            <button class="checkout-back" onclick="showPage('course')">← Back to course</button>
+            <button class="btn btn-primary" onclick="checkoutNext(1)">Continue to Payment →</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Payment -->
+        <div id="checkout-step-2" class="checkout-form" style="display:none;">
+          <h3>Payment Details</h3>
+          <div class="form-group">
+            <label for="card-name">Name on Card</label>
+            <input type="text" id="card-name" placeholder="Sara Al-Hassan" autocomplete="cc-name">
+          </div>
+          <div class="form-group">
+            <label for="card-number">Card Number</label>
+            <input type="text" id="card-number" placeholder="1234 5678 9012 3456" maxlength="19" autocomplete="cc-number">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="card-expiry">Expiry</label>
+              <input type="text" id="card-expiry" placeholder="MM / YY" maxlength="7" autocomplete="cc-exp">
+            </div>
+            <div class="form-group">
+              <label for="card-cvc">CVC</label>
+              <input type="text" id="card-cvc" placeholder="123" maxlength="4" autocomplete="cc-csc">
+            </div>
+          </div>
+          <p class="form-note">🔒 All payments processed securely through Stripe. We never store your card details.</p>
+          <div class="checkout-actions">
+            <button class="checkout-back" onclick="checkoutPrev(2)">← Back</button>
+            <button class="btn btn-primary" onclick="checkoutNext(2)">Subscribe Now →</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Complete -->
+        <div id="checkout-step-3" class="checkout-form" style="display:none;">
+          <div class="checkout-complete">
+            <div class="success-icon" aria-hidden="true">🎉</div>
+            <h3>You're Subscribed!</h3>
+            <p id="checkout-confirm-msg">Your first session link will be sent to your email address within 24 hours.</p>
+            <button class="btn btn-primary" onclick="showPage('home')">Back to Home</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Persistent Sidebar (desktop) -->
+      <div class="checkout-sidebar" id="checkout-sidebar-desktop">
+        <div class="checkout-sidebar-header">
+          <h4>Subscription Summary</h4>
+          <p>Review your order below</p>
+        </div>
+        <div class="checkout-sidebar-body" id="checkout-sidebar-body"></div>
+      </div>
+
+    </div>
+  </div>
+</div><!-- end page-checkout -->
+
+<!-- ======================== FLOATING BUTTONS ======================== -->
+<!-- TODO: Replace YOUR_WHATSAPP_NUMBER with Ranem's number in international format e.g. 447700900000 -->
+<a href="https://wa.me/YOUR_WHATSAPP_NUMBER" class="whatsapp-fab" target="_blank" rel="noopener noreferrer" aria-label="Contact Ranem on WhatsApp">
+  <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.736 5.469 2.025 7.767L0 32l8.468-2.002A15.94 15.94 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.27 13.27 0 01-6.758-1.844l-.485-.288-5.027 1.188 1.214-4.908-.317-.507A13.267 13.267 0 012.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.27-9.818c-.398-.199-2.355-1.161-2.72-1.294-.365-.133-.631-.199-.897.199-.266.398-1.031 1.294-1.264 1.561-.232.266-.465.299-.863.1-.398-.2-1.682-.62-3.203-1.977-1.184-1.057-1.983-2.363-2.215-2.761-.232-.398-.025-.613.174-.811.179-.178.398-.465.597-.698.199-.232.266-.398.398-.664.133-.266.067-.499-.033-.698-.1-.2-.897-2.164-1.229-2.963-.323-.779-.652-.673-.897-.686l-.764-.013c-.266 0-.698.1-.1063.499-.365.398-1.396 1.361-1.396 3.32 0 1.96 1.43 3.855 1.628 4.121.2.266 2.812 4.294 6.814 6.024.952.411 1.695.656 2.274.84.955.304 1.824.261 2.51.159.766-.114 2.355-.962 2.688-1.891.332-.929.332-1.727.232-1.891-.1-.165-.365-.265-.764-.465z"/>
+  </svg>
+</a>
+
+<button class="call-fab" onclick="openCallModal()" aria-label="Get help from teacher">
+  🙋 Need Help?
+</button>
+
+<!-- Call Teacher Modal -->
+<div class="modal-overlay" id="call-modal" role="dialog" aria-modal="true" aria-labelledby="call-modal-title" onclick="closeCallModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeCallModal()" aria-label="Close dialog">✕</button>
+    <h3 id="call-modal-title">Get in Touch</h3>
+    <span class="arabic-subtitle" lang="ar">تواصل معنا</span>
+    <p>Choose how you'd like to connect with Ranem.</p>
+    <div class="modal-options" role="list">
+      <a href="https://wa.me/YOUR_WHATSAPP_NUMBER" class="modal-option" target="_blank" rel="noopener noreferrer" role="listitem">
+        <span class="modal-option-icon" aria-hidden="true">💬</span>
+        <span>WhatsApp Chat<br><small style="font-weight:400;color:var(--text-muted);">Quick response via WhatsApp</small></span>
+      </a>
+      <button class="modal-option" onclick="openCallModal_callback()" role="listitem">
+        <span class="modal-option-icon" aria-hidden="true">📞</span>
+        <span>Request a Callback<br><small style="font-weight:400;color:var(--text-muted);">Leave your number, we'll call you</small></span>
+      </button>
+      <button class="modal-option" onclick="closeCallModal(); scrollToSection('courses-section');" role="listitem">
+        <span class="modal-option-icon" aria-hidden="true">📅</span>
+        <span>Book a Free Trial<br><small style="font-weight:400;color:var(--text-muted);">Schedule your first session</small></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+<script>
+// ===== DATA =====
+const COURSES = {
+  'arabic-beginners': {
+    id: 'arabic-beginners',
+    title: 'Arabic for Beginners',
+    titleAr: 'عربية للمبتدئين',
+    desc: 'Start your Arabic journey from scratch. Learn the alphabet, basic vocabulary, and simple sentence structures through engaging, structured sessions.',
+    level: 'Beginner',
+    levelClass: 'badge-beginner',
+    subject: 'arabic',
+    price: '£149',
+    emoji: '📖',
+    learn: ['Arabic alphabet (all 28 letters)', 'Numbers and everyday vocabulary', 'Simple greetings and phrases'],
+    curriculum: [
+      { month: 'Month 1 — Foundations', items: ['Arabic alphabet (all 28 letters)', 'Basic pronunciation rules', 'Numbers 1–100', 'Greetings and introductions'] },
+      { month: 'Month 2 — Building Blocks', items: ['Common nouns and adjectives', 'Simple sentence construction', 'Days, months, and telling time', 'Family vocabulary'] },
+      { month: 'Month 3 — Real Conversation', items: ['Shopping and food vocabulary', 'Asking for directions', 'Past tense introduction', 'Short reading passages'] },
+      { month: 'Month 4 — Consolidation', items: ['Review and revision', 'Simple writing practice', 'Quran recitation basics (optional)', 'Reading short stories'] },
+    ],
+    outcomes: [
+      'Read and write all 28 Arabic letters fluently',
+      'Hold basic conversations in everyday situations',
+      'Understand and use 300+ common Arabic words',
+      'Recite simple Quranic verses with correct pronunciation',
+    ],
+    exercises: [
+      {
+        type: 'mcq',
+        question: 'What letter is this? — ب',
+        options: [
+          { text: 'Alif (أ)', correct: false, explanation: 'Alif looks like this: أ' },
+          { text: 'Ba (ب)', correct: true, explanation: 'Correct! ب (Ba) is the second letter of the Arabic alphabet.' },
+          { text: 'Ta (ت)', correct: false, explanation: 'Ta looks like this: ت' },
+          { text: 'Tha (ث)', correct: false, explanation: 'Tha looks like this: ث' },
+        ]
+      },
+      {
+        type: 'fill',
+        prompt: 'The Arabic word for "hello" is:',
+        answer: 'مرحبا',
+        hint: 'Hint: It sounds like "Marhaba"',
+        correct_msg: '✓ Correct! مرحبا (Marhaba) means hello.',
+        incorrect_msg: '✗ The answer is مرحبا (Marhaba).',
+      },
+      {
+        type: 'dnd',
+        pairs: [
+          { arabic: 'كتاب', english: 'Book' },
+          { arabic: 'بيت', english: 'House' },
+          { arabic: 'ماء', english: 'Water' },
+          { arabic: 'شمس', english: 'Sun' },
+        ]
+      }
+    ]
+  },
+  'arabic-intermediate': {
+    id: 'arabic-intermediate',
+    title: 'Intermediate Arabic',
+    titleAr: 'عربية متوسطة',
+    desc: 'Build on your foundation. Develop fluency in reading, writing, and speaking Modern Standard Arabic through real-world contexts and deeper grammar.',
+    level: 'Intermediate',
+    levelClass: 'badge-intermediate',
+    subject: 'arabic',
+    price: '£149',
+    emoji: '📚',
+    learn: ['Advanced grammar and verb conjugation', 'Reading authentic Arabic texts', 'Formal and informal conversation'],
+    curriculum: [
+      { month: 'Month 1 — Grammar Deep Dive', items: ['Verb conjugation (past, present, future)', 'Masculine and feminine agreement', 'Sentence patterns', 'Negation'] },
+      { month: 'Month 2 — Reading & Comprehension', items: ['Short news articles', 'Reading strategies', 'Vocabulary expansion (500+ words)', 'Summarising texts'] },
+      { month: 'Month 3 — Speaking Fluency', items: ['Debate and opinion expressing', 'Describing experiences', 'Listening comprehension', 'Pronunciation refinement'] },
+      { month: 'Month 4 — Writing', items: ['Paragraph and essay writing', 'Formal letters', 'Creative writing', 'Grammar revision'] },
+    ],
+    outcomes: [
+      'Hold fluent conversations in Modern Standard Arabic',
+      'Read and understand newspaper articles and books',
+      'Write formal and informal texts with correct grammar',
+      'Achieve B1–B2 level on the CEFR language scale',
+    ],
+    exercises: [
+      {
+        type: 'mcq',
+        question: 'What does "أكتب" mean?',
+        options: [
+          { text: 'I read', correct: false, explanation: '"I read" is أقرأ (aqra)' },
+          { text: 'I write', correct: true, explanation: 'Correct! أكتب (aktub) means "I write".' },
+          { text: 'I speak', correct: false, explanation: '"I speak" is أتكلم (atakallam)' },
+          { text: 'I listen', correct: false, explanation: '"I listen" is أسمع (asma)' },
+        ]
+      },
+      {
+        type: 'fill',
+        prompt: 'Complete the sentence: "أنا ___ من سوريا" (I am from Syria)',
+        answer: 'من',
+        hint: 'Hint: The missing word means "from"',
+        correct_msg: '✓ Correct! من (min) means "from".',
+        incorrect_msg: '✗ The answer is من (min), meaning "from".',
+      },
+      {
+        type: 'dnd',
+        pairs: [
+          { arabic: 'مدرسة', english: 'School' },
+          { arabic: 'طالب', english: 'Student' },
+          { arabic: 'معلمة', english: 'Teacher (f)' },
+          { arabic: 'درس', english: 'Lesson' },
+        ]
+      }
+    ]
+  },
+  'maths-kids': {
+    id: 'maths-kids',
+    title: 'Magic Maths for Kids',
+    titleAr: 'رياضيات سحرية للأطفال',
+    desc: 'Fun, engaging maths sessions designed for children aged 6–11. Build strong number foundations, multiplication confidence, and problem-solving skills.',
+    level: 'Kids',
+    levelClass: 'badge-kids',
+    subject: 'maths',
+    price: '£149',
+    emoji: '🔢',
+    learn: ['Number sense and place value', 'Multiplication and division', 'Fractions and basic geometry'],
+    curriculum: [
+      { month: 'Month 1 — Numbers & Operations', items: ['Place value up to 10,000', 'Addition and subtraction strategies', 'Mental maths tricks', 'Word problems'] },
+      { month: 'Month 2 — Multiplication & Division', items: ['Times tables (2–12)', 'Long multiplication', 'Division with remainders', 'Real-world applications'] },
+      { month: 'Month 3 — Fractions & Decimals', items: ['Understanding fractions', 'Comparing and ordering fractions', 'Introduction to decimals', 'Fraction word problems'] },
+      { month: 'Month 4 — Geometry & Measurement', items: ['2D and 3D shapes', 'Perimeter and area', 'Units of measure', 'Data handling and graphs'] },
+    ],
+    outcomes: [
+      'Confidently recall all multiplication tables up to 12×12',
+      'Solve multi-step word problems independently',
+      'Understand and work with fractions and decimals',
+      'Move up at least one grade level in school maths',
+    ],
+    exercises: [
+      {
+        type: 'mcq',
+        question: 'What is 7 × 8?',
+        options: [
+          { text: '54', correct: false, explanation: '7 × 8 = 56, not 54' },
+          { text: '56', correct: true, explanation: 'Correct! 7 × 8 = 56. Great work!' },
+          { text: '63', correct: false, explanation: '63 = 7 × 9' },
+          { text: '48', correct: false, explanation: '48 = 6 × 8' },
+        ]
+      },
+      {
+        type: 'fill',
+        prompt: 'What is ¾ of 24?',
+        answer: '18',
+        hint: 'Hint: Find ¼ of 24 first, then multiply by 3',
+        correct_msg: '✓ Correct! ¼ of 24 = 6, then 6 × 3 = 18.',
+        incorrect_msg: '✗ The answer is 18. ¼ of 24 = 6, then 6 × 3 = 18.',
+      },
+      {
+        type: 'dnd',
+        pairs: [
+          { arabic: '36', english: '6 × 6' },
+          { arabic: '42', english: '6 × 7' },
+          { arabic: '48', english: '6 × 8' },
+          { arabic: '54', english: '6 × 9' },
+        ]
+      }
+    ]
+  },
+  'maths-teens': {
+    id: 'maths-teens',
+    title: 'Maths for Teens',
+    titleAr: 'رياضيات للمراهقين',
+    desc: 'GCSE-aligned maths support for ages 12–18. Cover algebra, geometry, statistics and more with step-by-step guidance and exam technique coaching.',
+    level: 'Teens',
+    levelClass: 'badge-teens',
+    subject: 'maths',
+    price: '£149',
+    emoji: '📐',
+    learn: ['Algebra and equations', 'Geometry and trigonometry', 'Statistics and probability'],
+    curriculum: [
+      { month: 'Month 1 — Algebra', items: ['Solving linear equations', 'Expanding brackets and factorising', 'Simultaneous equations', 'Quadratic equations'] },
+      { month: 'Month 2 — Geometry', items: ['Angle rules and proofs', 'Pythagoras\' theorem', 'Trigonometry (sin, cos, tan)', 'Circle theorems'] },
+      { month: 'Month 3 — Statistics & Probability', items: ['Mean, median, mode, range', 'Probability trees', 'Histograms and scatter graphs', 'Interpreting data'] },
+      { month: 'Month 4 — Exam Preparation', items: ['Past paper practice', 'Exam technique', 'Time management', 'Identifying and fixing weak areas'] },
+    ],
+    outcomes: [
+      'Confidently solve GCSE-level algebra and geometry problems',
+      'Improve exam grades by at least one grade boundary',
+      'Develop strong exam technique and time management',
+      'Build independence and confidence in approaching new problems',
+    ],
+    exercises: [
+      {
+        type: 'mcq',
+        question: 'Solve for x: 3x + 7 = 22',
+        options: [
+          { text: 'x = 3', correct: false, explanation: '3(3) + 7 = 16, not 22' },
+          { text: 'x = 4', correct: false, explanation: '3(4) + 7 = 19, not 22' },
+          { text: 'x = 5', correct: true, explanation: 'Correct! 3(5) + 7 = 15 + 7 = 22 ✓' },
+          { text: 'x = 6', correct: false, explanation: '3(6) + 7 = 25, not 22' },
+        ]
+      },
+      {
+        type: 'fill',
+        prompt: 'A triangle has angles 45° and 75°. What is the third angle?',
+        answer: '60',
+        hint: 'Hint: Angles in a triangle always add up to 180°',
+        correct_msg: '✓ Correct! 180° − 45° − 75° = 60°',
+        incorrect_msg: '✗ The answer is 60°. Angles in a triangle sum to 180°.',
+      },
+      {
+        type: 'dnd',
+        pairs: [
+          { arabic: 'x² - 4', english: '(x+2)(x-2)' },
+          { arabic: 'x² + 5x + 6', english: '(x+2)(x+3)' },
+          { arabic: 'x² - x - 6', english: '(x-3)(x+2)' },
+          { arabic: 'x² - 9', english: '(x+3)(x-3)' },
+        ]
+      }
+    ]
+  }
+};
+
+const FAQS = [
+  {
+    q: 'How do sessions work?',
+    a: 'Sessions take place online via Zoom. After subscribing, you\'ll receive a booking link to schedule your first session at a time that suits you.',
+    // TODO: Confirm platform (Zoom/Google Meet)
+    ar: 'تتم الجلسات عبر الإنترنت. بعد الاشتراك، ستتلقى رابط الحجز لجدولة جلستك الأولى.'
+  },
+  {
+    q: 'What platform do you use?',
+    a: 'All sessions are held via Zoom. You\'ll need a free Zoom account and a device with a camera and microphone.',
+    // TODO: Confirm platform
+    ar: 'تُعقد جميع الجلسات عبر Zoom. ستحتاج إلى حساب Zoom مجاني وجهاز بكاميرا وميكروفون.'
+  },
+  {
+    q: 'Can I switch between plans?',
+    a: 'Yes, you can upgrade or downgrade your plan at any time. Changes take effect from the next billing cycle.',
+    ar: 'نعم، يمكنك ترقية خطتك أو تخفيضها في أي وقت. تسري التغييرات من دورة الفوترة التالية.'
+  },
+  {
+    q: 'Do you offer refunds?',
+    a: 'If you\'re unsatisfied after your first session, we offer a full refund within 7 days of your first payment.',
+    ar: 'إذا لم تكن راضيًا بعد جلستك الأولى، نقدم استردادًا كاملًا خلال 7 أيام من دفعتك الأولى.'
+  },
+  {
+    q: 'How many students per session?',
+    a: 'All sessions are one-on-one, fully personalised to your level and goals.',
+    ar: 'جميع الجلسات فردية، ومخصصة تمامًا لمستواك وأهدافك.'
+  },
+  {
+    q: 'What age groups do you teach?',
+    a: 'Arabic courses are open to all ages. Maths is designed for ages 6–18 (Kids and Teens programmes).',
+    ar: 'دورات العربية مفتوحة لجميع الأعمار. الرياضيات مصممة للأعمار 6–18 (برامج الأطفال والمراهقين).'
+  },
+  {
+    q: 'Do you offer a free trial?',
+    a: 'Yes! Click "Contact for Free Trial" on the homepage to request a complimentary introductory session.',
+    ar: 'نعم! انقر على "تواصل للتجربة المجانية" في الصفحة الرئيسية لطلب جلسة تعريفية مجانية.'
+  },
+  {
+    q: 'Is payment secure?',
+    a: 'All payments are processed securely through Stripe. Ranem\'s Learning Hub never stores your card details.',
+    ar: 'تتم معالجة جميع المدفوعات بأمان عبر Stripe. لا يخزن مركز رانم التعليمي بيانات بطاقتك.'
+  },
+];
+
+// ===== STATE =====
+let currentCourse = null;
+let currentCheckoutStep = 1;
+let dndDragging = null;
+let exerciseStates = {};
+
+// ===== PAGE NAVIGATION =====
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function scrollToSection(id) {
+  showPage('home');
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
+
+// ===== COURSES =====
+function renderCourses() {
+  const grid = document.getElementById('courses-grid');
+  grid.innerHTML = Object.values(COURSES).map(c => `
+    <article class="course-card" onclick="openCourse('${c.id}')" style="cursor:pointer;" role="button" tabindex="0"
+      onkeydown="if(event.key==='Enter'||event.key===' '){openCourse('${c.id}')}"
+      aria-label="View ${c.title} course details">
+      <div class="course-card-image">
+        <div class="course-card-image-bg ${c.subject === 'arabic' ? 'bg-arabic' : 'bg-maths'}" aria-hidden="true">
+          ${c.emoji}
+        </div>
+        <span class="level-badge ${c.levelClass}">${c.level}</span>
+      </div>
+      <div class="course-card-body">
+        <h3>${c.title}</h3>
+        <span class="course-title-ar" lang="ar">${c.titleAr}</span>
+        <p class="course-desc">${c.desc}</p>
+        <ul class="course-learn" aria-label="What you'll learn">
+          ${c.learn.map(l => `<li>${l}</li>`).join('')}
+        </ul>
+        <div class="course-meta">
+          <span>📅 8 sessions/mo</span>
+          <span>⏱ 60 min</span>
+        </div>
+        <div class="course-footer">
+          <div class="course-price">${c.price}<span>/month</span></div>
+          <button class="btn btn-primary" onclick="event.stopPropagation(); openCourse('${c.id}')">View Course</button>
+        </div>
+      </div>
+    </article>
+  `).join('');
+}
+
+function openCourse(id) {
+  currentCourse = COURSES[id];
+  if (!currentCourse) return;
+  exerciseStates = {};
+
+  // Populate header
+  document.getElementById('course-title').textContent = currentCourse.title;
+  document.getElementById('course-title-ar').textContent = currentCourse.titleAr;
+  document.getElementById('course-description').textContent = currentCourse.desc;
+  const badge = document.getElementById('course-level-badge');
+  badge.textContent = currentCourse.level;
+  badge.className = 'level-badge ' + currentCourse.levelClass;
+  document.getElementById('cs-price').textContent = currentCourse.price;
+  document.getElementById('cs-price-2').textContent = currentCourse.price;
+
+  // Curriculum
+  const currEl = document.getElementById('curriculum-container');
+  currEl.innerHTML = currentCourse.curriculum.map((m, i) => `
+    <div class="curriculum-month" id="cm-${i}">
+      <button class="curriculum-month-btn" onclick="toggleCurrMonth(${i})"
+        aria-expanded="false" aria-controls="cmb-${i}">
+        <span>${m.month}</span>
+        <span class="cm-icon" aria-hidden="true">▾</span>
+      </button>
+      <div class="curriculum-month-body" id="cmb-${i}" role="region">
+        <ul>${m.items.map(it => `<li>${it}</li>`).join('')}</ul>
+      </div>
+    </div>
+  `).join('');
+
+  // Outcomes
+  const outEl = document.getElementById('outcomes-list');
+  outEl.innerHTML = currentCourse.outcomes.map(o => `
+    <li class="outcome-item">
+      <div class="outcome-icon" aria-hidden="true">✓</div>
+      <p class="outcome-text">${o}</p>
+    </li>
+  `).join('');
+
+  // Free preview (first exercise)
+  const fp = currentCourse.exercises[0];
+  document.getElementById('fp-title').textContent = `Sample: ${currentCourse.title}`;
+  document.getElementById('fp-exercise').innerHTML = renderExercise(fp, 'fp', true);
+  bindExercise('fp', fp);
+
+  // All exercises
+  const exEl = document.getElementById('exercises-container');
+  exEl.innerHTML = currentCourse.exercises.map((ex, i) => `
+    <div class="exercise-card">
+      <div class="exercise-header">
+        <div class="exercise-progress">Question ${i+1} of ${currentCourse.exercises.length}</div>
+        <span class="exercise-type-label">${ex.type === 'mcq' ? 'Multiple Choice' : ex.type === 'fill' ? 'Fill in the Blank' : 'Vocabulary Match'}</span>
+      </div>
+      ${renderExercise(ex, 'ex' + i, false)}
+    </div>
+  `).join('');
+  currentCourse.exercises.forEach((ex, i) => bindExercise('ex' + i, ex));
+
+  showPage('course');
+}
+
+function renderExercise(ex, id, preview) {
+  if (ex.type === 'mcq') {
+    return `
+      <p class="question-text">${ex.question}</p>
+      <div class="options" id="opts-${id}" role="group" aria-label="Answer options">
+        ${ex.options.map((o, oi) => `
+          <button class="option" data-correct="${o.correct}" data-explanation="${o.explanation}"
+            id="opt-${id}-${oi}" onclick="answerMCQ('${id}', ${oi})"
+            aria-label="${o.text}">
+            ${o.text}
+          </button>
+        `).join('')}
+      </div>
+      <div class="feedback" id="fb-${id}" aria-live="polite"></div>
+      <div id="next-${id}"></div>
+    `;
+  } else if (ex.type === 'fill') {
+    return `
+      <div class="fill-blank-wrap">
+        <p>${ex.prompt}</p>
+        <input type="text" class="fill-blank" id="input-${id}" placeholder="Type your answer..."
+          data-answer="${ex.answer}" data-correct="${ex.correct_msg.replace(/"/g,'&quot;')}" data-incorrect="${ex.incorrect_msg.replace(/"/g,'&quot;')}"
+          onkeydown="if(event.key==='Enter'){checkFillEl(this)}"
+          aria-label="Your answer">
+        <p style="font-size:0.8rem;color:var(--text-muted);margin-top:6px;">${ex.hint}</p>
+        <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="checkFillEl(document.getElementById('input-${id}'))">Check Answer</button>
+          <span class="arabic-subtitle" lang="ar">تحقق / Check</span>
+        </div>
+        <div class="feedback" id="fb-${id}" aria-live="polite" style="margin-top:12px;"></div>
+      </div>
+    `;
+  } else if (ex.type === 'dnd') {
+    const shuffled = [...ex.pairs].sort(() => Math.random() - 0.5);
+    return `
+      <div class="dnd-wrap">
+        <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:16px;">Drag the items on the left to match the correct pair on the right.</p>
+        <div class="dnd-cols">
+          <div>
+            <div class="dnd-col-title">Match these</div>
+            <div class="dnd-list" id="dnd-source-${id}">
+              ${shuffled.map((p, i) => `
+                <div class="dnd-item dnd-arabic-item" draggable="true" data-value="${p.arabic}"
+                  id="dnd-item-${id}-${i}" role="option" tabindex="0"
+                  aria-label="Drag: ${p.arabic}"
+                  ondragstart="dndStart(event,'${id}')"
+                  ondragend="dndEnd(event)">
+                  ${p.arabic}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+          <div>
+            <div class="dnd-col-title">To these</div>
+            <div class="dnd-list" id="dnd-target-${id}">
+              ${ex.pairs.map((p, i) => `
+                <div class="dnd-drop" id="dnd-drop-${id}-${i}" data-answer="${p.arabic}"
+                  role="listitem" aria-label="Drop zone for: ${p.english}"
+                  ondragover="event.preventDefault(); this.classList.add('over')"
+                  ondragleave="this.classList.remove('over')"
+                  ondrop="dndDrop(event, '${id}', ${i})">
+                  ${p.english}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+        <div class="dnd-score" id="dnd-score-${id}" aria-live="polite"></div>
+        <button class="btn btn-secondary" style="margin-top:12px;" onclick="resetDnd('${id}')">Try Again</button>
+      </div>
+    `;
+  }
+  return '';
+}
+
+function bindExercise(id, ex) { /* events bound inline */ }
+
+function answerMCQ(id, selectedIdx) {
+  const opts = document.querySelectorAll(`#opts-${id} .option`);
+  opts.forEach(o => o.disabled = true);
+  const selected = opts[selectedIdx];
+  const correct = selected.dataset.correct === 'true';
+  const explanation = selected.dataset.explanation;
+  selected.classList.add(correct ? 'correct' : 'incorrect');
+  if (!correct) {
+    opts.forEach(o => { if (o.dataset.correct === 'true') o.classList.add('correct'); });
+  }
+  const fb = document.getElementById(`fb-${id}`);
+  fb.textContent = (correct ? '✓ ' : '✗ ') + explanation;
+  fb.className = 'feedback ' + (correct ? 'correct' : 'incorrect');
+}
+
+function checkFillEl(input) {
+  const id = input.id.replace('input-', '');
+  const answer = input.dataset.answer;
+  const val = input.value.trim();
+  const isCorrect = val.toLowerCase() === answer.toLowerCase() || val === answer;
+  input.className = 'fill-blank ' + (isCorrect ? 'correct' : 'incorrect');
+  const fb = document.getElementById(`fb-${id}`);
+  if (fb) {
+    fb.textContent = isCorrect ? input.dataset.correct : input.dataset.incorrect;
+    fb.className = 'feedback ' + (isCorrect ? 'correct' : 'incorrect');
+  }
+}
+
+// DnD
+function dndStart(e, id) {
+  dndDragging = { id, value: e.target.dataset.value, el: e.target };
+  e.target.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+function dndEnd(e) {
+  e.target.classList.remove('dragging');
+}
+function dndDrop(e, id, dropIdx) {
+  e.preventDefault();
+  const dropEl = e.currentTarget;
+  dropEl.classList.remove('over');
+  if (!dndDragging || dndDragging.id !== id) return;
+  const correct = dropEl.dataset.answer === dndDragging.value;
+  dropEl.textContent = dndDragging.value + ' → ' + dropEl.textContent.split('→').pop().trim();
+  dropEl.className = 'dnd-drop ' + (correct ? 'matched' : 'wrong');
+  if (dndDragging.el) dndDragging.el.style.opacity = '0.3';
+
+  // Score
+  const course = currentCourse;
+  const ex = course.exercises.find((e, i) => {
+    const eid = id.startsWith('ex') ? parseInt(id.replace('ex','')) : -1;
+    return eid >= 0 ? i === eid : false;
+  });
+  const drops = document.querySelectorAll(`[id^="dnd-drop-${id}-"]`);
+  const matched = [...drops].filter(d => d.classList.contains('matched')).length;
+  const total = drops.length;
+  const scoreEl = document.getElementById(`dnd-score-${id}`);
+  if (matched === total) {
+    scoreEl.textContent = `🎉 Perfect score! ${matched}/${total} correct`;
+    scoreEl.style.color = 'var(--green)';
+  } else {
+    scoreEl.textContent = `${matched}/${total} matched so far`;
+  }
+  dndDragging = null;
+}
+function resetDnd(id) {
+  const drops = document.querySelectorAll(`[id^="dnd-drop-${id}-"]`);
+  drops.forEach(d => {
+    d.className = 'dnd-drop';
+    d.textContent = d.dataset.answer ? d.textContent.split('→').pop().trim() : d.textContent;
+  });
+  document.querySelectorAll(`[id^="dnd-item-${id}-"]`).forEach(i => i.style.opacity = '1');
+  document.getElementById(`dnd-score-${id}`).textContent = '';
+}
+
+function toggleCurrMonth(i) {
+  const item = document.getElementById(`cm-${i}`);
+  const body = document.getElementById(`cmb-${i}`);
+  const btn = item.querySelector('.curriculum-month-btn');
+  const isOpen = item.classList.contains('open');
+  item.classList.toggle('open');
+  body.classList.toggle('open');
+  btn.setAttribute('aria-expanded', !isOpen);
+}
+
+// ===== CHECKOUT =====
+function openCheckout() {
+  currentCheckoutStep = 1;
+  updateCheckoutSidebar();
+  showPage('checkout');
+  updateCheckoutSteps(1);
+  document.getElementById('checkout-step-1').style.display = 'block';
+  document.getElementById('checkout-step-2').style.display = 'none';
+  document.getElementById('checkout-step-3').style.display = 'none';
+}
+
+function updateCheckoutSidebar() {
+  if (!currentCourse) return;
+  const c = currentCourse;
+  const isComplete = currentCheckoutStep === 3;
+  const email = document.getElementById('email') ? document.getElementById('email').value : '';
+
+  const html = `
+    <div class="checkout-sidebar-course">
+      <div class="checkout-sidebar-course-icon" aria-hidden="true">${c.emoji}</div>
+      <div class="checkout-sidebar-course-info">
+        <h5>${c.title}</h5>
+        <p>${c.titleAr}</p>
+        <p>${c.level} · 8 sessions/month</p>
+      </div>
+    </div>
+    ${isComplete ? `
+      <div class="confirm-summary">
+        🎉 You're subscribed! Your first session link will be sent to <strong>${email || 'your email'}</strong> within 24 hours.
+        <br><br>
+        <span class="arabic-subtitle" lang="ar">تم الاشتراك! سيُرسل رابط جلستك الأولى إلى بريدك الإلكتروني خلال 24 ساعة.</span>
+      </div>
+    ` : `
+      <ul class="checkout-sidebar-features">
+        <li>8 live one-on-one sessions</li>
+        <li>Personalised lesson plan</li>
+        <li>Session recordings</li>
+        <li>Practice materials</li>
+        <li>Direct messaging with Ranem</li>
+      </ul>
+      <div class="checkout-price-breakdown">
+        <div class="checkout-price-row"><span>Monthly fee</span><span>${c.price}</span></div>
+        <div class="checkout-price-row"><span>Tax</span><span>Included</span></div>
+        <div class="checkout-price-total"><span>Total/month</span><span>${c.price}</span></div>
+      </div>
+      ${currentCheckoutStep === 2 ? `<div class="secure-note">🔒 Secure checkout powered by Stripe</div>` : ''}
+    `}
+  `;
+
+  const desktop = document.getElementById('checkout-sidebar-body');
+  if (desktop) desktop.innerHTML = html;
+  const mobile = document.getElementById('mobile-sidebar-content');
+  if (mobile) mobile.innerHTML = html;
+  const mobilePrice = document.getElementById('mobile-summary-price');
+  if (mobilePrice) mobilePrice.textContent = c.price + '/mo';
+}
+
+function checkoutNext(step) {
+  if (step === 1) {
+    const email = document.getElementById('email').value;
+    const fname = document.getElementById('first-name').value;
+    if (!fname || !email) { showToast('Please fill in your name and email'); return; }
+    document.getElementById('checkout-step-1').style.display = 'none';
+    document.getElementById('checkout-step-2').style.display = 'block';
+    currentCheckoutStep = 2;
+    updateCheckoutSteps(2);
+    updateCheckoutSidebar();
+  } else if (step === 2) {
+    const cardNum = document.getElementById('card-number').value;
+    if (!cardNum || cardNum.length < 16) { showToast('Please enter a valid card number'); return; }
+    document.getElementById('checkout-step-2').style.display = 'none';
+    document.getElementById('checkout-step-3').style.display = 'block';
+    currentCheckoutStep = 3;
+    updateCheckoutSteps(3);
+    const email = document.getElementById('email').value;
+    document.getElementById('checkout-confirm-msg').textContent = `Your first session link will be sent to ${email || 'your email'} within 24 hours.`;
+    updateCheckoutSidebar();
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function checkoutPrev(step) {
+  if (step === 2) {
+    document.getElementById('checkout-step-2').style.display = 'none';
+    document.getElementById('checkout-step-1').style.display = 'block';
+    currentCheckoutStep = 1;
+    updateCheckoutSteps(1);
+    updateCheckoutSidebar();
+  }
+}
+
+function checkoutBack() {
+  if (currentCourse) showPage('course');
+  else showPage('home');
+}
+
+function updateCheckoutSteps(active) {
+  [1,2,3].forEach(n => {
+    const el = document.getElementById(`step-${n}-indicator`);
+    if (!el) return;
+    el.className = 'checkout-step' + (n === active ? ' active' : n < active ? ' done' : '');
+    const numEl = el.querySelector('.step-num');
+    if (n < active) numEl.textContent = '✓';
+    else numEl.textContent = n;
+  });
+}
+
+function toggleMobileSummary() {
+  const body = document.getElementById('mobile-summary-body');
+  const btn = document.querySelector('.checkout-mobile-summary-btn');
+  const isOpen = body.classList.toggle('open');
+  btn.setAttribute('aria-expanded', isOpen);
+}
+
+// ===== FAQ =====
+function renderFAQ() {
+  const list = document.getElementById('faq-list');
+  list.innerHTML = FAQS.map((faq, i) => `
+    <div class="faq-item" id="faq-${i}">
+      <button class="faq-question" id="faq-btn-${i}" onclick="toggleFAQ(${i})"
+        aria-expanded="false" aria-controls="faq-ans-${i}">
+        <span>${faq.q}</span>
+        <span class="faq-icon" aria-hidden="true">+</span>
+      </button>
+      <div class="faq-answer" id="faq-ans-${i}" role="region" aria-labelledby="faq-btn-${i}">
+        <div class="faq-answer-inner">
+          <p>${faq.a}</p>
+          <span class="arabic-subtitle" lang="ar">${faq.ar}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleFAQ(idx) {
+  const item = document.getElementById(`faq-${idx}`);
+  const btn = document.getElementById(`faq-btn-${idx}`);
+  const isOpen = item.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.faq-item').forEach(f => {
+    f.classList.remove('open');
+    f.querySelector('.faq-question').classList.remove('active');
+    f.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+  });
+  // Open this one if it was closed
+  if (!isOpen) {
+    item.classList.add('open');
+    btn.classList.add('active');
+    btn.setAttribute('aria-expanded', 'true');
+  }
+}
+
+// ===== MODALS =====
+function openCallModal() {
+  const m = document.getElementById('call-modal');
+  m.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => m.querySelector('.modal-close').focus(), 100);
+}
+function closeCallModal(e) {
+  if (e && e.target !== document.getElementById('call-modal')) return;
+  document.getElementById('call-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function openCallModal_callback() {
+  closeCallModal();
+  showToast('📞 Callback request — please contact via WhatsApp for now!');
+}
+// Escape key closes modal
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.getElementById('call-modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+});
+
+// ===== NAV =====
+function toggleMobileNav() {
+  const nav = document.getElementById('nav-mobile');
+  nav.classList.toggle('open');
+}
+
+// ===== TOAST =====
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ===== INIT =====
+renderCourses();
+renderFAQ();
+
+// Card number formatting
+document.addEventListener('input', e => {
+  if (e.target.id === 'card-number') {
+    let v = e.target.value.replace(/\D/g,'').substring(0,16);
+    e.target.value = v.replace(/(.{4})/g,'$1 ').trim();
+  }
+  if (e.target.id === 'card-expiry') {
+    let v = e.target.value.replace(/\D/g,'').substring(0,4);
+    if (v.length >= 2) v = v.substring(0,2) + ' / ' + v.substring(2);
+    e.target.value = v;
+  }
+});
+</script>
+</body>
+</html>
