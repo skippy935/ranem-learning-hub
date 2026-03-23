@@ -104,9 +104,10 @@ h3 { font-size: 1.2rem; font-weight: 700; }
 
 .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
 .hero-image { position: relative; }
-.hero-image-card { background: #fff; border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow-hover); text-align: center; }
-.hero-image-card .emoji { font-size: 5rem; display: block; margin-bottom: 16px; }
-.hero-image-card p { color: var(--text-muted); font-size: 0.95rem; }
+.hero-image-card { background: #fff; border-radius: var(--radius); padding: 0; box-shadow: var(--shadow-hover); text-align: center; overflow: hidden; }
+.hero-image-card .teacher-photo { width: 100%; aspect-ratio: 4/5; object-fit: cover; object-position: center top; display: block; }
+.hero-image-card .hero-quote { padding: 16px 20px; }
+.hero-image-card p { color: var(--text-muted); font-size: 0.9rem; }
 .hero-image-badge { position: absolute; bottom: -16px; right: -16px; background: var(--red); color: #fff; border-radius: 12px; padding: 12px 20px; font-weight: 700; font-size: 0.9rem; box-shadow: 0 4px 16px rgba(232,41,76,0.4); }
 
 @media(max-width:768px){
@@ -151,7 +152,7 @@ h3 { font-size: 1.2rem; font-weight: 700; }
 .about-point-text h4 { font-weight: 700; margin-bottom: 4px; }
 .about-point-text p { font-size: 0.9rem; color: var(--text-muted); }
 .about-image-card { background: var(--bg-alt); border-radius: var(--radius); padding: 40px; text-align: center; }
-.about-image-card .avatar { width: 120px; height: 120px; background: linear-gradient(135deg, var(--red), var(--red-dark)); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: #fff; }
+.about-image-card .avatar { width: 160px; height: 160px; border-radius: 50%; margin: 0 auto 20px; object-fit: cover; object-position: center top; display: block; box-shadow: 0 4px 20px rgba(0,0,0,0.15); border: 4px solid #fff; }
 .about-image-card h3 { font-size: 1.3rem; margin-bottom: 4px; }
 .about-image-card p { color: var(--text-muted); font-size: 0.9rem; }
 .about-image-card .badge { display: inline-block; background: var(--red-light); color: var(--red); border-radius: 20px; padding: 4px 12px; font-size: 0.8rem; font-weight: 600; margin: 8px 4px 0; }
@@ -475,6 +476,39 @@ h3 { font-size: 1.2rem; font-weight: 700; }
 .checkout-mobile-summary .checkout-sidebar-body { padding: 0 20px 20px; }
 @media(max-width:768px){ .checkout-mobile-summary{display:block;} }
 
+/* ===== BOOKING CALENDAR ===== */
+.cal-wrap { }
+.cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.cal-nav h4 { font-size: 1rem; font-weight: 700; }
+.cal-nav-btn { background: none; border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 6px 14px; font-weight: 600; font-size: 0.9rem; transition: all 0.2s; }
+.cal-nav-btn:hover { border-color: var(--red); color: var(--red); }
+.cal-nav-btn:focus-visible { outline: 2px solid var(--red); }
+.cal-grid { overflow-x: auto; }
+.cal-table { width: 100%; border-collapse: collapse; min-width: 500px; }
+.cal-table th { text-align: center; font-size: 0.8rem; font-weight: 700; padding: 10px 4px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.cal-table th.today-col { color: var(--red); }
+.cal-time { font-size: 0.78rem; color: var(--text-muted); padding: 4px 8px 4px 0; white-space: nowrap; font-weight: 600; }
+.cal-slot { padding: 3px; }
+.slot-btn {
+  width: 100%; padding: 8px 4px; border-radius: 6px; border: none; font-size: 0.75rem; font-weight: 600;
+  cursor: default; transition: all 0.15s; text-align: center; line-height: 1.2;
+}
+.slot-available { background: #dcfce7; color: #166534; cursor: pointer; }
+.slot-available:hover { background: #bbf7d0; transform: scale(1.05); }
+.slot-available:focus-visible { outline: 2px solid var(--green); }
+.slot-unavailable { background: #f3f4f6; color: #9ca3af; cursor: not-allowed; }
+.slot-booked { background: #fee2e2; color: #991b1b; cursor: not-allowed; }
+.slot-selected { background: var(--red) !important; color: #fff !important; transform: scale(1.05); box-shadow: 0 2px 8px rgba(232,41,76,0.4); }
+.cal-legend { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+.cal-legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--text-muted); }
+.cal-legend-dot { width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0; }
+.cal-legend-dot.avail { background: #dcfce7; border: 1px solid #86efac; }
+.cal-legend-dot.unavail { background: #f3f4f6; border: 1px solid #d1d5db; }
+.cal-legend-dot.booked { background: #fee2e2; border: 1px solid #fca5a5; }
+.cal-legend-dot.selected { background: var(--red); }
+.selected-slot-display { margin-top: 20px; padding: 16px 20px; background: #dcfce7; border-radius: var(--radius-sm); border: 2px solid #86efac; font-weight: 600; color: #166534; display: none; }
+.selected-slot-display.show { display: block; }
+
 /* ===== TOAST ===== */
 .toast {
   position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(20px);
@@ -552,11 +586,13 @@ h3 { font-size: 1.2rem; font-weight: 700; }
         <button class="btn btn-secondary" onclick="scrollToSection('courses-section')">Explore Tutoring Programs</button>
       </div>
     </div>
-    <div class="hero-image" aria-hidden="true">
+    <div class="hero-image">
       <div class="hero-image-card">
-        <span class="emoji">👩‍🏫</span>
-        <p>"Learning a language opens a door to a new world"</p>
-        <p class="arabic-subtitle" lang="ar">"تعلّم لغة يفتح بابًا لعالم جديد"</p>
+        <img src="ranem.jpg" alt="Ranem — Arabic and Maths Tutor" class="teacher-photo">
+        <div class="hero-quote">
+          <p>"Learning a language opens a door to a new world"</p>
+          <p class="arabic-subtitle" lang="ar">"تعلّم لغة يفتح بابًا لعالم جديد"</p>
+        </div>
       </div>
       <div class="hero-image-badge">🇸🇾 Native Speaker</div>
     </div>
@@ -627,7 +663,7 @@ h3 { font-size: 1.2rem; font-weight: 700; }
         </div>
       </div>
       <div class="about-image-card">
-        <div class="avatar" aria-hidden="true">👩‍🏫</div>
+        <img src="ranem.jpg" alt="Ranem — Arabic and Maths Tutor" class="avatar">
         <h3>Ranem</h3>
         <!-- TODO: Add Ranem's full name -->
         <p>Arabic & Maths Tutor</p>
@@ -904,7 +940,11 @@ h3 { font-size: 1.2rem; font-weight: 700; }
           </div>
           <div class="step-divider" aria-hidden="true"></div>
           <div class="checkout-step" id="step-3-indicator" role="listitem">
-            <span class="step-num">3</span><span>Complete</span>
+            <span class="step-num">3</span><span>Book Session</span>
+          </div>
+          <div class="step-divider" aria-hidden="true"></div>
+          <div class="checkout-step" id="step-4-indicator" role="listitem">
+            <span class="step-num">4</span><span>Complete</span>
           </div>
         </div>
 
@@ -987,12 +1027,46 @@ h3 { font-size: 1.2rem; font-weight: 700; }
           </div>
         </div>
 
-        <!-- Step 3: Complete -->
+        <!-- Step 3: Book Session -->
         <div id="checkout-step-3" class="checkout-form" style="display:none;">
+          <h3>Book Your First Session</h3>
+          <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:24px;">Choose a date and time for your first session. Available slots are shown in green.</p>
+          <div class="cal-wrap">
+            <div class="cal-nav">
+              <button class="cal-nav-btn" onclick="calPrevWeek()" aria-label="Previous week">← Prev</button>
+              <h4 id="cal-week-label">Loading…</h4>
+              <button class="cal-nav-btn" onclick="calNextWeek()" aria-label="Next week">Next →</button>
+            </div>
+            <div class="cal-grid">
+              <table class="cal-table" role="grid" aria-label="Session availability calendar">
+                <thead id="cal-head"></thead>
+                <tbody id="cal-body"></tbody>
+              </table>
+            </div>
+            <div class="cal-legend" aria-label="Calendar legend">
+              <div class="cal-legend-item"><div class="cal-legend-dot avail"></div>Available</div>
+              <div class="cal-legend-item"><div class="cal-legend-dot unavail"></div>Unavailable</div>
+              <div class="cal-legend-item"><div class="cal-legend-dot booked"></div>Already Booked</div>
+              <div class="cal-legend-item"><div class="cal-legend-dot selected"></div>Your Selection</div>
+            </div>
+            <div class="selected-slot-display" id="selected-slot-display" role="status" aria-live="polite"></div>
+          </div>
+          <div class="checkout-actions" style="margin-top:28px;">
+            <button class="checkout-back" onclick="checkoutPrev(3)">← Back</button>
+            <button class="btn btn-primary" id="book-confirm-btn" onclick="checkoutNext(3)" disabled style="opacity:0.5;">Confirm Booking →</button>
+          </div>
+        </div>
+
+        <!-- Step 4: Complete -->
+        <div id="checkout-step-4" class="checkout-form" style="display:none;">
           <div class="checkout-complete">
             <div class="success-icon" aria-hidden="true">🎉</div>
             <h3>You're Subscribed!</h3>
             <p id="checkout-confirm-msg">Your first session link will be sent to your email address within 24 hours.</p>
+            <div style="background:var(--bg-alt);border-radius:var(--radius-sm);padding:16px;margin:20px 0;text-align:left;">
+              <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:4px;">Your first session:</p>
+              <p style="font-weight:700;color:var(--red);" id="booked-slot-display"></p>
+            </div>
             <button class="btn btn-primary" onclick="showPage('home')">Back to Home</button>
           </div>
         </div>
@@ -1598,12 +1672,13 @@ function openCheckout() {
   document.getElementById('checkout-step-1').style.display = 'block';
   document.getElementById('checkout-step-2').style.display = 'none';
   document.getElementById('checkout-step-3').style.display = 'none';
+  document.getElementById('checkout-step-4').style.display = 'none';
 }
 
 function updateCheckoutSidebar() {
   if (!currentCourse) return;
   const c = currentCourse;
-  const isComplete = currentCheckoutStep === 3;
+  const isComplete = currentCheckoutStep === 4;
   const email = document.getElementById('email') ? document.getElementById('email').value : '';
 
   const html = `
@@ -1663,8 +1738,24 @@ function checkoutNext(step) {
     document.getElementById('checkout-step-3').style.display = 'block';
     currentCheckoutStep = 3;
     updateCheckoutSteps(3);
+    updateCheckoutSidebar();
+    calInit();
+  } else if (step === 3) {
+    if (!selectedSlot) { showToast('Please select a session time first'); return; }
+    // Mark slot as booked
+    const data = getAvailData();
+    data.slots[selectedSlot] = 'booked';
     const email = document.getElementById('email').value;
-    document.getElementById('checkout-confirm-msg').textContent = `Your first session link will be sent to ${email || 'your email'} within 24 hours.`;
+    const fname = document.getElementById('first-name').value;
+    if (!data.bookings) data.bookings = [];
+    data.bookings.push({ slot: selectedSlot, student: fname, email, course: currentCourse ? currentCourse.title : '', bookedAt: Date.now() });
+    saveAvailData(data);
+    document.getElementById('checkout-step-3').style.display = 'none';
+    document.getElementById('checkout-step-4').style.display = 'block';
+    currentCheckoutStep = 4;
+    updateCheckoutSteps(4);
+    document.getElementById('checkout-confirm-msg').textContent = `A confirmation will be sent to ${email || 'your email'}.`;
+    document.getElementById('booked-slot-display').textContent = formatSlotLabel(selectedSlot);
     updateCheckoutSidebar();
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1677,6 +1768,12 @@ function checkoutPrev(step) {
     currentCheckoutStep = 1;
     updateCheckoutSteps(1);
     updateCheckoutSidebar();
+  } else if (step === 3) {
+    document.getElementById('checkout-step-3').style.display = 'none';
+    document.getElementById('checkout-step-2').style.display = 'block';
+    currentCheckoutStep = 2;
+    updateCheckoutSteps(2);
+    updateCheckoutSidebar();
   }
 }
 
@@ -1686,7 +1783,7 @@ function checkoutBack() {
 }
 
 function updateCheckoutSteps(active) {
-  [1,2,3].forEach(n => {
+  [1,2,3,4].forEach(n => {
     const el = document.getElementById(`step-${n}-indicator`);
     if (!el) return;
     el.className = 'checkout-step' + (n === active ? ' active' : n < active ? ' done' : '');
@@ -1777,6 +1874,107 @@ function showToast(msg) {
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ===== AVAILABILITY DATA =====
+const AVAIL_KEY = 'ranem_availability';
+function getAvailData() {
+  try { return JSON.parse(localStorage.getItem(AVAIL_KEY)) || { slots: {}, bookings: [] }; }
+  catch { return { slots: {}, bookings: [] }; }
+}
+function saveAvailData(data) { localStorage.setItem(AVAIL_KEY, JSON.stringify(data)); }
+
+const HOURS = ['09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00'];
+const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat'];
+let calWeekOffset = 0;
+let selectedSlot = null;
+
+function getWeekStart(offset) {
+  const d = new Date();
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  d.setDate(diff + offset * 7);
+  d.setHours(0,0,0,0);
+  return d;
+}
+
+function slotKey(date, hour) {
+  return date.toISOString().slice(0,10) + '_' + hour;
+}
+
+function formatSlotLabel(key) {
+  const [datePart, hour] = key.split('_');
+  const d = new Date(datePart + 'T12:00:00');
+  return d.toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' }) + ' at ' + hour;
+}
+
+function calInit() {
+  calWeekOffset = 0;
+  selectedSlot = null;
+  calRender();
+}
+
+function calPrevWeek() {
+  if (calWeekOffset > 0) { calWeekOffset--; calRender(); }
+}
+function calNextWeek() {
+  if (calWeekOffset < 7) { calWeekOffset++; calRender(); }
+}
+
+function calRender() {
+  const ws = getWeekStart(calWeekOffset);
+  const data = getAvailData();
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  // Week label
+  const we = new Date(ws); we.setDate(we.getDate() + 5);
+  document.getElementById('cal-week-label').textContent =
+    ws.toLocaleDateString('en-GB',{day:'numeric',month:'short'}) + ' – ' +
+    we.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+
+  // Build dates for Mon–Sat
+  const dates = [];
+  for (let i = 0; i < 6; i++) {
+    const d = new Date(ws); d.setDate(ws.getDate() + i);
+    dates.push(d);
+  }
+
+  // Header
+  const thead = document.getElementById('cal-head');
+  thead.innerHTML = '<tr><th scope="col">Time</th>' + dates.map(d => {
+    const isToday = d.toDateString() === today.toDateString();
+    return `<th scope="col" class="${isToday?'today-col':''}">${DAYS[d.getDay()-1]||'Sat'}<br><small>${d.getDate()}/${d.getMonth()+1}</small></th>`;
+  }).join('') + '</tr>';
+
+  // Body
+  const tbody = document.getElementById('cal-body');
+  tbody.innerHTML = HOURS.map(hour => {
+    const cells = dates.map(d => {
+      const key = slotKey(d, hour);
+      const isPast = d < today || (d.toDateString() === today.toDateString() && parseInt(hour) <= today.getHours());
+      const status = isPast ? 'unavailable' : (data.slots[key] || 'unavailable');
+      const isSelected = selectedSlot === key;
+      let cls = isSelected ? 'slot-selected' : (status === 'available' ? 'slot-available' : status === 'booked' ? 'slot-booked' : 'slot-unavailable');
+      const label = status === 'available' ? 'Available' : status === 'booked' ? 'Booked' : '—';
+      const clickable = status === 'available' && !isPast;
+      return `<td class="cal-slot"><button class="slot-btn ${cls}" ${clickable ? `onclick="selectSlot('${key}')"` : ''} aria-label="${d.toLocaleDateString('en-GB')} ${hour} — ${status}">${isSelected ? '✓ Selected' : label}</button></td>`;
+    }).join('');
+    return `<tr><td class="cal-time">${hour}</td>${cells}</tr>`;
+  }).join('');
+
+  // Disable prev if already at current week
+  document.querySelector('.cal-nav-btn').disabled = calWeekOffset === 0;
+}
+
+function selectSlot(key) {
+  selectedSlot = key;
+  const display = document.getElementById('selected-slot-display');
+  display.textContent = '✓ Selected: ' + formatSlotLabel(key);
+  display.classList.add('show');
+  const btn = document.getElementById('book-confirm-btn');
+  btn.disabled = false;
+  btn.style.opacity = '1';
+  calRender();
 }
 
 // ===== INIT =====

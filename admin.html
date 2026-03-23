@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Ranem's Learning Hub</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --red: #E8294C; --red-dark: #c41e3a; --red-light: rgba(232,41,76,0.08);
+  --green: #22c55e; --green-light: #dcfce7;
+  --bg: #f9f9f9; --white: #fff;
+  --text: #1a1a1a; --muted: #555; --border: #e5e5e5;
+  --shadow: 0 4px 20px rgba(0,0,0,0.08);
+  --radius: 12px;
+}
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+/* LOCK SCREEN */
+#lock-screen {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #fff 0%, #fef2f4 100%);
+}
+.lock-card { background: #fff; border-radius: 20px; padding: 48px 40px; max-width: 420px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.12); text-align: center; }
+.lock-logo { font-size: 1.4rem; font-weight: 800; color: var(--red); margin-bottom: 8px; }
+.lock-card h2 { margin-bottom: 8px; }
+.lock-card p { color: var(--muted); font-size: 0.9rem; margin-bottom: 32px; }
+.lock-input { width: 100%; border: 2px solid var(--border); border-radius: 10px; padding: 14px 16px; font-size: 1rem; font-family: inherit; letter-spacing: 0.2em; text-align: center; transition: border-color 0.2s; margin-bottom: 16px; }
+.lock-input:focus { outline: none; border-color: var(--red); }
+.lock-input.error { border-color: var(--red); animation: shake 0.3s; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+.lock-btn { width: 100%; background: var(--red); color: #fff; border: none; border-radius: 10px; padding: 14px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+.lock-btn:hover { background: var(--red-dark); }
+.lock-error { color: var(--red); font-size: 0.85rem; margin-top: 8px; display: none; }
+
+/* ADMIN PANEL */
+#admin-panel { display: none; min-height: 100vh; }
+.admin-nav { background: #1a1a1a; color: #fff; padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.admin-nav-logo { font-weight: 800; font-size: 1rem; }
+.admin-nav-logo span { color: var(--red); }
+.admin-nav-right { display: flex; align-items: center; gap: 16px; }
+.admin-nav-right a { color: #999; font-size: 0.85rem; text-decoration: none; }
+.admin-nav-right a:hover { color: #fff; }
+.admin-logout { background: none; border: 1px solid #444; color: #999; border-radius: 6px; padding: 6px 14px; font-size: 0.85rem; cursor: pointer; }
+.admin-logout:hover { border-color: var(--red); color: var(--red); }
+
+.admin-body { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+.admin-tabs { display: flex; gap: 4px; border-bottom: 2px solid var(--border); margin-bottom: 32px; flex-wrap: wrap; }
+.tab-btn { background: none; border: none; padding: 12px 20px; font-size: 0.95rem; font-weight: 600; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+.tab-btn:hover { color: var(--red); }
+.tab-btn.active { color: var(--red); border-bottom-color: var(--red); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* CARDS */
+.admin-card { background: var(--white); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); margin-bottom: 24px; }
+.admin-card h3 { margin-bottom: 20px; font-size: 1.1rem; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+
+/* CALENDAR ADMIN */
+.cal-controls { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
+.cal-controls h4 { font-size: 1rem; font-weight: 700; }
+.cal-ctrl-btns { display: flex; gap: 8px; align-items: center; }
+.ctrl-btn { background: none; border: 2px solid var(--border); border-radius: 8px; padding: 7px 16px; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; }
+.ctrl-btn:hover { border-color: var(--red); color: var(--red); }
+.cal-table-wrap { overflow-x: auto; }
+.cal-tbl { width: 100%; border-collapse: collapse; min-width: 600px; }
+.cal-tbl th { text-align: center; font-size: 0.8rem; font-weight: 700; padding: 10px 6px; color: var(--muted); text-transform: uppercase; }
+.cal-tbl .time-col { font-size: 0.78rem; color: var(--muted); padding: 4px 10px 4px 0; white-space: nowrap; font-weight: 600; }
+.slot-cell { padding: 3px; }
+.slot-toggle {
+  width: 100%; padding: 8px 4px; border-radius: 6px; font-size: 0.75rem; font-weight: 700;
+  cursor: pointer; border: none; transition: all 0.15s; text-align: center;
+}
+.slot-toggle.available { background: var(--green-light); color: #166534; }
+.slot-toggle.available:hover { background: #bbf7d0; }
+.slot-toggle.booked { background: #fee2e2; color: #991b1b; cursor: not-allowed; }
+.slot-toggle.unavailable { background: #f3f4f6; color: #9ca3af; }
+.slot-toggle.unavailable:hover { background: #e5e7eb; }
+.cal-legend { display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--muted); }
+.legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+
+/* BOOKINGS TABLE */
+.bookings-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.bookings-table th { text-align: left; padding: 10px 14px; background: var(--bg); font-weight: 700; font-size: 0.8rem; color: var(--muted); text-transform: uppercase; }
+.bookings-table td { padding: 12px 14px; border-top: 1px solid var(--border); }
+.bookings-table tr:hover td { background: var(--bg); }
+.status-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+.status-booked { background: #fee2e2; color: #991b1b; }
+.status-available { background: var(--green-light); color: #166534; }
+.empty-state { text-align: center; padding: 40px; color: var(--muted); font-size: 0.9rem; }
+
+/* SETTINGS */
+.settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media(max-width:600px){ .settings-grid{grid-template-columns:1fr;} }
+.field-group { margin-bottom: 20px; }
+.field-group label { display: block; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+.field-group input, .field-group textarea, .field-group select { width: 100%; border: 2px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: 0.9rem; font-family: inherit; transition: border-color 0.2s; }
+.field-group input:focus, .field-group textarea:focus { outline: none; border-color: var(--red); }
+.field-group textarea { resize: vertical; min-height: 80px; }
+.save-btn { background: var(--red); color: #fff; border: none; border-radius: 8px; padding: 12px 28px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+.save-btn:hover { background: var(--red-dark); }
+.save-note { display: inline-block; margin-left: 12px; font-size: 0.85rem; color: var(--green); opacity: 0; transition: opacity 0.3s; }
+.save-note.show { opacity: 1; }
+
+/* BULK TOGGLE */
+.bulk-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+.bulk-btn { padding: 8px 16px; border-radius: 8px; border: 2px solid var(--border); font-size: 0.85rem; font-weight: 600; cursor: pointer; background: #fff; transition: all 0.2s; }
+.bulk-btn:hover { border-color: var(--red); color: var(--red); }
+.bulk-btn.green:hover { border-color: var(--green); color: #166534; }
+
+/* Password change */
+.pw-form { max-width: 360px; }
+
+/* Stats bar */
+.stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 28px; }
+.stat-card { background: var(--white); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); text-align: center; }
+.stat-num { font-size: 2rem; font-weight: 800; color: var(--red); }
+.stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+@media(max-width:600px){ .stats-row{grid-template-columns:1fr 1fr;} }
+
+/* Toast */
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px); background: #1a1a1a; color: #fff; border-radius: 10px; padding: 12px 24px; font-size: 0.9rem; z-index: 9999; opacity: 0; transition: all 0.3s; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- LOCK SCREEN -->
+<div id="lock-screen">
+  <div class="lock-card">
+    <div class="lock-logo">Ranem's Learning Hub</div>
+    <h2>Admin Access</h2>
+    <p>Enter your admin code to manage the site.</p>
+    <input type="password" class="lock-input" id="pw-input" placeholder="••••••••"
+      onkeydown="if(event.key==='Enter')checkPw()" autocomplete="current-password" aria-label="Admin password">
+    <button class="lock-btn" onclick="checkPw()">Enter Admin Panel</button>
+    <p class="lock-error" id="lock-error">Incorrect code. Please try again.</p>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin-panel">
+  <nav class="admin-nav">
+    <div class="admin-nav-logo">Ranem's Learning Hub <span>Admin</span></div>
+    <div class="admin-nav-right">
+      <a href="index.html" target="_blank">View Site ↗</a>
+      <button class="admin-logout" onclick="logout()">Log Out</button>
+    </div>
+  </nav>
+
+  <div class="admin-body">
+
+    <!-- Stats -->
+    <div class="stats-row" id="admin-stats"></div>
+
+    <!-- Tabs -->
+    <div class="admin-tabs">
+      <button class="tab-btn active" onclick="switchTab('calendar')">📅 Availability Calendar</button>
+      <button class="tab-btn" onclick="switchTab('bookings')">📋 Bookings</button>
+      <button class="tab-btn" onclick="switchTab('settings')">⚙️ Site Settings</button>
+      <button class="tab-btn" onclick="switchTab('security')">🔐 Security</button>
+    </div>
+
+    <!-- TAB: CALENDAR -->
+    <div id="tab-calendar" class="tab-content active">
+      <div class="admin-card">
+        <h3>Manage Availability — click any slot to toggle it on/off</h3>
+        <div class="cal-controls">
+          <h4 id="adm-week-label">Week</h4>
+          <div class="cal-ctrl-btns">
+            <button class="ctrl-btn" onclick="admCalPrev()">← Prev</button>
+            <button class="ctrl-btn" onclick="admCalNext()">Next →</button>
+          </div>
+        </div>
+        <div class="bulk-row">
+          <button class="bulk-btn green" onclick="bulkToggle('week','available')">✓ Mark whole week available</button>
+          <button class="bulk-btn" onclick="bulkToggle('week','unavailable')">✗ Clear whole week</button>
+          <button class="bulk-btn green" onclick="bulkToggle('day','available')">✓ Mark weekdays only</button>
+        </div>
+        <div class="cal-table-wrap">
+          <table class="cal-tbl" role="grid" id="adm-cal-tbl">
+            <thead id="adm-cal-head"></thead>
+            <tbody id="adm-cal-body"></tbody>
+          </table>
+        </div>
+        <div class="cal-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#dcfce7;border:1px solid #86efac;"></div>Available (students can book)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#fee2e2;border:1px solid #fca5a5;"></div>Booked (locked)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f3f4f6;border:1px solid #d1d5db;"></div>Unavailable</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: BOOKINGS -->
+    <div id="tab-bookings" class="tab-content">
+      <div class="admin-card">
+        <h3>All Bookings</h3>
+        <div id="bookings-content"></div>
+      </div>
+    </div>
+
+    <!-- TAB: SETTINGS -->
+    <div id="tab-settings" class="tab-content">
+      <div class="admin-card">
+        <h3>Site Information</h3>
+        <div class="settings-grid">
+          <div>
+            <div class="field-group">
+              <label>WhatsApp Number (international format)</label>
+              <input type="text" id="s-whatsapp" placeholder="447700900000">
+            </div>
+            <div class="field-group">
+              <label>Course Price (£)</label>
+              <input type="text" id="s-price" placeholder="149">
+            </div>
+            <div class="field-group">
+              <label>YouTube Video ID</label>
+              <input type="text" id="s-video" placeholder="dQw4w9WgXcQ">
+            </div>
+          </div>
+          <div>
+            <div class="field-group">
+              <label>Hero Tagline</label>
+              <input type="text" id="s-tagline" placeholder="Native Arabic Speaker from Syria">
+            </div>
+            <div class="field-group">
+              <label>Hero Subtitle</label>
+              <textarea id="s-subtitle" placeholder="Personalised one-on-one online sessions..."></textarea>
+            </div>
+            <div class="field-group">
+              <label>Stat: Students</label>
+              <input type="text" id="s-stat-students" placeholder="150+">
+            </div>
+          </div>
+        </div>
+        <button class="save-btn" onclick="saveSettings()">Save Changes</button>
+        <span class="save-note" id="settings-saved">✓ Saved!</span>
+      </div>
+
+      <div class="admin-card">
+        <h3>Student Results (Testimonials)</h3>
+        <p style="color:var(--muted);font-size:0.85rem;margin-bottom:20px;">Edit the transformation stories shown on the homepage.</p>
+        <div id="results-editor"></div>
+        <button class="save-btn" onclick="saveResults()">Save Results</button>
+        <span class="save-note" id="results-saved">✓ Saved!</span>
+      </div>
+    </div>
+
+    <!-- TAB: SECURITY -->
+    <div id="tab-security" class="tab-content">
+      <div class="admin-card">
+        <h3>Change Admin Code</h3>
+        <div class="pw-form">
+          <div class="field-group">
+            <label>Current Code</label>
+            <input type="password" id="pw-current" placeholder="••••••••">
+          </div>
+          <div class="field-group">
+            <label>New Code</label>
+            <input type="password" id="pw-new" placeholder="••••••••">
+          </div>
+          <div class="field-group">
+            <label>Confirm New Code</label>
+            <input type="password" id="pw-confirm" placeholder="••••••••">
+          </div>
+          <button class="save-btn" onclick="changePw()">Update Code</button>
+          <span class="save-note" id="pw-saved">✓ Code updated!</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+<script>
+// ===== AUTH =====
+const DEFAULT_PW = 'ranem2026';
+const PW_KEY = 'ranem_admin_pw';
+const AVAIL_KEY = 'ranem_availability';
+const SETTINGS_KEY = 'ranem_settings';
+const RESULTS_KEY = 'ranem_results';
+
+function getAdminPw() { return localStorage.getItem(PW_KEY) || DEFAULT_PW; }
+
+function checkPw() {
+  const val = document.getElementById('pw-input').value;
+  if (val === getAdminPw()) {
+    sessionStorage.setItem('ranem_authed', '1');
+    document.getElementById('lock-screen').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    initAdmin();
+  } else {
+    const inp = document.getElementById('pw-input');
+    inp.classList.add('error');
+    document.getElementById('lock-error').style.display = 'block';
+    setTimeout(() => inp.classList.remove('error'), 400);
+  }
+}
+
+function logout() {
+  sessionStorage.removeItem('ranem_authed');
+  document.getElementById('admin-panel').style.display = 'none';
+  document.getElementById('lock-screen').style.display = 'flex';
+  document.getElementById('pw-input').value = '';
+  document.getElementById('lock-error').style.display = 'none';
+}
+
+// Auto-restore session
+if (sessionStorage.getItem('ranem_authed') === '1') {
+  document.getElementById('lock-screen').style.display = 'none';
+  document.getElementById('admin-panel').style.display = 'block';
+}
+
+// ===== DATA =====
+function getAvailData() {
+  try { return JSON.parse(localStorage.getItem(AVAIL_KEY)) || { slots: {}, bookings: [] }; }
+  catch { return { slots: {}, bookings: [] }; }
+}
+function saveAvailData(data) { localStorage.setItem(AVAIL_KEY, JSON.stringify(data)); }
+function getSettings() {
+  try { return JSON.parse(localStorage.getItem(SETTINGS_KEY)) || {}; }
+  catch { return {}; }
+}
+function getResults() {
+  try { return JSON.parse(localStorage.getItem(RESULTS_KEY)) || DEFAULT_RESULTS; }
+  catch { return DEFAULT_RESULTS; }
+}
+const DEFAULT_RESULTS = [
+  { name: 'Sara · Germany', course: 'Arabic for Beginners · 4 months', text: 'Sara came with zero Arabic knowledge. After 4 months she can read the Quran and write full sentences independently.' },
+  { name: 'Ahmed · Netherlands', course: 'Magic Maths for Kids · 3 months', text: 'Ahmed struggled with multiplication. After 3 months he moved up a full grade level in school maths.' },
+  { name: 'Fatima · UK', course: 'Intermediate Arabic · 6 months', text: 'In 6 months Fatima went from hesitant to holding full conversations with her grandparents.' },
+];
+
+// ===== ADMIN INIT =====
+function initAdmin() {
+  admCalOffset = 0;
+  renderStats();
+  admCalRender();
+  renderBookings();
+  loadSettings();
+  renderResultsEditor();
+}
+
+// ===== STATS =====
+function renderStats() {
+  const data = getAvailData();
+  const bookings = data.bookings || [];
+  const slots = data.slots || {};
+  const available = Object.values(slots).filter(v => v === 'available').length;
+  const booked = Object.values(slots).filter(v => v === 'booked').length;
+  document.getElementById('admin-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-num">${bookings.length}</div><div class="stat-label">Total Bookings</div></div>
+    <div class="stat-card"><div class="stat-num">${available}</div><div class="stat-label">Available Slots</div></div>
+    <div class="stat-card"><div class="stat-num">${booked}</div><div class="stat-label">Booked Slots</div></div>
+    <div class="stat-card"><div class="stat-num">${Object.keys(slots).length}</div><div class="stat-label">Configured Slots</div></div>
+  `;
+}
+
+// ===== ADMIN CALENDAR =====
+const HOURS = ['09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00'];
+const DAY_NAMES = ['Mon','Tue','Wed','Thu','Fri','Sat'];
+let admCalOffset = 0;
+
+function getWeekStart(offset) {
+  const d = new Date();
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  d.setDate(diff + offset * 7);
+  d.setHours(0,0,0,0);
+  return d;
+}
+
+function slotKey(date, hour) { return date.toISOString().slice(0,10) + '_' + hour; }
+
+function admCalPrev() { if (admCalOffset > -4) { admCalOffset--; admCalRender(); } }
+function admCalNext() { if (admCalOffset < 12) { admCalOffset++; admCalRender(); } }
+
+function admCalRender() {
+  const ws = getWeekStart(admCalOffset);
+  const data = getAvailData();
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  const we = new Date(ws); we.setDate(we.getDate() + 5);
+  document.getElementById('adm-week-label').textContent =
+    ws.toLocaleDateString('en-GB',{day:'numeric',month:'short'}) + ' – ' +
+    we.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+
+  const dates = [];
+  for (let i = 0; i < 6; i++) { const d = new Date(ws); d.setDate(ws.getDate()+i); dates.push(d); }
+
+  // Head
+  document.getElementById('adm-cal-head').innerHTML = '<tr><th>Time</th>' +
+    dates.map((d,i) => `<th>${DAY_NAMES[i]}<br><small>${d.getDate()}/${d.getMonth()+1}</small></th>`).join('') + '</tr>';
+
+  // Body
+  document.getElementById('adm-cal-body').innerHTML = HOURS.map(hour => {
+    const cells = dates.map(d => {
+      const key = slotKey(d, hour);
+      const status = data.slots[key] || 'unavailable';
+      const isPast = d < today;
+      if (status === 'booked') {
+        return `<td class="slot-cell"><button class="slot-toggle booked" disabled title="Already booked — cannot change">Booked</button></td>`;
+      }
+      const isAvail = status === 'available';
+      return `<td class="slot-cell"><button class="slot-toggle ${isAvail?'available':'unavailable'}"
+        onclick="admToggleSlot('${key}')"
+        title="Click to toggle ${isAvail?'off':'on'}"
+        ${isPast ? 'disabled style="opacity:0.4;"' : ''}>
+        ${isAvail ? '✓ Open' : 'Closed'}
+      </button></td>`;
+    }).join('');
+    return `<tr><td class="time-col">${hour}</td>${cells}</tr>`;
+  }).join('');
+}
+
+function admToggleSlot(key) {
+  const data = getAvailData();
+  const current = data.slots[key] || 'unavailable';
+  if (current === 'booked') return;
+  data.slots[key] = current === 'available' ? 'unavailable' : 'available';
+  saveAvailData(data);
+  admCalRender();
+  renderStats();
+  showToast(data.slots[key] === 'available' ? '✓ Slot opened' : 'Slot closed');
+}
+
+function bulkToggle(scope, status) {
+  const data = getAvailData();
+  const ws = getWeekStart(admCalOffset);
+  const today = new Date(); today.setHours(0,0,0,0);
+  for (let i = 0; i < 6; i++) {
+    const d = new Date(ws); d.setDate(ws.getDate()+i);
+    if (d < today) continue;
+    if (scope === 'day' && (d.getDay() === 0 || d.getDay() === 6)) continue;
+    HOURS.forEach(h => {
+      const key = slotKey(d, h);
+      if (data.slots[key] !== 'booked') data.slots[key] = status;
+    });
+  }
+  saveAvailData(data);
+  admCalRender();
+  renderStats();
+  showToast(status === 'available' ? '✓ Slots opened' : 'Slots cleared');
+}
+
+// ===== BOOKINGS =====
+function renderBookings() {
+  const data = getAvailData();
+  const bookings = (data.bookings || []).slice().reverse();
+  const el = document.getElementById('bookings-content');
+  if (!bookings.length) {
+    el.innerHTML = '<div class="empty-state">No bookings yet.</div>';
+    return;
+  }
+  el.innerHTML = `<table class="bookings-table"><thead><tr>
+    <th>Date & Time</th><th>Student</th><th>Email</th><th>Course</th><th>Status</th>
+  </tr></thead><tbody>` +
+  bookings.map(b => `<tr>
+    <td>${formatSlotLabel(b.slot)}</td>
+    <td>${b.student || '—'}</td>
+    <td>${b.email || '—'}</td>
+    <td>${b.course || '—'}</td>
+    <td><span class="status-badge status-booked">Booked</span></td>
+  </tr>`).join('') + '</tbody></table>';
+}
+
+function formatSlotLabel(key) {
+  if (!key) return '—';
+  const [datePart, hour] = key.split('_');
+  const d = new Date(datePart + 'T12:00:00');
+  return d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'}) + ' ' + hour;
+}
+
+// ===== SETTINGS =====
+function loadSettings() {
+  const s = getSettings();
+  document.getElementById('s-whatsapp').value = s.whatsapp || '';
+  document.getElementById('s-price').value = s.price || '149';
+  document.getElementById('s-video').value = s.video || '';
+  document.getElementById('s-tagline').value = s.tagline || '';
+  document.getElementById('s-subtitle').value = s.subtitle || '';
+  document.getElementById('s-stat-students').value = s.statStudents || '150+';
+}
+function saveSettings() {
+  const s = {
+    whatsapp: document.getElementById('s-whatsapp').value,
+    price: document.getElementById('s-price').value,
+    video: document.getElementById('s-video').value,
+    tagline: document.getElementById('s-tagline').value,
+    subtitle: document.getElementById('s-subtitle').value,
+    statStudents: document.getElementById('s-stat-students').value,
+  };
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
+  flashSaved('settings-saved');
+}
+
+// ===== RESULTS EDITOR =====
+function renderResultsEditor() {
+  const results = getResults();
+  document.getElementById('results-editor').innerHTML = results.map((r, i) => `
+    <div style="border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:16px;">
+      <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">Story ${i+1}</div>
+      <div class="field-group">
+        <label>Story text</label>
+        <textarea id="res-text-${i}" rows="3">${r.text}</textarea>
+      </div>
+      <div class="settings-grid">
+        <div class="field-group">
+          <label>Name & Country</label>
+          <input type="text" id="res-name-${i}" value="${r.name}">
+        </div>
+        <div class="field-group">
+          <label>Course & Duration</label>
+          <input type="text" id="res-course-${i}" value="${r.course}">
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+function saveResults() {
+  const results = getResults().map((r, i) => ({
+    text: document.getElementById(`res-text-${i}`).value,
+    name: document.getElementById(`res-name-${i}`).value,
+    course: document.getElementById(`res-course-${i}`).value,
+  }));
+  localStorage.setItem(RESULTS_KEY, JSON.stringify(results));
+  flashSaved('results-saved');
+}
+
+// ===== PASSWORD =====
+function changePw() {
+  const current = document.getElementById('pw-current').value;
+  const newPw = document.getElementById('pw-new').value;
+  const confirm = document.getElementById('pw-confirm').value;
+  if (current !== getAdminPw()) { showToast('❌ Current code is incorrect'); return; }
+  if (!newPw || newPw.length < 6) { showToast('New code must be at least 6 characters'); return; }
+  if (newPw !== confirm) { showToast('New codes do not match'); return; }
+  localStorage.setItem(PW_KEY, newPw);
+  document.getElementById('pw-current').value = '';
+  document.getElementById('pw-new').value = '';
+  document.getElementById('pw-confirm').value = '';
+  flashSaved('pw-saved');
+}
+
+// ===== TABS =====
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+  if (name === 'bookings') renderBookings();
+  if (name === 'calendar') admCalRender();
+}
+
+// ===== UTILS =====
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+function flashSaved(id) {
+  const el = document.getElementById(id);
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+  showToast('✓ Saved successfully');
+}
+
+// Init if already authed
+if (sessionStorage.getItem('ranem_authed') === '1') initAdmin();
+</script>
+</body>
+</html>
