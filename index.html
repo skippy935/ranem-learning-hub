@@ -1396,10 +1396,9 @@ h1 { letter-spacing: -0.035em; }
               We've saved your details. Click below to complete your subscription securely on Stripe.<br>
               <span style="font-size:0.85rem;">You'll be redirected to a secure Stripe checkout page.</span>
             </p>
-            <a id="stripe-pay-btn" href="#" target="_blank" rel="noopener noreferrer"
-              class="btn btn-primary btn-full" onclick="checkoutNext(2)" style="margin-bottom:12px;display:flex;">
+            <button id="stripe-pay-btn" class="btn btn-primary btn-full" onclick="checkoutNext(2)" style="margin-bottom:12px;">
               Pay Securely with Stripe →
-            </a>
+            </button>
             <p style="font-size:0.8rem;color:var(--text-muted);">🔒 Powered by Stripe · Your card details are never shared with us</p>
           </div>
           <div class="checkout-actions" style="margin-top:24px;">
@@ -2110,33 +2109,41 @@ function updateCheckoutSidebar() {
   if (mobilePrice) mobilePrice.textContent = c.price + '/mo';
 }
 
+function isStripeReady(url) {
+  return url && !url.includes('REPLACE_') && url.startsWith('https://');
+}
+
 function checkoutNext(step) {
   if (step === 1) {
     const email = document.getElementById('email').value;
     const fname = document.getElementById('first-name').value;
     if (!fname || !email) { showToast('Please fill in your name and email'); return; }
-    // Set Stripe URL on the pay button
-    const stripeUrl = currentCourse && currentCourse.stripeUrl ? currentCourse.stripeUrl : '#';
+    const stripeUrl = currentCourse && currentCourse.stripeUrl ? currentCourse.stripeUrl : null;
+    const ready = isStripeReady(stripeUrl);
     const payBtn = document.getElementById('stripe-pay-btn');
     const fallbackLink = document.getElementById('stripe-fallback-link');
-    if (payBtn) payBtn.href = stripeUrl;
-    if (fallbackLink) fallbackLink.href = stripeUrl;
+    // Only set real href if URL is configured — otherwise keep href="#" to prevent navigation
+    if (payBtn) { payBtn.href = ready ? stripeUrl : '#'; payBtn.onclick = ready ? null : function(e){ e.preventDefault(); checkoutNext(2); }; }
+    if (fallbackLink) { fallbackLink.href = ready ? stripeUrl : '#'; }
     document.getElementById('checkout-step-1').style.display = 'none';
     document.getElementById('checkout-step-2').style.display = 'block';
     currentCheckoutStep = 2;
     updateCheckoutSteps(2);
     updateCheckoutSidebar();
   } else if (step === 2) {
-    // Open Stripe in new tab and show confirmation
     const stripeUrl = currentCourse && currentCourse.stripeUrl ? currentCourse.stripeUrl : null;
-    if (stripeUrl && !stripeUrl.includes('REPLACE_')) {
+    if (isStripeReady(stripeUrl)) {
       window.open(stripeUrl, '_blank', 'noopener,noreferrer');
+      document.getElementById('checkout-step-2').style.display = 'none';
+      document.getElementById('checkout-step-3').style.display = 'block';
+      currentCheckoutStep = 3;
+      updateCheckoutSteps(3);
+      updateCheckoutSidebar();
+    } else {
+      // Stripe not configured yet — show helpful message
+      showToast('⚠️ Stripe payment not configured yet — contact Ranem directly via WhatsApp to subscribe.');
+      return;
     }
-    document.getElementById('checkout-step-2').style.display = 'none';
-    document.getElementById('checkout-step-3').style.display = 'block';
-    currentCheckoutStep = 3;
-    updateCheckoutSteps(3);
-    updateCheckoutSidebar();
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
