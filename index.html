@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ranem's Learning Hub — Arabic & Maths Tutoring</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ===== RESET & BASE ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -17,8 +20,10 @@
   --text-muted: #555555;
   --text-light: #666666;
   --border: #e5e5e5;
-  --shadow: 0 4px 20px rgba(0,0,0,0.08);
-  --shadow-hover: 0 8px 32px rgba(0,0,0,0.14);
+  --shadow: 0 4px 24px rgba(0,0,0,0.10);
+  --shadow-hover: 0 12px 40px rgba(0,0,0,0.18);
+  --shadow-colored: 0 8px 32px rgba(232,41,76,0.18);
+  --gradient-hero: linear-gradient(135deg, #1a0a0f 0%, #2d0e1a 55%, #5c1428 100%);
   --radius: 16px;
   --radius-sm: 8px;
   --green: #22c55e;
@@ -27,7 +32,8 @@
   --purple: #8b5cf6;
 }
 html { scroll-behavior: smooth; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif; color: var(--text); background: var(--bg); line-height: 1.6; overflow-x: hidden; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--text); background: var(--bg); line-height: 1.6; overflow-x: hidden; }
+h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; }
 a { color: inherit; text-decoration: none; }
 img { max-width: 100%; display: block; }
 button { cursor: pointer; font-family: inherit; }
@@ -483,6 +489,347 @@ h3 { font-size: 1.2rem; font-weight: 700; }
   opacity: 0; transition: all 0.3s; pointer-events: none;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ===== CINEMATIC HERO ===== */
+.hero {
+  background: var(--gradient-hero) !important;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.hero-blob {
+  position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; opacity: 0.15;
+}
+.hero-blob-1 { width: 400px; height: 400px; background: var(--red); top: -100px; right: -100px; }
+.hero-blob-2 { width: 300px; height: 300px; background: #ff6b8a; bottom: -80px; left: 10%; }
+.hero .hero-inner { position: relative; z-index: 1; }
+.hero .hero-title { color: #fff; }
+.hero .hero-subtitle { color: rgba(255,255,255,0.75); }
+.hero .hero-tag { background: rgba(255,255,255,0.12); color: #fff; backdrop-filter: blur(4px); }
+.hero .hero-stats { border-top-color: rgba(255,255,255,0.15); }
+.hero .hero-stat-num { color: #fff; }
+.hero .hero-stat-label { color: rgba(255,255,255,0.6); }
+.hero .hero-stat-ar { color: rgba(255,255,255,0.4); }
+.hero .hero-stat + .hero-stat { border-left-color: rgba(255,255,255,0.15); }
+.hero .hero-image-card { background: rgba(255,255,255,0.08); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.15); color: #fff; }
+.hero .hero-image-card p { color: rgba(255,255,255,0.75); }
+.hero .btn-secondary { color: #fff; border-color: rgba(255,255,255,0.5); }
+.hero .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+.hero .arabic-subtitle { color: rgba(255,255,255,0.5) !important; }
+
+/* ===== TRUST BAR ===== */
+.trust-bar {
+  background: #fff; border-bottom: 1px solid var(--border);
+  padding: 14px 0;
+}
+.trust-bar-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; flex-wrap: wrap;
+}
+.trust-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 24px; font-size: 0.875rem; font-weight: 600; color: var(--text-muted);
+  white-space: nowrap;
+}
+.trust-item + .trust-item { border-left: 1px solid var(--border); }
+.trust-item-icon { font-size: 1rem; }
+@media(max-width:768px){
+  .trust-item { padding: 6px 12px; font-size: 0.78rem; }
+}
+@media(max-width:480px){
+  .trust-bar-inner { justify-content: flex-start; overflow-x: auto; }
+}
+
+/* ===== CALENDLY PLACEHOLDER ===== */
+.calendly-section { background: var(--bg); }
+.calendly-embed-wrapper {
+  max-width: 900px; margin: 0 auto;
+  background: var(--bg-alt); border-radius: var(--radius);
+  overflow: hidden; box-shadow: var(--shadow);
+  min-height: 400px;
+}
+.calendly-placeholder-ui {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 400px; gap: 16px; color: var(--text-muted); text-align: center; padding: 40px;
+}
+.calendly-placeholder-ui .cal-icon { font-size: 3rem; margin-bottom: 8px; }
+.calendly-placeholder-ui p { max-width: 440px; line-height: 1.7; }
+.calendly-placeholder-ui .btn { margin-top: 8px; }
+
+/* ===== HOW IT WORKS ===== */
+.how-section { background: var(--bg-alt); }
+.how-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 32px;
+  position: relative;
+}
+.how-grid::before {
+  content: ''; position: absolute;
+  top: 40px; left: calc(16.6% + 20px); right: calc(16.6% + 20px);
+  height: 2px; background: var(--border);
+}
+@media(max-width:768px){ .how-grid{ grid-template-columns: 1fr; } .how-grid::before{ display:none; } }
+.how-step {
+  background: #fff; border-radius: var(--radius); padding: 32px 24px;
+  text-align: center; box-shadow: var(--shadow); position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.how-step:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+.how-step-num {
+  width: 56px; height: 56px; background: var(--red); color: #fff;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; font-weight: 800; font-family: 'Plus Jakarta Sans', sans-serif;
+  margin: 0 auto 20px; position: relative; z-index: 1;
+}
+.how-step h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.how-step p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+.how-step-icon { font-size: 2rem; margin-bottom: 12px; }
+
+/* ===== LANGUAGE SWITCHER ===== */
+.lang-switcher {
+  display: flex; align-items: center; background: var(--bg-alt);
+  border: 1px solid var(--border); border-radius: 8px;
+  overflow: hidden; font-size: 0.85rem; font-weight: 600;
+}
+.lang-btn {
+  padding: 6px 12px; background: none; border: none; cursor: pointer;
+  color: var(--text-muted); transition: all 0.15s;
+}
+.lang-btn.active { background: var(--red); color: #fff; }
+.lang-btn:focus-visible { outline: 2px solid var(--red); outline-offset: -2px; }
+
+/* Arabic mode */
+body.ar-mode { direction: rtl; }
+body.ar-mode .arabic-subtitle { font-size: 1em; color: var(--text); font-weight: 600; }
+body.ar-mode [lang="ar"] { font-size: 1em; color: var(--text); }
+body.ar-mode .nav-links, body.ar-mode .footer-grid { direction: rtl; }
+
+/* ===== FADE-UP SCROLL ANIMATION ===== */
+.fade-up {
+  opacity: 0; transform: translateY(32px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-up.visible { opacity: 1; transform: none; }
+
+/* ===== CARD HOVER COLORED SHADOW ===== */
+.course-card:hover { box-shadow: var(--shadow-colored) !important; }
+.testimonial-card:hover { transform: scale(1.02); box-shadow: var(--shadow-hover); transition: all 0.2s; }
+.result-card:hover { box-shadow: var(--shadow-colored); transition: box-shadow 0.2s; }
+
+/* ===== BUTTON RIPPLE ===== */
+.btn { position: relative; overflow: hidden; }
+.ripple {
+  position: absolute; border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  transform: scale(0); animation: ripple-anim 0.5s linear;
+  pointer-events: none;
+}
+@keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
+
+/* ===== LEAD CAPTURE POPUP ===== */
+.lead-popup-overlay {
+  display: none; position: fixed; inset: 0; z-index: 1100;
+  background: rgba(0,0,0,0.55); backdrop-filter: blur(4px);
+  align-items: center; justify-content: center; padding: 24px;
+}
+.lead-popup-overlay.open { display: flex; }
+.lead-popup {
+  background: #fff; border-radius: var(--radius);
+  max-width: 480px; width: 100%; position: relative;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.25);
+  animation: modal-in 0.3s ease; overflow: hidden;
+}
+.lead-popup-header {
+  background: var(--gradient-hero); padding: 32px 32px 24px;
+  color: #fff; text-align: center;
+}
+.lead-popup-header h3 { font-size: 1.5rem; margin-bottom: 8px; color: #fff; }
+.lead-popup-header p { font-size: 0.95rem; opacity: 0.85; }
+.lead-popup-body { padding: 28px 32px 32px; }
+.lead-popup-body .form-group { margin-bottom: 16px; }
+.lead-popup-body .form-group label { font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 6px; }
+.lead-popup-body .form-group input { width: 100%; border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; font-size: 0.95rem; font-family: inherit; transition: border-color 0.2s; }
+.lead-popup-body .form-group input:focus { outline: none; border-color: var(--red); }
+.lead-popup-gift { display: flex; align-items: center; gap: 10px; background: var(--bg-alt); border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: 20px; font-size: 0.88rem; color: var(--text-muted); }
+.lead-popup-gift strong { color: var(--text); }
+.lead-popup-close {
+  position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.15);
+  border: none; color: #fff; width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer;
+}
+.lead-popup-close:hover { background: rgba(255,255,255,0.3); }
+.lead-popup-success { padding: 40px 32px; text-align: center; }
+.lead-popup-success .success-icon { font-size: 3rem; margin-bottom: 16px; }
+.lead-popup-success h3 { margin-bottom: 8px; }
+.lead-popup-success p { color: var(--text-muted); }
+.lead-popup-skip { width: 100%; background: none; border: none; color: var(--text-muted); font-size: 0.82rem; margin-top: 12px; cursor: pointer; }
+.lead-popup-skip:hover { color: var(--red); }
+
+/* ===== PROFESSIONAL POLISH ===== */
+
+/* Section eyebrow labels */
+.section-eyebrow {
+  display: inline-block;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--red);
+  background: var(--red-light); padding: 5px 14px; border-radius: 20px;
+  margin-bottom: 14px;
+}
+
+/* Refined section-header */
+.section-header { text-align: center; margin-bottom: 56px; }
+.section-header h2 { margin-bottom: 6px; letter-spacing: -0.02em; }
+.section-header > p { max-width: 520px; margin: 0 auto; }
+
+/* NAV: taller, refined logo */
+.nav { height: auto; border-bottom: 1px solid rgba(0,0,0,0.07); box-shadow: 0 1px 12px rgba(0,0,0,0.04); }
+.nav-inner { height: 72px; }
+.nav-logo {
+  font-size: 1.15rem; font-weight: 800; letter-spacing: -0.01em;
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-logo::before {
+  content: '';
+  display: inline-block; width: 28px; height: 28px;
+  background: var(--red); border-radius: 8px;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 28 28' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14 7c-3.86 0-7 3.14-7 7s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm0 12c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z' fill='white'/%3E%3C/svg%3E");
+  background-size: 18px; background-repeat: no-repeat; background-position: center;
+  flex-shrink: 0;
+}
+.nav-links a { font-size: 0.9rem; letter-spacing: 0.01em; }
+.nav-cta {
+  background: var(--red) !important;
+  background-image: linear-gradient(135deg, #f03355, var(--red)) !important;
+  box-shadow: 0 4px 14px rgba(232,41,76,0.35) !important;
+  letter-spacing: 0.01em; font-size: 0.88rem !important;
+}
+.nav-cta:hover { box-shadow: 0 6px 20px rgba(232,41,76,0.45) !important; transform: translateY(-1px); }
+
+/* Refined buttons */
+.btn { letter-spacing: 0.01em; font-family: 'Plus Jakarta Sans', sans-serif; }
+.btn-primary {
+  background-image: linear-gradient(135deg, #f03355, var(--red));
+  box-shadow: 0 4px 14px rgba(232,41,76,0.3);
+}
+.btn-primary:hover { box-shadow: 0 6px 20px rgba(232,41,76,0.45); }
+.btn-secondary { font-weight: 600; }
+
+/* Hero h1 refinement */
+.hero .hero-title { letter-spacing: -0.03em; }
+.hero-image-card {
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  background: rgba(255,255,255,0.06) !important;
+}
+.hero-image-badge { box-shadow: 0 6px 24px rgba(232,41,76,0.5); letter-spacing: 0.01em; }
+
+/* Photo-ready about card */
+.about-image-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  padding: 36px 32px;
+}
+.about-photo {
+  width: 140px; height: 140px;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  overflow: hidden;
+  border: 4px solid #fff;
+  box-shadow: 0 0 0 3px var(--red), 0 8px 24px rgba(232,41,76,0.25);
+  background: linear-gradient(135deg, var(--red), var(--red-dark));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3rem; color: #fff;
+}
+.about-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.about-image-card h3 { font-size: 1.4rem; letter-spacing: -0.02em; margin-bottom: 2px; }
+.about-image-card .about-role { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 14px; }
+.about-image-card .badge {
+  background: var(--red-light); color: var(--red);
+  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.03em;
+  padding: 5px 14px; border-radius: 20px; margin: 4px 3px 0;
+  display: inline-block;
+}
+.about-point-icon { border-radius: 12px; }
+.about-point-text h4 { font-size: 1rem; letter-spacing: -0.01em; }
+
+/* Course card refinements */
+.course-card {
+  border: 1px solid rgba(0,0,0,0.06);
+  border-top: 3px solid transparent;
+}
+.course-card[data-subject="arabic"] { border-top-color: var(--red); }
+.course-card[data-subject="maths"] { border-top-color: var(--blue); }
+.course-card:hover { border-color: rgba(232,41,76,0.2); border-top-color: var(--red); }
+.course-card-body h3 { letter-spacing: -0.02em; font-size: 1.15rem; }
+.course-price { font-size: 1.4rem; letter-spacing: -0.02em; }
+.bg-arabic { background: linear-gradient(135deg, #fff0f3 0%, #ffd6df 100%); }
+.bg-maths { background: linear-gradient(135deg, #f0f5ff 0%, #d6e4ff 100%); }
+
+/* Testimonial cards with quote decoration */
+.testimonial-card {
+  border: 1px solid rgba(0,0,0,0.06);
+  position: relative; overflow: hidden;
+}
+.testimonial-card::before {
+  content: '\201C';
+  position: absolute; top: -8px; right: 20px;
+  font-size: 6rem; color: var(--red); opacity: 0.07;
+  font-family: Georgia, serif; line-height: 1;
+  pointer-events: none;
+}
+.testimonial-stars { letter-spacing: 2px; }
+.testimonial-text { font-size: 0.93rem; line-height: 1.75; }
+.testimonial-name { font-size: 0.95rem; letter-spacing: -0.01em; }
+.testimonial-avatar { font-size: 1.1rem; }
+
+/* Result cards */
+.result-card { border: 1px solid rgba(0,0,0,0.06); }
+.result-text { font-size: 0.93rem; }
+.result-author { font-size: 0.95rem; letter-spacing: -0.01em; }
+
+/* FAQ refinement */
+.faq-item { border: 1px solid rgba(0,0,0,0.06); box-shadow: none; }
+.faq-item:hover { border-color: rgba(232,41,76,0.2); }
+.faq-question { font-size: 0.97rem; letter-spacing: -0.01em; }
+.faq-icon { font-size: 0.9rem; }
+
+/* Trust bar refinement */
+.trust-bar { background: #fafafa; border-bottom: 1px solid var(--border); }
+.trust-item { font-size: 0.82rem; font-weight: 600; letter-spacing: 0.02em; color: var(--text-muted); }
+
+/* Footer refinement */
+.footer {
+  background: #111;
+  border-top: 3px solid var(--red);
+}
+.footer-brand { max-width: 280px; }
+.footer-brand p { color: #888; font-size: 0.875rem; line-height: 1.8; }
+.footer-col h4 { font-size: 0.72rem; letter-spacing: 0.12em; color: #aaa; }
+.footer-col ul li a { color: #888; font-size: 0.88rem; }
+.footer-bottom { border-top-color: rgba(255,255,255,0.08); }
+.footer-bottom p { font-size: 0.82rem; color: #555; }
+.footer-logo-text { font-size: 1.1rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; }
+.footer-logo-dot { width: 8px; height: 8px; background: var(--red); border-radius: 50%; display: inline-block; flex-shrink: 0; }
+
+/* How-it-works refinement */
+.how-step { border: 1px solid rgba(0,0,0,0.06); }
+.how-step-num {
+  background-image: linear-gradient(135deg, #f03355, var(--red));
+  box-shadow: 0 4px 16px rgba(232,41,76,0.3);
+  font-size: 1.2rem;
+}
+.how-step h3 { letter-spacing: -0.02em; font-size: 1.05rem; }
+
+/* Checkout refinements */
+.checkout-form { border: 1px solid rgba(0,0,0,0.06); }
+.checkout-sidebar { border: 1px solid rgba(0,0,0,0.06); }
+
+/* Section spacing */
+h2 { letter-spacing: -0.025em; }
+h1 { letter-spacing: -0.035em; }
 </style>
 </head>
 <body>
@@ -497,6 +844,10 @@ h3 { font-size: 1.2rem; font-weight: 700; }
       <a href="#" role="menuitem" onclick="showPage('home'); scrollToSection('faq-section'); return false;">FAQ</a>
       <a href="#" role="menuitem" onclick="openCallModal(); return false;">Contact</a>
       <a href="#" class="btn btn-primary nav-cta" role="menuitem" onclick="openCallModal(); return false;">Free Trial</a>
+      <div class="lang-switcher" role="group" aria-label="Language">
+        <button class="lang-btn active" id="lang-en" onclick="setLang('en')" aria-pressed="true">EN</button>
+        <button class="lang-btn" id="lang-ar" onclick="setLang('ar')" aria-pressed="false">عر</button>
+      </div>
     </div>
     <button class="nav-hamburger" aria-label="Open menu" onclick="toggleMobileNav()">
       <span></span><span></span><span></span>
@@ -516,6 +867,8 @@ h3 { font-size: 1.2rem; font-weight: 700; }
 
 <!-- HERO -->
 <section class="hero">
+  <div class="hero-blob hero-blob-1" aria-hidden="true"></div>
+  <div class="hero-blob hero-blob-2" aria-hidden="true"></div>
   <div class="hero-inner">
     <div class="hero-content">
       <span class="hero-tag">🌟 Native Arabic Speaker from Syria</span>
@@ -563,10 +916,45 @@ h3 { font-size: 1.2rem; font-weight: 700; }
   </div>
 </section>
 
+<!-- TRUST BAR -->
+<div class="trust-bar" role="list" aria-label="Trust indicators">
+  <div class="trust-bar-inner">
+    <div class="trust-item" role="listitem"><span class="trust-item-icon">👨‍🎓</span> <span>150+ Students</span></div>
+    <div class="trust-item" role="listitem"><span class="trust-item-icon">⭐</span> <span>4.9 Rating</span></div>
+    <div class="trust-item" role="listitem"><span class="trust-item-icon">🌍</span> <span>3 Countries</span></div>
+    <div class="trust-item" role="listitem"><span class="trust-item-icon">🇸🇾</span> <span>Native Arabic Speaker</span></div>
+    <div class="trust-item" role="listitem"><span class="trust-item-icon">✅</span> <span>DBS Checked</span></div>
+  </div>
+</div>
+
+<!-- BOOK A FREE TRIAL (CALENDLY) -->
+<section class="section calendly-section" id="calendly-section">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-eyebrow">No commitment required</span>
+      <h2>Book a Free Trial</h2>
+      <span class="arabic-subtitle" lang="ar">احجز تجربة مجانية</span>
+      <p style="color:var(--text-muted);margin-top:12px;max-width:520px;margin-left:auto;margin-right:auto;">No commitment. Pick a time that works for you and meet Ranem in a free 30-minute introductory session.</p>
+    </div>
+    <div class="calendly-embed-wrapper fade-up">
+      <!-- TODO: Replace with your Calendly inline embed script once you have your Calendly URL -->
+      <!-- Example: <div class="calendly-inline-widget" data-url="https://calendly.com/YOUR_USERNAME/free-trial" style="min-width:320px;height:630px;"></div><script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script> -->
+      <div class="calendly-placeholder-ui">
+        <div class="cal-icon">📅</div>
+        <h3>Scheduling Widget Coming Soon</h3>
+        <p>Paste your Calendly URL into the code where indicated above to activate live booking.</p>
+        <button class="btn btn-primary" onclick="openCallModal()">Contact for Free Trial Instead</button>
+        <span class="arabic-subtitle" lang="ar">تواصل لحجز تجربة مجانية</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- VIDEO INTRO -->
 <section class="section video-section" id="video-section">
   <div class="container">
     <div class="section-header">
+      <span class="section-eyebrow">Your Tutor</span>
       <h2>Meet Ranem</h2>
       <span class="arabic-subtitle" lang="ar">تعرّفي على رانم</span>
       <p style="color:var(--text-muted);margin-top:12px;max-width:560px;margin-left:auto;margin-right:auto;">Watch a short introduction and find out why students love learning with Ranem.</p>
@@ -627,16 +1015,53 @@ h3 { font-size: 1.2rem; font-weight: 700; }
         </div>
       </div>
       <div class="about-image-card">
-        <div class="avatar" aria-hidden="true">👩‍🏫</div>
-        <h3>Ranem</h3>
-        <!-- TODO: Add Ranem's full name -->
-        <p>Arabic & Maths Tutor</p>
-        <span class="arabic-subtitle" lang="ar">معلمة عربية ورياضيات</span>
-        <div>
-          <span class="badge">Native Arabic</span>
-          <span class="badge">Maths</span>
-          <span class="badge">All Ages</span>
+        <div class="about-photo" id="about-photo-container" aria-label="Photo of Ranem">
+          <img src="Ranem jpg.jpeg" alt="Ranem — Arabic & Maths Tutor">
         </div>
+        <h3>Ranem</h3>
+        <p class="about-role">Arabic & Maths Tutor · Native Syrian Arabic Speaker</p>
+        <span class="arabic-subtitle" lang="ar">معلمة عربية ورياضيات · متحدثة عربية أصيلة</span>
+        <div style="margin-top:14px;">
+          <span class="badge">🇸🇾 Native Arabic</span>
+          <span class="badge">📐 Maths</span>
+          <span class="badge">👨‍👩‍👧 All Ages</span>
+          <span class="badge">✅ DBS Checked</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section how-section" id="how-section">
+  <div class="container">
+    <div class="section-header fade-up">
+      <span class="section-eyebrow">Getting started</span>
+      <h2>How It Works</h2>
+      <span class="arabic-subtitle" lang="ar">كيف يعمل</span>
+      <p style="color:var(--text-muted);margin-top:12px;">Three simple steps to start learning.</p>
+    </div>
+    <div class="how-grid">
+      <div class="how-step fade-up">
+        <div class="how-step-icon" aria-hidden="true">💬</div>
+        <div class="how-step-num" aria-hidden="true">1</div>
+        <h3>Tell Us What You Need</h3>
+        <p>Choose your subject and level — Arabic for beginners, advanced Arabic, or Maths for kids and teens.</p>
+        <span class="arabic-subtitle" lang="ar">اختر موادك ومستواك</span>
+      </div>
+      <div class="how-step fade-up">
+        <div class="how-step-icon" aria-hidden="true">📅</div>
+        <div class="how-step-num" aria-hidden="true">2</div>
+        <h3>Book a Free Trial</h3>
+        <p>Schedule a free 30-minute introductory session with Ranem at a time that suits your timezone.</p>
+        <span class="arabic-subtitle" lang="ar">احجز جلسة تعريفية مجانية</span>
+      </div>
+      <div class="how-step fade-up">
+        <div class="how-step-icon" aria-hidden="true">🚀</div>
+        <div class="how-step-num" aria-hidden="true">3</div>
+        <h3>Start Your Sessions</h3>
+        <p>Begin your personalised learning journey with weekly one-on-one sessions tailored entirely to you.</p>
+        <span class="arabic-subtitle" lang="ar">ابدأ جلساتك المخصصة</span>
       </div>
     </div>
   </div>
@@ -646,11 +1071,12 @@ h3 { font-size: 1.2rem; font-weight: 700; }
 <section class="section section-alt" id="courses-section">
   <div class="container">
     <div class="section-header">
+      <span class="section-eyebrow">Online · One-on-one · All ages</span>
       <h2>Tutoring Programs</h2>
       <span class="arabic-subtitle" lang="ar">برامج التدريس</span>
       <p style="color:var(--text-muted);margin-top:12px;">One-on-one sessions tailored to your level and goals.</p>
     </div>
-    <div class="courses-grid" id="courses-grid">
+    <div class="courses-grid fade-up" id="courses-grid">
       <!-- Populated by JS -->
     </div>
   </div>
@@ -660,10 +1086,11 @@ h3 { font-size: 1.2rem; font-weight: 700; }
 <section class="section" id="testimonials-section">
   <div class="container">
     <div class="section-header">
+      <span class="section-eyebrow">Reviews</span>
       <h2>What Students Say</h2>
       <span class="arabic-subtitle" lang="ar">ماذا يقول الطلاب</span>
     </div>
-    <div class="testimonials-grid">
+    <div class="testimonials-grid fade-up">
       <div class="testimonial-card">
         <div class="testimonial-stars" aria-label="5 stars">★★★★★</div>
         <p class="testimonial-text">"Ranem's patience and clear explanations made learning Arabic feel natural. I went from zero to reading simple texts in just 3 months."</p>
@@ -705,10 +1132,11 @@ h3 { font-size: 1.2rem; font-weight: 700; }
 <section class="section section-alt" id="results-section">
   <div class="container">
     <div class="section-header">
+      <span class="section-eyebrow">Student stories</span>
       <h2>Real Results</h2>
       <span class="arabic-subtitle" lang="ar">نتائج حقيقية</span>
     </div>
-    <div class="results-grid">
+    <div class="results-grid fade-up">
       <div class="result-card">
         <span class="result-quote-icon" aria-hidden="true">"</span>
         <!-- TODO: Replace with real student story -->
@@ -752,7 +1180,7 @@ h3 { font-size: 1.2rem; font-weight: 700; }
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <div style="font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:12px;">Ranem's Learning Hub</div>
+        <div class="footer-logo-text" style="margin-bottom:12px;"><span class="footer-logo-dot"></span>Ranem's Learning Hub</div>
         <p>Personalised Arabic and Maths tutoring for all ages. Online, one-on-one, and tailored to you.</p>
         <p class="arabic-subtitle" lang="ar" style="margin-top:8px;color:#666;">تدريس مخصص للغة العربية والرياضيات لجميع الأعمار.</p>
       </div>
@@ -779,7 +1207,7 @@ h3 { font-size: 1.2rem; font-weight: 700; }
           <li><a href="#" onclick="openCallModal();return false;">Free Trial Session</a></li>
           <li><a href="#" onclick="scrollToSection('courses-section');return false;">View Programs</a></li>
           <!-- TODO: Add WhatsApp link -->
-          <li><a href="https://wa.me/YOUR_WHATSAPP_NUMBER" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+          <li><a href="https://wa.me/963947055414" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
         </ul>
       </div>
     </div>
@@ -959,31 +1387,23 @@ h3 { font-size: 1.2rem; font-weight: 700; }
           </div>
         </div>
 
-        <!-- Step 2: Payment -->
+        <!-- Step 2: Stripe Redirect -->
         <div id="checkout-step-2" class="checkout-form" style="display:none;">
-          <h3>Payment Details</h3>
-          <div class="form-group">
-            <label for="card-name">Name on Card</label>
-            <input type="text" id="card-name" placeholder="Sara Al-Hassan" autocomplete="cc-name">
+          <div style="text-align:center;padding:16px 0 8px;">
+            <div style="font-size:2.5rem;margin-bottom:16px;">🔒</div>
+            <h3 style="margin-bottom:12px;">Complete Payment on Stripe</h3>
+            <p style="color:var(--text-muted);line-height:1.7;margin-bottom:24px;">
+              We've saved your details. Click below to complete your subscription securely on Stripe.<br>
+              <span style="font-size:0.85rem;">You'll be redirected to a secure Stripe checkout page.</span>
+            </p>
+            <a id="stripe-pay-btn" href="#" target="_blank" rel="noopener noreferrer"
+              class="btn btn-primary btn-full" onclick="checkoutNext(2)" style="margin-bottom:12px;display:flex;">
+              Pay Securely with Stripe →
+            </a>
+            <p style="font-size:0.8rem;color:var(--text-muted);">🔒 Powered by Stripe · Your card details are never shared with us</p>
           </div>
-          <div class="form-group">
-            <label for="card-number">Card Number</label>
-            <input type="text" id="card-number" placeholder="1234 5678 9012 3456" maxlength="19" autocomplete="cc-number">
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="card-expiry">Expiry</label>
-              <input type="text" id="card-expiry" placeholder="MM / YY" maxlength="7" autocomplete="cc-exp">
-            </div>
-            <div class="form-group">
-              <label for="card-cvc">CVC</label>
-              <input type="text" id="card-cvc" placeholder="123" maxlength="4" autocomplete="cc-csc">
-            </div>
-          </div>
-          <p class="form-note">🔒 All payments processed securely through Stripe. We never store your card details.</p>
-          <div class="checkout-actions">
+          <div class="checkout-actions" style="margin-top:24px;">
             <button class="checkout-back" onclick="checkoutPrev(2)">← Back</button>
-            <button class="btn btn-primary" onclick="checkoutNext(2)">Subscribe Now →</button>
           </div>
         </div>
 
@@ -991,8 +1411,9 @@ h3 { font-size: 1.2rem; font-weight: 700; }
         <div id="checkout-step-3" class="checkout-form" style="display:none;">
           <div class="checkout-complete">
             <div class="success-icon" aria-hidden="true">🎉</div>
-            <h3>You're Subscribed!</h3>
-            <p id="checkout-confirm-msg">Your first session link will be sent to your email address within 24 hours.</p>
+            <h3>Payment Sent to Stripe!</h3>
+            <p id="checkout-confirm-msg">Complete your payment on the Stripe page that opened. Once confirmed, your first session link will be sent to your email within 24 hours.</p>
+            <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:24px;">If the Stripe page didn't open, <a id="stripe-fallback-link" href="#" target="_blank" rel="noopener noreferrer" style="color:var(--red);text-decoration:underline;">click here to retry</a>.</p>
             <button class="btn btn-primary" onclick="showPage('home')">Back to Home</button>
           </div>
         </div>
@@ -1012,8 +1433,8 @@ h3 { font-size: 1.2rem; font-weight: 700; }
 </div><!-- end page-checkout -->
 
 <!-- ======================== FLOATING BUTTONS ======================== -->
-<!-- TODO: Replace YOUR_WHATSAPP_NUMBER with Ranem's number in international format e.g. 447700900000 -->
-<a href="https://wa.me/YOUR_WHATSAPP_NUMBER" class="whatsapp-fab" target="_blank" rel="noopener noreferrer" aria-label="Contact Ranem on WhatsApp">
+<!-- TODO: Replace 963947055414 with Ranem's number in international format e.g. 447700900000 -->
+<a href="https://wa.me/963947055414" class="whatsapp-fab" target="_blank" rel="noopener noreferrer" aria-label="Contact Ranem on WhatsApp">
   <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.736 5.469 2.025 7.767L0 32l8.468-2.002A15.94 15.94 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.27 13.27 0 01-6.758-1.844l-.485-.288-5.027 1.188 1.214-4.908-.317-.507A13.267 13.267 0 012.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.27-9.818c-.398-.199-2.355-1.161-2.72-1.294-.365-.133-.631-.199-.897.199-.266.398-1.031 1.294-1.264 1.561-.232.266-.465.299-.863.1-.398-.2-1.682-.62-3.203-1.977-1.184-1.057-1.983-2.363-2.215-2.761-.232-.398-.025-.613.174-.811.179-.178.398-.465.597-.698.199-.232.266-.398.398-.664.133-.266.067-.499-.033-.698-.1-.2-.897-2.164-1.229-2.963-.323-.779-.652-.673-.897-.686l-.764-.013c-.266 0-.698.1-.1063.499-.365.398-1.396 1.361-1.396 3.32 0 1.96 1.43 3.855 1.628 4.121.2.266 2.812 4.294 6.814 6.024.952.411 1.695.656 2.274.84.955.304 1.824.261 2.51.159.766-.114 2.355-.962 2.688-1.891.332-.929.332-1.727.232-1.891-.1-.165-.365-.265-.764-.465z"/>
   </svg>
@@ -1031,7 +1452,7 @@ h3 { font-size: 1.2rem; font-weight: 700; }
     <span class="arabic-subtitle" lang="ar">تواصل معنا</span>
     <p>Choose how you'd like to connect with Ranem.</p>
     <div class="modal-options" role="list">
-      <a href="https://wa.me/YOUR_WHATSAPP_NUMBER" class="modal-option" target="_blank" rel="noopener noreferrer" role="listitem">
+      <a href="https://wa.me/963947055414" class="modal-option" target="_blank" rel="noopener noreferrer" role="listitem">
         <span class="modal-option-icon" aria-hidden="true">💬</span>
         <span>WhatsApp Chat<br><small style="font-weight:400;color:var(--text-muted);">Quick response via WhatsApp</small></span>
       </a>
@@ -1047,14 +1468,56 @@ h3 { font-size: 1.2rem; font-weight: 700; }
   </div>
 </div>
 
+<!-- Lead Capture Popup -->
+<div class="lead-popup-overlay" id="lead-popup-overlay" role="dialog" aria-modal="true" aria-labelledby="lead-popup-title">
+  <div class="lead-popup">
+    <div class="lead-popup-header">
+      <button class="lead-popup-close" onclick="closeLeadPopup()" aria-label="Close">✕</button>
+      <div style="font-size:2rem;margin-bottom:12px;">🎁</div>
+      <h3 id="lead-popup-title">Free Arabic Starter Vocabulary Sheet</h3>
+      <p>100 essential words with pronunciation — yours for free.</p>
+      <span style="font-size:0.82rem;opacity:0.7;direction:rtl;display:block;margin-top:4px;">قائمة مفردات عربية مجانية للمبتدئين</span>
+    </div>
+    <div class="lead-popup-body" id="lead-popup-form-body">
+      <div class="lead-popup-gift">
+        <span style="font-size:1.3rem;">📄</span>
+        <span><strong>What you get:</strong> 100 Arabic words + phonetic pronunciation guide — perfect for absolute beginners.</span>
+      </div>
+      <!-- TODO: Replace YOUR_FORM_ID with your Formspree form ID at formspree.io -->
+      <form id="lead-form" onsubmit="submitLeadForm(event)">
+        <input type="hidden" name="_subject" value="New lead from Ranem's Learning Hub">
+        <div class="form-group">
+          <label for="lead-name">First Name</label>
+          <input type="text" id="lead-name" name="name" placeholder="Your first name" required autocomplete="given-name">
+        </div>
+        <div class="form-group">
+          <label for="lead-email">Email Address</label>
+          <input type="email" id="lead-email" name="email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Send Me the Vocabulary Sheet →</button>
+      </form>
+      <button class="lead-popup-skip" onclick="closeLeadPopup()">No thanks, I'll learn without it</button>
+    </div>
+    <div class="lead-popup-success" id="lead-popup-success" style="display:none;">
+      <div class="success-icon">🎉</div>
+      <h3>Check your inbox!</h3>
+      <p>The vocabulary sheet is on its way. See you in your first session!</p>
+      <span class="arabic-subtitle" lang="ar" style="text-align:center;margin-top:8px;">تحقق من بريدك الإلكتروني!</span>
+      <button class="btn btn-primary" style="margin-top:20px;" onclick="closeLeadPopup()">Close</button>
+    </div>
+  </div>
+</div>
+
 <!-- Toast -->
 <div class="toast" id="toast" role="alert" aria-live="polite"></div>
 
 <script>
 // ===== DATA =====
+// TODO: Replace each stripeUrl with the real Stripe Payment Link URL from your Stripe dashboard
 const COURSES = {
   'arabic-beginners': {
     id: 'arabic-beginners',
+    stripeUrl: 'https://buy.stripe.com/REPLACE_ARABIC_BEGINNERS',
     title: 'Arabic for Beginners',
     titleAr: 'عربية للمبتدئين',
     desc: 'Start your Arabic journey from scratch. Learn the alphabet, basic vocabulary, and simple sentence structures through engaging, structured sessions.',
@@ -1108,6 +1571,7 @@ const COURSES = {
   },
   'arabic-intermediate': {
     id: 'arabic-intermediate',
+    stripeUrl: 'https://buy.stripe.com/REPLACE_ARABIC_INTERMEDIATE',
     title: 'Intermediate Arabic',
     titleAr: 'عربية متوسطة',
     desc: 'Build on your foundation. Develop fluency in reading, writing, and speaking Modern Standard Arabic through real-world contexts and deeper grammar.',
@@ -1161,6 +1625,7 @@ const COURSES = {
   },
   'maths-kids': {
     id: 'maths-kids',
+    stripeUrl: 'https://buy.stripe.com/REPLACE_MATHS_KIDS',
     title: 'Magic Maths for Kids',
     titleAr: 'رياضيات سحرية للأطفال',
     desc: 'Fun, engaging maths sessions designed for children aged 6–11. Build strong number foundations, multiplication confidence, and problem-solving skills.',
@@ -1214,6 +1679,7 @@ const COURSES = {
   },
   'maths-teens': {
     id: 'maths-teens',
+    stripeUrl: 'https://buy.stripe.com/REPLACE_MATHS_TEENS',
     title: 'Maths for Teens',
     titleAr: 'رياضيات للمراهقين',
     desc: 'GCSE-aligned maths support for ages 12–18. Cover algebra, geometry, statistics and more with step-by-step guidance and exam technique coaching.',
@@ -1271,13 +1737,11 @@ const FAQS = [
   {
     q: 'How do sessions work?',
     a: 'Sessions take place online via Zoom. After subscribing, you\'ll receive a booking link to schedule your first session at a time that suits you.',
-    // TODO: Confirm platform (Zoom/Google Meet)
-    ar: 'تتم الجلسات عبر الإنترنت. بعد الاشتراك، ستتلقى رابط الحجز لجدولة جلستك الأولى.'
+    ar: 'تتم الجلسات عبر الإنترنت عبر Zoom. بعد الاشتراك، ستتلقى رابط الحجز لجدولة جلستك الأولى.'
   },
   {
     q: 'What platform do you use?',
     a: 'All sessions are held via Zoom. You\'ll need a free Zoom account and a device with a camera and microphone.',
-    // TODO: Confirm platform
     ar: 'تُعقد جميع الجلسات عبر Zoom. ستحتاج إلى حساب Zoom مجاني وجهاز بكاميرا وميكروفون.'
   },
   {
@@ -1337,7 +1801,7 @@ function scrollToSection(id) {
 function renderCourses() {
   const grid = document.getElementById('courses-grid');
   grid.innerHTML = Object.values(COURSES).map(c => `
-    <article class="course-card" onclick="openCourse('${c.id}')" style="cursor:pointer;" role="button" tabindex="0"
+    <article class="course-card" data-subject="${c.subject}" onclick="openCourse('${c.id}')" style="cursor:pointer;" role="button" tabindex="0"
       onkeydown="if(event.key==='Enter'||event.key===' '){openCourse('${c.id}')}"
       aria-label="View ${c.title} course details">
       <div class="course-card-image">
@@ -1651,20 +2115,27 @@ function checkoutNext(step) {
     const email = document.getElementById('email').value;
     const fname = document.getElementById('first-name').value;
     if (!fname || !email) { showToast('Please fill in your name and email'); return; }
+    // Set Stripe URL on the pay button
+    const stripeUrl = currentCourse && currentCourse.stripeUrl ? currentCourse.stripeUrl : '#';
+    const payBtn = document.getElementById('stripe-pay-btn');
+    const fallbackLink = document.getElementById('stripe-fallback-link');
+    if (payBtn) payBtn.href = stripeUrl;
+    if (fallbackLink) fallbackLink.href = stripeUrl;
     document.getElementById('checkout-step-1').style.display = 'none';
     document.getElementById('checkout-step-2').style.display = 'block';
     currentCheckoutStep = 2;
     updateCheckoutSteps(2);
     updateCheckoutSidebar();
   } else if (step === 2) {
-    const cardNum = document.getElementById('card-number').value;
-    if (!cardNum || cardNum.length < 16) { showToast('Please enter a valid card number'); return; }
+    // Open Stripe in new tab and show confirmation
+    const stripeUrl = currentCourse && currentCourse.stripeUrl ? currentCourse.stripeUrl : null;
+    if (stripeUrl && !stripeUrl.includes('REPLACE_')) {
+      window.open(stripeUrl, '_blank', 'noopener,noreferrer');
+    }
     document.getElementById('checkout-step-2').style.display = 'none';
     document.getElementById('checkout-step-3').style.display = 'block';
     currentCheckoutStep = 3;
     updateCheckoutSteps(3);
-    const email = document.getElementById('email').value;
-    document.getElementById('checkout-confirm-msg').textContent = `Your first session link will be sent to ${email || 'your email'} within 24 hours.`;
     updateCheckoutSidebar();
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1757,13 +2228,7 @@ function openCallModal_callback() {
   closeCallModal();
   showToast('📞 Callback request — please contact via WhatsApp for now!');
 }
-// Escape key closes modal
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    document.getElementById('call-modal').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-});
+// Escape key — handled in consolidated listener at bottom
 
 // ===== NAV =====
 function toggleMobileNav() {
@@ -1783,16 +2248,130 @@ function showToast(msg) {
 renderCourses();
 renderFAQ();
 
-// Card number formatting
-document.addEventListener('input', e => {
-  if (e.target.id === 'card-number') {
-    let v = e.target.value.replace(/\D/g,'').substring(0,16);
-    e.target.value = v.replace(/(.{4})/g,'$1 ').trim();
+// ===== LANGUAGE SWITCHER =====
+function setLang(lang) {
+  const isAr = lang === 'ar';
+  document.body.classList.toggle('ar-mode', isAr);
+  document.documentElement.setAttribute('lang', lang);
+  document.getElementById('lang-en').classList.toggle('active', !isAr);
+  document.getElementById('lang-ar').classList.toggle('active', isAr);
+  document.getElementById('lang-en').setAttribute('aria-pressed', !isAr);
+  document.getElementById('lang-ar').setAttribute('aria-pressed', isAr);
+  if (isAr) {
+    document.querySelectorAll('.arabic-subtitle, [lang="ar"]').forEach(el => {
+      el.style.fontSize = '1em';
+      el.style.color = 'var(--text)';
+      el.style.fontWeight = '600';
+    });
+  } else {
+    document.querySelectorAll('.arabic-subtitle, [lang="ar"]').forEach(el => {
+      el.style.fontSize = '';
+      el.style.color = '';
+      el.style.fontWeight = '';
+    });
   }
-  if (e.target.id === 'card-expiry') {
-    let v = e.target.value.replace(/\D/g,'').substring(0,4);
-    if (v.length >= 2) v = v.substring(0,2) + ' / ' + v.substring(2);
-    e.target.value = v;
+}
+
+// ===== SCROLL FADE-UP (IntersectionObserver) =====
+const fadeObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      fadeObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-up').forEach(el => fadeObserver.observe(el));
+
+// ===== COUNT-UP ANIMATION =====
+function countUp(el, target, suffix) {
+  const duration = 1400;
+  const start = performance.now();
+  const isFloat = target !== Math.floor(target);
+  const step = (now) => {
+    const progress = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const value = isFloat ? (eased * target).toFixed(1) : Math.floor(eased * target);
+    el.textContent = value + suffix;
+    if (progress < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.hero-stat-num').forEach(el => {
+        const raw = el.textContent.trim();
+        const num = parseFloat(raw.replace(/[^0-9.]/g, ''));
+        const suffix = raw.replace(/[0-9.]/g, '');
+        if (!isNaN(num)) countUp(el, num, suffix);
+      });
+      statsObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+const heroStats = document.querySelector('.hero-stats');
+if (heroStats) statsObserver.observe(heroStats);
+
+// ===== BUTTON RIPPLE =====
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.btn');
+  if (!btn) return;
+  const r = document.createElement('span');
+  r.className = 'ripple';
+  const rect = btn.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+  r.style.width = r.style.height = size + 'px';
+  r.style.left = (e.clientX - rect.left - size / 2) + 'px';
+  r.style.top = (e.clientY - rect.top - size / 2) + 'px';
+  btn.appendChild(r);
+  setTimeout(() => r.remove(), 600);
+});
+
+// ===== LEAD POPUP =====
+let leadPopupShown = false;
+function showLeadPopup() {
+  if (leadPopupShown || sessionStorage.getItem('leadDismissed')) return;
+  leadPopupShown = true;
+  const overlay = document.getElementById('lead-popup-overlay');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLeadPopup() {
+  document.getElementById('lead-popup-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  sessionStorage.setItem('leadDismissed', '1');
+}
+function submitLeadForm(e) {
+  e.preventDefault();
+  const name = document.getElementById('lead-name').value;
+  const email = document.getElementById('lead-email').value;
+  // TODO: Replace YOUR_FORM_ID with real Formspree ID from formspree.io
+  fetch('https://formspree.io/f/YOUR_FORM_ID', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({ name, email, _subject: 'Vocabulary sheet request — Ranem\'s Learning Hub' })
+  }).catch(() => {/* Silent fail — still show success */});
+  document.getElementById('lead-popup-form-body').style.display = 'none';
+  document.getElementById('lead-popup-success').style.display = 'block';
+  sessionStorage.setItem('leadDismissed', '1');
+}
+// 20-second timer
+setTimeout(showLeadPopup, 20000);
+// Exit intent
+document.addEventListener('mouseleave', e => {
+  if (e.clientY < 10) showLeadPopup();
+});
+// Close on overlay click
+document.getElementById('lead-popup-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('lead-popup-overlay')) closeLeadPopup();
+});
+// Escape closes lead popup
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.getElementById('call-modal').classList.remove('open');
+    document.getElementById('lead-popup-overlay').classList.remove('open');
+    document.body.style.overflow = '';
   }
 });
 </script>
