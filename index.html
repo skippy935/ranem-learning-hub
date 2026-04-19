@@ -830,6 +830,76 @@ body.ar-mode .nav-links, body.ar-mode .footer-grid { direction: rtl; }
 /* Section spacing */
 h2 { letter-spacing: -0.025em; }
 h1 { letter-spacing: -0.035em; }
+
+/* ===== EXTRA SERVICES ===== */
+.extra-services {
+  margin-top: 56px;
+  border-top: 1px solid var(--border);
+  padding-top: 48px;
+}
+.extra-services-label {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  margin-bottom: 32px; flex-wrap: wrap;
+}
+.extra-services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+@media(max-width:900px){ .extra-services-grid{ grid-template-columns: repeat(2,1fr); } }
+@media(max-width:480px){ .extra-services-grid{ grid-template-columns: 1fr; } }
+.extra-service-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  text-align: center;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.extra-service-card:hover {
+  border-color: var(--red);
+  box-shadow: var(--shadow-colored);
+  transform: translateY(-3px);
+}
+.extra-service-icon {
+  font-size: 2.2rem;
+  margin-bottom: 12px;
+  display: block;
+}
+.extra-service-card h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.extra-service-card p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.extra-service-card .arabic-subtitle {
+  font-size: 0.78em;
+  text-align: center;
+}
+.extra-services-cta {
+  text-align: center;
+  margin-top: 28px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+.extra-services-link {
+  background: none;
+  border: none;
+  color: var(--red);
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.extra-services-link:hover { color: var(--red-dark); }
 </style>
 </head>
 <body>
@@ -1078,6 +1148,39 @@ h1 { letter-spacing: -0.035em; }
     </div>
     <div class="courses-grid fade-up" id="courses-grid">
       <!-- Populated by JS -->
+    </div>
+
+    <!-- Additional Services -->
+    <div class="extra-services fade-up">
+      <div class="extra-services-label">
+        <span class="section-eyebrow" style="margin-bottom:0;">Also Available</span>
+        <span class="section-eyebrow" lang="ar" style="margin-bottom:0;direction:rtl;">خدمات إضافية</span>
+      </div>
+      <div class="extra-services-grid">
+        <div class="extra-service-card">
+          <div class="extra-service-icon">🧮</div>
+          <h4>Mental Arithmetic</h4>
+          <span lang="ar" class="arabic-subtitle">حساب ذهني</span>
+        </div>
+        <div class="extra-service-card">
+          <div class="extra-service-icon">📚</div>
+          <h4>All Subjects — Grades 1 to 6</h4>
+          <p>In-person &amp; online</p>
+          <span lang="ar" class="arabic-subtitle">متابعة لكافة المواد من الأول للسادس الابتدائي — حضوري وأونلاين</span>
+        </div>
+        <div class="extra-service-card">
+          <div class="extra-service-icon">🕌</div>
+          <h4>Quran Memorisation</h4>
+          <span lang="ar" class="arabic-subtitle">تحفيظ القرآن الكريم</span>
+        </div>
+        <div class="extra-service-card">
+          <div class="extra-service-icon">✍️</div>
+          <h4>Kufic Calligraphy</h4>
+          <p>Learn to write in Kufic script</p>
+          <span lang="ar" class="arabic-subtitle">تعلم كيفية الكتابة بالخط الكوفي</span>
+        </div>
+      </div>
+      <p class="extra-services-cta">Interested in any of these? <button class="extra-services-link" onclick="openCallModal()">Get in touch →</button></p>
     </div>
   </div>
 </section>
