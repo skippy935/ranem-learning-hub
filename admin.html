@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Ranem's Learning Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --red:#E8294C;--red-dark:#c41e3a;--red-light:rgba(232,41,76,0.12);
+  --bg:#0f0f14;--sidebar:#16161f;--card:#1e1e2a;--card-hover:#252533;
+  --border:rgba(255,255,255,0.07);--border-light:rgba(255,255,255,0.12);
+  --text:#e2e8f0;--muted:#94a3b8;--faint:#4a5568;
+  --green:#22c55e;--green-light:rgba(34,197,94,0.12);
+  --amber:#f59e0b;--amber-light:rgba(245,158,11,0.12);
+  --blue:#3b82f6;--blue-light:rgba(59,130,246,0.12);
+  --purple:#8b5cf6;--purple-light:rgba(139,92,246,0.12);
+  --radius:12px;--radius-sm:8px;--radius-xs:6px;
+  --shadow:0 4px 24px rgba(0,0,0,0.3);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.5;overflow-x:hidden;}
+h1,h2,h3,h4,h5{font-family:'Plus Jakarta Sans',sans-serif;}
+a{color:inherit;text-decoration:none;}
+button{cursor:pointer;font-family:inherit;}
+input,select,textarea{font-family:inherit;}
+ul{list-style:none;}
+
+/* ===== LOGIN ===== */
+#login-screen{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:var(--bg);
+  background-image:radial-gradient(ellipse at 20% 50%,rgba(232,41,76,0.08) 0%,transparent 60%),
+                   radial-gradient(ellipse at 80% 20%,rgba(139,92,246,0.06) 0%,transparent 60%);
+}
+.login-card{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;
+  padding:48px 40px;width:100%;max-width:420px;
+  box-shadow:0 24px 64px rgba(0,0,0,0.5);
+}
+.login-logo{display:flex;align-items:center;gap:12px;margin-bottom:32px;justify-content:center;}
+.login-logo-dot{width:36px;height:36px;background:var(--red);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+.login-logo-text{font-size:1.1rem;font-weight:800;color:var(--text);}
+.login-card h2{font-size:1.6rem;font-weight:800;margin-bottom:6px;text-align:center;letter-spacing:-0.03em;}
+.login-card p{color:var(--muted);font-size:0.9rem;text-align:center;margin-bottom:32px;}
+.login-field{margin-bottom:20px;}
+.login-field label{display:block;font-size:0.8rem;font-weight:600;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em;}
+.login-field input{
+  width:100%;background:var(--bg);border:1.5px solid var(--border-light);
+  border-radius:var(--radius-sm);padding:13px 16px;color:var(--text);
+  font-size:0.95rem;transition:border-color 0.2s;
+}
+.login-field input:focus{outline:none;border-color:var(--red);}
+.login-btn{
+  width:100%;background:var(--red);color:#fff;border:none;
+  border-radius:var(--radius-sm);padding:14px;font-size:1rem;
+  font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;
+  transition:all 0.2s;margin-top:4px;
+  background-image:linear-gradient(135deg,#f03355,var(--red));
+  box-shadow:0 4px 16px rgba(232,41,76,0.3);
+}
+.login-btn:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(232,41,76,0.4);}
+.login-error{color:#f87171;font-size:0.85rem;text-align:center;margin-top:12px;display:none;}
+
+/* ===== ADMIN LAYOUT ===== */
+#admin-app{display:none;min-height:100vh;}
+.admin-layout{display:flex;min-height:100vh;}
+
+/* SIDEBAR */
+.sidebar{
+  width:240px;background:var(--sidebar);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;position:fixed;top:0;left:0;
+  height:100vh;z-index:50;transition:transform 0.3s;
+}
+.sidebar-header{padding:24px 20px;border-bottom:1px solid var(--border);}
+.sidebar-logo{display:flex;align-items:center;gap:10px;}
+.sidebar-logo-dot{width:30px;height:30px;background:var(--red);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.sidebar-logo-text{font-size:0.95rem;font-weight:800;letter-spacing:-0.01em;line-height:1.2;}
+.sidebar-logo-sub{font-size:0.7rem;color:var(--muted);font-weight:400;font-family:'Inter',sans-serif;}
+.sidebar-nav{flex:1;padding:16px 12px;overflow-y:auto;}
+.nav-section-label{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--faint);padding:8px 8px 4px;margin-top:8px;}
+.nav-item{
+  display:flex;align-items:center;gap:10px;padding:10px 12px;
+  border-radius:var(--radius-xs);color:var(--muted);font-size:0.875rem;
+  font-weight:500;transition:all 0.15s;cursor:pointer;margin-bottom:2px;
+  border:none;background:none;width:100%;text-align:left;
+}
+.nav-item:hover{background:var(--border);color:var(--text);}
+.nav-item.active{background:var(--red-light);color:var(--red);font-weight:600;}
+.nav-item-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0;}
+.nav-item-badge{
+  margin-left:auto;background:var(--red);color:#fff;
+  font-size:0.65rem;font-weight:700;padding:2px 7px;
+  border-radius:20px;min-width:18px;text-align:center;
+}
+.sidebar-footer{padding:16px 12px;border-top:1px solid var(--border);}
+.sidebar-user{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--radius-xs);}
+.sidebar-avatar{width:34px;height:34px;background:var(--red-light);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.sidebar-user-info{flex:1;min-width:0;}
+.sidebar-user-name{font-size:0.82rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sidebar-user-role{font-size:0.7rem;color:var(--muted);}
+.logout-btn{background:none;border:none;color:var(--muted);font-size:0.8rem;padding:6px 12px;border-radius:var(--radius-xs);transition:all 0.15s;width:100%;text-align:left;margin-top:4px;}
+.logout-btn:hover{background:var(--border);color:#f87171;}
+
+/* MAIN */
+.admin-main{margin-left:240px;flex:1;display:flex;flex-direction:column;min-height:100vh;}
+.topbar{
+  background:var(--sidebar);border-bottom:1px solid var(--border);
+  padding:0 28px;height:60px;display:flex;align-items:center;
+  justify-content:space-between;position:sticky;top:0;z-index:40;
+}
+.topbar-title{font-size:1rem;font-weight:700;letter-spacing:-0.01em;}
+.topbar-actions{display:flex;align-items:center;gap:12px;}
+.topbar-search{
+  background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-xs);
+  padding:7px 14px;color:var(--text);font-size:0.85rem;width:200px;
+}
+.topbar-search:focus{outline:none;border-color:var(--red);}
+.topbar-btn{
+  background:var(--card);border:1px solid var(--border);color:var(--text);
+  border-radius:var(--radius-xs);padding:7px 14px;font-size:0.82rem;
+  font-weight:600;transition:all 0.15s;
+}
+.topbar-btn:hover{border-color:var(--border-light);background:var(--card-hover);}
+.topbar-btn.primary{background:var(--red);border-color:var(--red);color:#fff;}
+.topbar-btn.primary:hover{background:var(--red-dark);}
+
+/* CONTENT */
+.page-content{padding:28px;flex:1;}
+.page-content.hidden{display:none;}
+
+/* STAT CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;}
+@media(max-width:1100px){.stats-grid{grid-template-columns:repeat(2,1fr);}}
+.stat-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:20px 22px;transition:border-color 0.2s;
+}
+.stat-card:hover{border-color:var(--border-light);}
+.stat-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.stat-card-label{font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);}
+.stat-card-icon{width:36px;height:36px;border-radius:var(--radius-xs);display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+.stat-card-value{font-size:2rem;font-weight:800;letter-spacing:-0.04em;font-family:'Plus Jakarta Sans',sans-serif;line-height:1;}
+.stat-card-sub{font-size:0.78rem;color:var(--muted);margin-top:6px;}
+.stat-card-trend{font-size:0.75rem;font-weight:600;}
+.trend-up{color:var(--green);}
+.trend-down{color:#f87171;}
+
+/* TABLES */
+.table-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.table-card-header{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.table-card-title{font-size:0.95rem;font-weight:700;}
+.table-card-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+th{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);padding:11px 16px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;}
+td{padding:13px 16px;font-size:0.875rem;border-bottom:1px solid var(--border);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,0.02);}
+.td-name{font-weight:600;}
+.td-email{color:var(--muted);font-size:0.82rem;}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;white-space:nowrap;}
+.badge-green{background:var(--green-light);color:var(--green);}
+.badge-red{background:var(--red-light);color:var(--red);}
+.badge-amber{background:var(--amber-light);color:var(--amber);}
+.badge-blue{background:var(--blue-light);color:var(--blue);}
+.badge-purple{background:var(--purple-light);color:var(--purple);}
+.badge-grey{background:rgba(255,255,255,0.06);color:var(--muted);}
+
+/* ACTION BUTTONS */
+.action-btn{background:none;border:1px solid var(--border);color:var(--muted);border-radius:var(--radius-xs);padding:5px 10px;font-size:0.75rem;transition:all 0.15s;cursor:pointer;}
+.action-btn:hover{border-color:var(--border-light);color:var(--text);}
+.action-btn.danger:hover{border-color:#f87171;color:#f87171;}
+.action-btn.success:hover{border-color:var(--green);color:var(--green);}
+
+/* SEARCH/FILTER BAR */
+.filter-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.filter-input{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-xs);padding:7px 12px;color:var(--text);font-size:0.82rem;}
+.filter-input:focus{outline:none;border-color:var(--red);}
+.filter-select{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-xs);padding:7px 12px;color:var(--text);font-size:0.82rem;}
+
+/* MODAL */
+.modal-overlay{
+  display:none;position:fixed;inset:0;z-index:200;
+  background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;padding:20px;
+}
+.modal-overlay.open{display:flex;}
+.modal{
+  background:var(--card);border:1px solid var(--border-light);border-radius:16px;
+  padding:28px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;
+  box-shadow:0 32px 80px rgba(0,0,0,0.6);animation:modal-in 0.2s ease;
+}
+@keyframes modal-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.modal-title{font-size:1.1rem;font-weight:800;letter-spacing:-0.02em;}
+.modal-close{background:none;border:none;color:var(--muted);font-size:1.3rem;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.modal-close:hover{background:var(--border);color:var(--text);}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:0.78rem;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em;}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:var(--bg);border:1.5px solid var(--border-light);border-radius:var(--radius-xs);padding:10px 14px;color:var(--text);font-size:0.9rem;transition:border-color 0.2s;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--red);}
+.form-group textarea{resize:vertical;min-height:80px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);}
+.btn{padding:9px 18px;border-radius:var(--radius-xs);font-size:0.875rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;border:none;transition:all 0.2s;cursor:pointer;}
+.btn-primary{background:var(--red);color:#fff;}
+.btn-primary:hover{background:var(--red-dark);}
+.btn-secondary{background:var(--bg);border:1px solid var(--border-light);color:var(--text);}
+.btn-secondary:hover{background:var(--border);}
+.btn-danger{background:rgba(248,113,113,0.1);color:#f87171;border:1px solid rgba(248,113,113,0.2);}
+.btn-danger:hover{background:rgba(248,113,113,0.2);}
+
+/* DASHBOARD GRID */
+.dashboard-grid{display:grid;grid-template-columns:1fr 360px;gap:20px;}
+@media(max-width:1000px){.dashboard-grid{grid-template-columns:1fr;}}
+
+/* ACTIVITY FEED */
+.activity-feed{display:flex;flex-direction:column;gap:0;}
+.activity-item{display:flex;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);align-items:flex-start;}
+.activity-item:last-child{border-bottom:none;}
+.activity-dot{width:8px;height:8px;border-radius:50%;background:var(--muted);margin-top:6px;flex-shrink:0;}
+.activity-dot.green{background:var(--green);}
+.activity-dot.red{background:var(--red);}
+.activity-dot.amber{background:var(--amber);}
+.activity-dot.blue{background:var(--blue);}
+.activity-text{font-size:0.85rem;line-height:1.5;}
+.activity-time{font-size:0.75rem;color:var(--muted);margin-top:2px;}
+
+/* QUICK ACTIONS */
+.quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+.quick-action{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px;display:flex;align-items:center;gap:12px;
+  transition:all 0.2s;cursor:pointer;text-decoration:none;
+}
+.quick-action:hover{border-color:var(--border-light);background:var(--card-hover);transform:translateY(-1px);}
+.quick-action-icon{width:36px;height:36px;border-radius:var(--radius-xs);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.quick-action-text{font-size:0.82rem;font-weight:600;line-height:1.3;}
+.quick-action-sub{font-size:0.72rem;color:var(--muted);font-weight:400;}
+
+/* SETTINGS */
+.settings-section{margin-bottom:28px;}
+.settings-section-title{font-size:0.85rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);gap:20px;}
+.settings-row:last-child{border-bottom:none;}
+.settings-row-label{font-size:0.9rem;font-weight:600;}
+.settings-row-sub{font-size:0.78rem;color:var(--muted);margin-top:2px;}
+.settings-row-value{font-size:0.85rem;color:var(--muted);text-align:right;}
+.settings-edit-btn{background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:var(--radius-xs);padding:6px 12px;font-size:0.78rem;cursor:pointer;flex-shrink:0;}
+.settings-edit-btn:hover{border-color:var(--border-light);}
+
+/* CHARTS / MINI BARS */
+.mini-bar-wrap{display:flex;flex-direction:column;gap:10px;}
+.mini-bar-row{display:flex;align-items:center;gap:10px;}
+.mini-bar-label{font-size:0.78rem;color:var(--muted);width:120px;flex-shrink:0;}
+.mini-bar-track{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+.mini-bar-fill{height:100%;border-radius:3px;background:var(--red);}
+.mini-bar-value{font-size:0.78rem;font-weight:600;width:30px;text-align:right;flex-shrink:0;}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:48px 24px;color:var(--muted);}
+.empty-state-icon{font-size:3rem;margin-bottom:12px;opacity:0.5;}
+.empty-state p{font-size:0.9rem;}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:24px;right:24px;z-index:500;
+  background:var(--card);border:1px solid var(--border-light);color:var(--text);
+  border-radius:var(--radius-sm);padding:12px 20px;font-size:0.875rem;font-weight:500;
+  box-shadow:var(--shadow);opacity:0;transform:translateY(10px);
+  transition:all 0.3s;pointer-events:none;max-width:320px;
+}
+.toast.show{opacity:1;transform:none;}
+.toast.success{border-left:3px solid var(--green);}
+.toast.error{border-left:3px solid #f87171;}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.mobile-open{transform:translateX(0);}
+  .admin-main{margin-left:0;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .page-content{padding:16px;}
+  .topbar{padding:0 16px;}
+  .form-row{grid-template-columns:1fr;}
+}
+.hamburger{display:none;background:none;border:none;color:var(--text);font-size:1.3rem;cursor:pointer;padding:4px;}
+@media(max-width:768px){.hamburger{display:block;}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-dot">🎓</div>
+      <div class="login-logo-text">Ranem's Learning Hub<br><span style="font-size:0.7rem;color:var(--muted);font-weight:400;font-family:Inter,sans-serif;">Admin Dashboard</span></div>
+    </div>
+    <h2>Welcome back</h2>
+    <p>Sign in to manage your students and courses</p>
+    <div class="login-field">
+      <label>Username</label>
+      <input type="text" id="login-user" placeholder="admin" autocomplete="username">
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="login-btn" onclick="doLogin()">Sign In →</button>
+    <div class="login-error" id="login-error">Incorrect username or password.</div>
+  </div>
+</div>
+
+<!-- ADMIN APP -->
+<div id="admin-app">
+  <div class="admin-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <div class="sidebar-logo-dot">🎓</div>
+          <div>
+            <div class="sidebar-logo-text">Ranem's Hub</div>
+            <div class="sidebar-logo-sub">Admin Panel</div>
+          </div>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main</div>
+        <button class="nav-item active" onclick="showSection('dashboard')" id="nav-dashboard">
+          <span class="nav-item-icon">📊</span> Dashboard
+        </button>
+        <button class="nav-item" onclick="showSection('students')" id="nav-students">
+          <span class="nav-item-icon">👨‍🎓</span> Students
+          <span class="nav-item-badge" id="badge-students">0</span>
+        </button>
+        <button class="nav-item" onclick="showSection('enquiries')" id="nav-enquiries">
+          <span class="nav-item-icon">💬</span> Enquiries
+          <span class="nav-item-badge" id="badge-enquiries" style="background:var(--amber);">0</span>
+        </button>
+        <button class="nav-item" onclick="showSection('sessions')" id="nav-sessions">
+          <span class="nav-item-icon">📅</span> Sessions
+        </button>
+        <div class="nav-section-label">Management</div>
+        <button class="nav-item" onclick="showSection('courses')" id="nav-courses">
+          <span class="nav-item-icon">📚</span> Courses
+        </button>
+        <button class="nav-item" onclick="showSection('revenue')" id="nav-revenue">
+          <span class="nav-item-icon">💰</span> Revenue
+        </button>
+        <button class="nav-item" onclick="showSection('settings')" id="nav-settings">
+          <span class="nav-item-icon">⚙️</span> Settings
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="sidebar-avatar">👩‍🏫</div>
+          <div class="sidebar-user-info">
+            <div class="sidebar-user-name">Ranem</div>
+            <div class="sidebar-user-role">Administrator</div>
+          </div>
+        </div>
+        <button class="logout-btn" onclick="doLogout()">🚪 Sign out</button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="admin-main">
+      <div class="topbar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="hamburger" onclick="toggleSidebar()">☰</button>
+          <span class="topbar-title" id="topbar-title">Dashboard</span>
+        </div>
+        <div class="topbar-actions">
+          <input class="topbar-search" placeholder="Search students…" oninput="globalSearch(this.value)">
+          <button class="topbar-btn primary" onclick="openAddStudent()">+ Add Student</button>
+        </div>
+      </div>
+
+      <!-- DASHBOARD -->
+      <div class="page-content" id="section-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">Total Students</span>
+              <div class="stat-card-icon" style="background:var(--blue-light);">👨‍🎓</div>
+            </div>
+            <div class="stat-card-value" id="stat-total">0</div>
+            <div class="stat-card-sub"><span class="stat-card-trend trend-up" id="stat-active-count">0 active</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">Monthly Revenue</span>
+              <div class="stat-card-icon" style="background:var(--green-light);">💰</div>
+            </div>
+            <div class="stat-card-value" id="stat-revenue">£0</div>
+            <div class="stat-card-sub"><span class="stat-card-trend trend-up" id="stat-revenue-sub">from active subscriptions</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">Open Enquiries</span>
+              <div class="stat-card-icon" style="background:var(--amber-light);">💬</div>
+            </div>
+            <div class="stat-card-value" id="stat-enquiries">0</div>
+            <div class="stat-card-sub"><span class="stat-card-trend" id="stat-enq-sub">awaiting response</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <span class="stat-card-label">Sessions This Month</span>
+              <div class="stat-card-icon" style="background:var(--purple-light);">📅</div>
+            </div>
+            <div class="stat-card-value" id="stat-sessions">0</div>
+            <div class="stat-card-sub" id="stat-sessions-sub">scheduled &amp; completed</div>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <div>
+            <!-- Recent students -->
+            <div class="table-card" style="margin-bottom:20px;">
+              <div class="table-card-header">
+                <span class="table-card-title">Recent Students</span>
+                <button class="topbar-btn" onclick="showSection('students')">View all →</button>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>Name</th><th>Course</th><th>Status</th><th>Joined</th></tr></thead>
+                  <tbody id="recent-students-body"></tbody>
+                </table>
+              </div>
+            </div>
+            <!-- Course breakdown -->
+            <div class="table-card">
+              <div class="table-card-header"><span class="table-card-title">Students by Course</span></div>
+              <div style="padding:20px;"><div class="mini-bar-wrap" id="course-bars"></div></div>
+            </div>
+          </div>
+
+          <div>
+            <!-- Quick actions -->
+            <div style="margin-bottom:20px;">
+              <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:12px;">Quick Actions</div>
+              <div class="quick-actions">
+                <button class="quick-action" onclick="openAddStudent()">
+                  <div class="quick-action-icon" style="background:var(--blue-light);">➕</div>
+                  <div><div class="quick-action-text">Add Student</div><div class="quick-action-sub">New enrolment</div></div>
+                </button>
+                <button class="quick-action" onclick="openAddEnquiry()">
+                  <div class="quick-action-icon" style="background:var(--amber-light);">📝</div>
+                  <div><div class="quick-action-text">Log Enquiry</div><div class="quick-action-sub">Record contact</div></div>
+                </button>
+                <a class="quick-action" href="https://wa.me/963947055414" target="_blank">
+                  <div class="quick-action-icon" style="background:rgba(37,211,102,0.12);">💬</div>
+                  <div><div class="quick-action-text">WhatsApp</div><div class="quick-action-sub">Open chat</div></div>
+                </a>
+                <button class="quick-action" onclick="exportStudentsCSV()">
+                  <div class="quick-action-icon" style="background:var(--green-light);">📤</div>
+                  <div><div class="quick-action-text">Export CSV</div><div class="quick-action-sub">All students</div></div>
+                </button>
+                <a class="quick-action" href="https://dashboard.stripe.com" target="_blank">
+                  <div class="quick-action-icon" style="background:var(--purple-light);">💳</div>
+                  <div><div class="quick-action-text">Stripe</div><div class="quick-action-sub">Payments</div></div>
+                </a>
+                <a class="quick-action" href="index.html" target="_blank">
+                  <div class="quick-action-icon" style="background:var(--red-light);">🌐</div>
+                  <div><div class="quick-action-text">View Site</div><div class="quick-action-sub">Open website</div></div>
+                </a>
+              </div>
+            </div>
+            <!-- Activity feed -->
+            <div class="table-card">
+              <div class="table-card-header"><span class="table-card-title">Recent Activity</span></div>
+              <div class="activity-feed" id="activity-feed"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STUDENTS -->
+      <div class="page-content hidden" id="section-students">
+        <div class="table-card">
+          <div class="table-card-header">
+            <span class="table-card-title">All Students</span>
+            <div class="table-card-actions">
+              <div class="filter-bar">
+                <input class="filter-input" placeholder="Search…" oninput="filterStudents()" id="student-search">
+                <select class="filter-select" onchange="filterStudents()" id="student-filter-course">
+                  <option value="">All Courses</option>
+                  <option value="arabic-beginners">Arabic Beginners</option>
+                  <option value="arabic-intermediate">Intermediate Arabic</option>
+                  <option value="maths-kids">Magic Maths (Kids)</option>
+                  <option value="maths-teens">Maths for Teens</option>
+                  <option value="other">Other</option>
+                </select>
+                <select class="filter-select" onchange="filterStudents()" id="student-filter-status">
+                  <option value="">All Status</option>
+                  <option value="active">Active</option>
+                  <option value="trial">Trial</option>
+                  <option value="paused">Paused</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+              </div>
+              <button class="topbar-btn" onclick="exportStudentsCSV()">📤 Export CSV</button>
+              <button class="topbar-btn primary" onclick="openAddStudent()">+ Add Student</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Name</th><th>Email</th><th>Phone / WhatsApp</th><th>Course</th><th>Status</th><th>Fee</th><th>Joined</th><th>Actions</th></tr></thead>
+              <tbody id="students-body"></tbody>
+            </table>
+          </div>
+          <div id="students-empty" class="empty-state" style="display:none;">
+            <div class="empty-state-icon">👨‍🎓</div>
+            <p>No students yet. Add your first student to get started.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ENQUIRIES -->
+      <div class="page-content hidden" id="section-enquiries">
+        <div class="table-card">
+          <div class="table-card-header">
+            <span class="table-card-title">Enquiries</span>
+            <div class="table-card-actions">
+              <select class="filter-select" onchange="filterEnquiries()" id="enq-filter-status">
+                <option value="">All</option>
+                <option value="new">New</option>
+                <option value="responded">Responded</option>
+                <option value="converted">Converted</option>
+                <option value="closed">Closed</option>
+              </select>
+              <button class="topbar-btn primary" onclick="openAddEnquiry()">+ Log Enquiry</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Name</th><th>Email</th><th>Source</th><th>Message</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+              <tbody id="enquiries-body"></tbody>
+            </table>
+          </div>
+          <div id="enquiries-empty" class="empty-state" style="display:none;">
+            <div class="empty-state-icon">💬</div>
+            <p>No enquiries logged yet.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SESSIONS -->
+      <div class="page-content hidden" id="section-sessions">
+        <div class="table-card">
+          <div class="table-card-header">
+            <span class="table-card-title">Sessions</span>
+            <div class="table-card-actions">
+              <select class="filter-select" onchange="filterSessions()" id="session-filter-status">
+                <option value="">All</option>
+                <option value="scheduled">Scheduled</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+              <button class="topbar-btn primary" onclick="openAddSession()">+ Log Session</button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Student</th><th>Course</th><th>Date &amp; Time</th><th>Duration</th><th>Status</th><th>Notes</th><th>Actions</th></tr></thead>
+              <tbody id="sessions-body"></tbody>
+            </table>
+          </div>
+          <div id="sessions-empty" class="empty-state" style="display:none;">
+            <div class="empty-state-icon">📅</div>
+            <p>No sessions logged yet.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- COURSES -->
+      <div class="page-content hidden" id="section-courses">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;" id="courses-overview"></div>
+      </div>
+
+      <!-- REVENUE -->
+      <div class="page-content hidden" id="section-revenue">
+        <div class="stats-grid" style="margin-bottom:20px;">
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-card-label">Monthly Revenue</span><div class="stat-card-icon" style="background:var(--green-light);">💰</div></div>
+            <div class="stat-card-value" id="rev-monthly">£0</div>
+            <div class="stat-card-sub">From active subscriptions</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-card-label">Annual Projection</span><div class="stat-card-icon" style="background:var(--blue-light);">📈</div></div>
+            <div class="stat-card-value" id="rev-annual">£0</div>
+            <div class="stat-card-sub">Based on current actives</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-card-label">Active Subscriptions</span><div class="stat-card-icon" style="background:var(--purple-light);">✅</div></div>
+            <div class="stat-card-value" id="rev-subs">0</div>
+            <div class="stat-card-sub">Paying students</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-header"><span class="stat-card-label">Avg. Fee/Student</span><div class="stat-card-icon" style="background:var(--amber-light);">📊</div></div>
+            <div class="stat-card-value" id="rev-avg">£0</div>
+            <div class="stat-card-sub">Per month</div>
+          </div>
+        </div>
+        <div class="table-card">
+          <div class="table-card-header"><span class="table-card-title">Revenue by Course</span></div>
+          <div style="padding:24px;"><div class="mini-bar-wrap" id="revenue-bars"></div></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="page-content hidden" id="section-settings">
+        <div style="max-width:680px;">
+          <div class="table-card" style="margin-bottom:20px;">
+            <div class="table-card-header"><span class="table-card-title">Site Information</span></div>
+            <div style="padding:0 20px;">
+              <div class="settings-section">
+                <div class="settings-row">
+                  <div><div class="settings-row-label">WhatsApp Number</div><div class="settings-row-sub">Used for all contact links on the site</div></div>
+                  <div style="display:flex;align-items:center;gap:8px;"><span class="settings-row-value">+963 947 055 414</span><button class="settings-edit-btn" onclick="showToast('Edit in index.html — search for 963947055414','')">Edit</button></div>
+                </div>
+                <div class="settings-row">
+                  <div><div class="settings-row-label">Live Site URL</div><div class="settings-row-sub">Your public website</div></div>
+                  <div style="display:flex;align-items:center;gap:8px;"><a href="https://skippy935.github.io/ranem-learning-hub/" target="_blank" style="color:var(--blue);font-size:0.82rem;">View site ↗</a></div>
+                </div>
+                <div class="settings-row">
+                  <div><div class="settings-row-label">Admin Password</div><div class="settings-row-sub">Change your login password</div></div>
+                  <button class="settings-edit-btn" onclick="openChangePassword()">Change</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="table-card" style="margin-bottom:20px;">
+            <div class="table-card-header"><span class="table-card-title">Stripe Payment Links</span><button class="topbar-btn primary" onclick="openStripeSettings()">Configure</button></div>
+            <div style="padding:0 20px;">
+              <div class="settings-section">
+                <div class="settings-row"><div><div class="settings-row-label">Arabic for Beginners</div></div><span class="settings-row-value" id="stripe-arabic-beg">Not set</span></div>
+                <div class="settings-row"><div><div class="settings-row-label">Intermediate Arabic</div></div><span class="settings-row-value" id="stripe-arabic-int">Not set</span></div>
+                <div class="settings-row"><div><div class="settings-row-label">Magic Maths for Kids</div></div><span class="settings-row-value" id="stripe-maths-kids">Not set</span></div>
+                <div class="settings-row"><div><div class="settings-row-label">Maths for Teens</div></div><span class="settings-row-value" id="stripe-maths-teens">Not set</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="table-card">
+            <div class="table-card-header"><span class="table-card-title">Data Management</span></div>
+            <div style="padding:20px;display:flex;flex-direction:column;gap:12px;">
+              <button class="btn btn-secondary" onclick="exportStudentsCSV()">📤 Export All Students (CSV)</button>
+              <button class="btn btn-secondary" onclick="exportEnquiriesCSV()">📤 Export All Enquiries (CSV)</button>
+              <button class="btn btn-danger" onclick="confirmClearData()">🗑️ Clear All Data</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- MODALS -->
+<!-- Add/Edit Student -->
+<div class="modal-overlay" id="modal-student">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="student-modal-title">Add Student</span>
+      <button class="modal-close" onclick="closeModal('modal-student')">✕</button>
+    </div>
+    <input type="hidden" id="student-edit-id">
+    <div class="form-row">
+      <div class="form-group"><label>First Name *</label><input type="text" id="s-fname" placeholder="Sara"></div>
+      <div class="form-group"><label>Last Name *</label><input type="text" id="s-lname" placeholder="Al-Hassan"></div>
+    </div>
+    <div class="form-group"><label>Email *</label><input type="email" id="s-email" placeholder="sara@example.com"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Phone / WhatsApp</label><input type="tel" id="s-phone" placeholder="+44 7700 900000"></div>
+      <div class="form-group"><label>Age Group</label>
+        <select id="s-age">
+          <option value="">Select…</option>
+          <option>Under 10</option><option>10–14</option><option>15–18</option><option>Adult (18+)</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Course *</label>
+        <select id="s-course">
+          <option value="">Select…</option>
+          <option value="arabic-beginners">Arabic for Beginners</option>
+          <option value="arabic-intermediate">Intermediate Arabic</option>
+          <option value="maths-kids">Magic Maths for Kids</option>
+          <option value="maths-teens">Maths for Teens</option>
+          <option value="mental-arithmetic">Mental Arithmetic</option>
+          <option value="quran">Quran Memorisation</option>
+          <option value="kufic">Kufic Calligraphy</option>
+          <option value="all-subjects">All Subjects (G1–6)</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Status</label>
+        <select id="s-status">
+          <option value="trial">Trial</option>
+          <option value="active">Active</option>
+          <option value="paused">Paused</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Monthly Fee (£)</label><input type="number" id="s-fee" placeholder="149" min="0"></div>
+      <div class="form-group"><label>Start Date</label><input type="date" id="s-start"></div>
+    </div>
+    <div class="form-group"><label>Country</label><input type="text" id="s-country" placeholder="UK"></div>
+    <div class="form-group"><label>Notes</label><textarea id="s-notes" placeholder="Any notes about this student…"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modal-student')">Cancel</button>
+      <button class="btn btn-danger" id="student-delete-btn" onclick="deleteCurrentStudent()" style="display:none;">Delete</button>
+      <button class="btn btn-primary" onclick="saveStudent()">Save Student</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Enquiry -->
+<div class="modal-overlay" id="modal-enquiry">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="enquiry-modal-title">Log Enquiry</span>
+      <button class="modal-close" onclick="closeModal('modal-enquiry')">✕</button>
+    </div>
+    <input type="hidden" id="enquiry-edit-id">
+    <div class="form-row">
+      <div class="form-group"><label>Name *</label><input type="text" id="e-name" placeholder="Sara"></div>
+      <div class="form-group"><label>Email</label><input type="email" id="e-email" placeholder="sara@example.com"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Source</label>
+        <select id="e-source">
+          <option value="whatsapp">WhatsApp</option>
+          <option value="website">Website</option>
+          <option value="referral">Referral</option>
+          <option value="social">Social Media</option>
+          <option value="manual">Manual Entry</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Status</label>
+        <select id="e-status">
+          <option value="new">New</option>
+          <option value="responded">Responded</option>
+          <option value="converted">Converted → Student</option>
+          <option value="closed">Closed</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label>Message / Notes</label><textarea id="e-message" placeholder="What they enquired about…"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modal-enquiry')">Cancel</button>
+      <button class="btn btn-danger" id="enquiry-delete-btn" onclick="deleteCurrentEnquiry()" style="display:none;">Delete</button>
+      <button class="btn btn-primary" onclick="saveEnquiry()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Session -->
+<div class="modal-overlay" id="modal-session">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="session-modal-title">Log Session</span>
+      <button class="modal-close" onclick="closeModal('modal-session')">✕</button>
+    </div>
+    <input type="hidden" id="session-edit-id">
+    <div class="form-group"><label>Student *</label>
+      <select id="ss-student"><option value="">Select student…</option></select>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Date *</label><input type="datetime-local" id="ss-date"></div>
+      <div class="form-group"><label>Duration (mins)</label><input type="number" id="ss-duration" placeholder="60" min="15" step="15"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Status</label>
+        <select id="ss-status">
+          <option value="scheduled">Scheduled</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Platform</label>
+        <select id="ss-platform">
+          <option value="Zoom">Zoom</option>
+          <option value="In-person">In-person</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label>Notes</label><textarea id="ss-notes" placeholder="Session notes…"></textarea></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modal-session')">Cancel</button>
+      <button class="btn btn-danger" id="session-delete-btn" onclick="deleteCurrentSession()" style="display:none;">Delete</button>
+      <button class="btn btn-primary" onclick="saveSession()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Change Password -->
+<div class="modal-overlay" id="modal-password">
+  <div class="modal" style="max-width:380px;">
+    <div class="modal-header"><span class="modal-title">Change Password</span><button class="modal-close" onclick="closeModal('modal-password')">✕</button></div>
+    <div class="form-group"><label>Current Password</label><input type="password" id="pw-current"></div>
+    <div class="form-group"><label>New Password</label><input type="password" id="pw-new"></div>
+    <div class="form-group"><label>Confirm New Password</label><input type="password" id="pw-confirm"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modal-password')">Cancel</button>
+      <button class="btn btn-primary" onclick="changePassword()">Update Password</button>
+    </div>
+  </div>
+</div>
+
+<!-- Stripe Settings -->
+<div class="modal-overlay" id="modal-stripe">
+  <div class="modal">
+    <div class="modal-header"><span class="modal-title">Stripe Payment Links</span><button class="modal-close" onclick="closeModal('modal-stripe')">✕</button></div>
+    <p style="color:var(--muted);font-size:0.85rem;margin-bottom:20px;">Go to stripe.com → Payment Links → Create a link for each course. Paste the URLs below.</p>
+    <div class="form-group"><label>Arabic for Beginners URL</label><input type="url" id="stripe-beg-url" placeholder="https://buy.stripe.com/…"></div>
+    <div class="form-group"><label>Intermediate Arabic URL</label><input type="url" id="stripe-int-url" placeholder="https://buy.stripe.com/…"></div>
+    <div class="form-group"><label>Magic Maths for Kids URL</label><input type="url" id="stripe-kids-url" placeholder="https://buy.stripe.com/…"></div>
+    <div class="form-group"><label>Maths for Teens URL</label><input type="url" id="stripe-teens-url" placeholder="https://buy.stripe.com/…"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal('modal-stripe')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveStripeUrls()">Save URLs</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== AUTH =====
+const DEFAULT_PASS = 'Ranem2026!';
+function getPassword(){ return localStorage.getItem('admin_password') || DEFAULT_PASS; }
+
+function doLogin(){
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value;
+  if((u === 'admin' || u === 'ranem') && p === getPassword()){
+    localStorage.setItem('admin_session', '1');
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-app').style.display = 'block';
+    initAdmin();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('login-pass').value = '';
+  }
+}
+
+function doLogout(){
+  localStorage.removeItem('admin_session');
+  location.reload();
+}
+
+function openChangePassword(){
+  closeModal('modal-student');
+  document.getElementById('modal-password').classList.add('open');
+}
+
+function changePassword(){
+  const cur = document.getElementById('pw-current').value;
+  const nw = document.getElementById('pw-new').value;
+  const cf = document.getElementById('pw-confirm').value;
+  if(cur !== getPassword()){ showToast('Current password incorrect','error'); return; }
+  if(nw.length < 6){ showToast('New password must be at least 6 characters','error'); return; }
+  if(nw !== cf){ showToast('Passwords do not match','error'); return; }
+  localStorage.setItem('admin_password', nw);
+  closeModal('modal-password');
+  showToast('Password updated successfully','success');
+}
+
+// ===== DATA =====
+function getData(key){ try{ return JSON.parse(localStorage.getItem(key)||'[]'); } catch{ return []; } }
+function setData(key,val){ localStorage.setItem(key,JSON.stringify(val)); }
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2); }
+
+// ===== COURSE LABELS =====
+const COURSE_LABELS = {
+  'arabic-beginners':'Arabic for Beginners','arabic-intermediate':'Intermediate Arabic',
+  'maths-kids':'Magic Maths for Kids','maths-teens':'Maths for Teens',
+  'mental-arithmetic':'Mental Arithmetic','quran':'Quran Memorisation',
+  'kufic':'Kufic Calligraphy','all-subjects':'All Subjects (G1–6)','other':'Other'
+};
+const STATUS_BADGE = {
+  active:'badge-green',trial:'badge-blue',paused:'badge-amber',cancelled:'badge-grey',
+  new:'badge-red',responded:'badge-amber',converted:'badge-green',closed:'badge-grey',
+  scheduled:'badge-blue',completed:'badge-green'
+};
+
+// ===== INIT =====
+function initAdmin(){
+  if(!localStorage.getItem('admin_session')){ return; }
+  renderDashboard();
+  renderStudents();
+  renderEnquiries();
+  renderSessions();
+  renderCourseOverview();
+  renderRevenue();
+  loadStripeSettings();
+  updateBadges();
+}
+
+// ===== NAVIGATION =====
+function showSection(name){
+  document.querySelectorAll('.page-content').forEach(el=>el.classList.add('hidden'));
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+  document.getElementById('section-'+name).classList.remove('hidden');
+  document.getElementById('nav-'+name).classList.add('active');
+  const titles={dashboard:'Dashboard',students:'Students',enquiries:'Enquiries',sessions:'Sessions',courses:'Courses',revenue:'Revenue',settings:'Settings'};
+  document.getElementById('topbar-title').textContent = titles[name]||name;
+  if(name==='dashboard') renderDashboard();
+  if(name==='students') renderStudents();
+  if(name==='enquiries') renderEnquiries();
+  if(name==='sessions') renderSessions();
+  if(name==='courses') renderCourseOverview();
+  if(name==='revenue') renderRevenue();
+}
+
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('mobile-open');
+}
+
+// ===== DASHBOARD =====
+function renderDashboard(){
+  const students = getData('students');
+  const enquiries = getData('enquiries');
+  const sessions = getData('sessions');
+  const active = students.filter(s=>s.status==='active');
+  const revenue = active.reduce((sum,s)=>sum+(parseFloat(s.fee)||149),0);
+  const openEnq = enquiries.filter(e=>e.status==='new').length;
+  const now = new Date();
+  const thisMonth = sessions.filter(s=>{
+    const d=new Date(s.date); return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();
+  });
+
+  document.getElementById('stat-total').textContent = students.length;
+  document.getElementById('stat-active-count').textContent = active.length+' active';
+  document.getElementById('stat-revenue').textContent = '£'+revenue.toLocaleString();
+  document.getElementById('stat-enquiries').textContent = openEnq;
+  document.getElementById('stat-enq-sub').textContent = openEnq===1?'awaiting response':'awaiting response';
+  document.getElementById('stat-sessions').textContent = thisMonth.length;
+
+  // Recent students
+  const tbody = document.getElementById('recent-students-body');
+  const recent = [...students].sort((a,b)=>new Date(b.addedAt)-new Date(a.addedAt)).slice(0,5);
+  tbody.innerHTML = recent.length ? recent.map(s=>`
+    <tr>
+      <td class="td-name">${s.fname} ${s.lname}</td>
+      <td>${COURSE_LABELS[s.course]||s.course||'—'}</td>
+      <td><span class="badge ${STATUS_BADGE[s.status]||'badge-grey'}">${s.status}</span></td>
+      <td style="color:var(--muted);font-size:0.8rem;">${fmtDate(s.addedAt)}</td>
+    </tr>`).join('') : '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px;">No students yet</td></tr>';
+
+  // Course bars
+  const courseCounts = {};
+  students.forEach(s=>{ const c=s.course||'other'; courseCounts[c]=(courseCounts[c]||0)+1; });
+  const max = Math.max(...Object.values(courseCounts),1);
+  document.getElementById('course-bars').innerHTML = Object.entries(courseCounts).map(([c,n])=>`
+    <div class="mini-bar-row">
+      <span class="mini-bar-label">${(COURSE_LABELS[c]||c).slice(0,18)}</span>
+      <div class="mini-bar-track"><div class="mini-bar-fill" style="width:${Math.round(n/max*100)}%"></div></div>
+      <span class="mini-bar-value">${n}</span>
+    </div>`).join('') || '<p style="color:var(--muted);font-size:0.85rem;">No data yet</p>';
+
+  // Activity feed
+  const acts = buildActivity(students, enquiries, sessions);
+  document.getElementById('activity-feed').innerHTML = acts.length ? acts.slice(0,8).map(a=>`
+    <div class="activity-item">
+      <div class="activity-dot ${a.color}"></div>
+      <div><div class="activity-text">${a.text}</div><div class="activity-time">${a.time}</div></div>
+    </div>`).join('') : '<div class="activity-item"><div class="activity-dot"></div><div><div class="activity-text" style="color:var(--muted);">No activity yet</div></div></div>';
+}
+
+function buildActivity(students,enquiries,sessions){
+  const items=[];
+  students.forEach(s=>items.push({date:new Date(s.addedAt),text:`New student: <strong>${s.fname} ${s.lname}</strong> enrolled in ${COURSE_LABELS[s.course]||s.course||'a course'}`,color:'green'}));
+  enquiries.forEach(e=>items.push({date:new Date(e.date),text:`Enquiry from <strong>${e.name}</strong> via ${e.source}`,color:e.status==='new'?'red':'amber'}));
+  sessions.forEach(s=>{
+    const st=getData('students').find(x=>x.id===s.studentId);
+    items.push({date:new Date(s.date),text:`Session ${s.status}: <strong>${st?st.fname+' '+st.lname:'Unknown'}</strong>`,color:s.status==='completed'?'green':s.status==='cancelled'?'red':'blue'});
+  });
+  items.sort((a,b)=>b.date-a.date);
+  return items.map(i=>({...i,time:fmtDateRelative(i.date)}));
+}
+
+// ===== STUDENTS =====
+function renderStudents(filter){
+  let students = getData('students');
+  const search=(document.getElementById('student-search')||{}).value||'';
+  const course=(document.getElementById('student-filter-course')||{}).value||'';
+  const status=(document.getElementById('student-filter-status')||{}).value||'';
+  if(search) students=students.filter(s=>`${s.fname} ${s.lname} ${s.email}`.toLowerCase().includes(search.toLowerCase()));
+  if(course) students=students.filter(s=>s.course===course);
+  if(status) students=students.filter(s=>s.status===status);
+  students.sort((a,b)=>new Date(b.addedAt)-new Date(a.addedAt));
+
+  const tbody=document.getElementById('students-body');
+  const empty=document.getElementById('students-empty');
+  if(!students.length){ tbody.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  tbody.innerHTML=students.map(s=>`
+    <tr>
+      <td><div class="td-name">${s.fname} ${s.lname}</div>${s.country?`<div style="font-size:0.75rem;color:var(--muted);">${s.country}</div>`:''}</td>
+      <td><div class="td-email">${s.email||'—'}</div></td>
+      <td>${s.phone?`<a href="https://wa.me/${s.phone.replace(/\D/g,'')}" target="_blank" style="color:var(--green);font-size:0.82rem;">💬 ${s.phone}</a>`:'—'}</td>
+      <td style="font-size:0.82rem;">${COURSE_LABELS[s.course]||s.course||'—'}</td>
+      <td><span class="badge ${STATUS_BADGE[s.status]||'badge-grey'}">${s.status}</span></td>
+      <td style="font-weight:700;">£${s.fee||149}</td>
+      <td style="color:var(--muted);font-size:0.8rem;">${fmtDate(s.addedAt)}</td>
+      <td><div style="display:flex;gap:6px;">
+        <button class="action-btn" onclick="editStudent('${s.id}')">Edit</button>
+        <button class="action-btn success" onclick="logSessionForStudent('${s.id}')">+ Session</button>
+      </div></td>
+    </tr>`).join('');
+  updateBadges();
+}
+
+function filterStudents(){ renderStudents(); }
+
+function openAddStudent(){
+  document.getElementById('student-modal-title').textContent='Add Student';
+  document.getElementById('student-edit-id').value='';
+  document.getElementById('student-delete-btn').style.display='none';
+  ['s-fname','s-lname','s-email','s-phone','s-country','s-notes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('s-age').value='';
+  document.getElementById('s-course').value='';
+  document.getElementById('s-status').value='trial';
+  document.getElementById('s-fee').value='149';
+  document.getElementById('s-start').value=new Date().toISOString().split('T')[0];
+  document.getElementById('modal-student').classList.add('open');
+}
+
+function editStudent(id){
+  const s=getData('students').find(x=>x.id===id);
+  if(!s) return;
+  document.getElementById('student-modal-title').textContent='Edit Student';
+  document.getElementById('student-edit-id').value=id;
+  document.getElementById('student-delete-btn').style.display='block';
+  document.getElementById('s-fname').value=s.fname||'';
+  document.getElementById('s-lname').value=s.lname||'';
+  document.getElementById('s-email').value=s.email||'';
+  document.getElementById('s-phone').value=s.phone||'';
+  document.getElementById('s-age').value=s.age||'';
+  document.getElementById('s-course').value=s.course||'';
+  document.getElementById('s-status').value=s.status||'active';
+  document.getElementById('s-fee').value=s.fee||149;
+  document.getElementById('s-start').value=s.start||'';
+  document.getElementById('s-country').value=s.country||'';
+  document.getElementById('s-notes').value=s.notes||'';
+  document.getElementById('modal-student').classList.add('open');
+}
+
+function saveStudent(){
+  const fname=document.getElementById('s-fname').value.trim();
+  const email=document.getElementById('s-email').value.trim();
+  const course=document.getElementById('s-course').value;
+  if(!fname||!course){ showToast('Name and course are required','error'); return; }
+  const id=document.getElementById('student-edit-id').value;
+  const students=getData('students');
+  const record={
+    id:id||uid(),fname,
+    lname:document.getElementById('s-lname').value.trim(),
+    email,
+    phone:document.getElementById('s-phone').value.trim(),
+    age:document.getElementById('s-age').value,
+    course,
+    status:document.getElementById('s-status').value,
+    fee:parseFloat(document.getElementById('s-fee').value)||149,
+    start:document.getElementById('s-start').value,
+    country:document.getElementById('s-country').value.trim(),
+    notes:document.getElementById('s-notes').value.trim(),
+    addedAt:id?(students.find(s=>s.id===id)||{}).addedAt||new Date().toISOString():new Date().toISOString()
+  };
+  if(id){ const i=students.findIndex(s=>s.id===id); if(i>=0) students[i]=record; else students.push(record); }
+  else students.push(record);
+  setData('students',students);
+  closeModal('modal-student');
+  renderStudents();
+  renderDashboard();
+  showToast(id?'Student updated':'Student added','success');
+}
+
+let _deleteStudentId=null;
+function deleteCurrentStudent(){
+  _deleteStudentId=document.getElementById('student-edit-id').value;
+  if(!_deleteStudentId) return;
+  if(!confirm('Delete this student? This cannot be undone.')) return;
+  const students=getData('students').filter(s=>s.id!==_deleteStudentId);
+  setData('students',students);
+  closeModal('modal-student');
+  renderStudents();
+  renderDashboard();
+  showToast('Student deleted','');
+}
+
+// ===== ENQUIRIES =====
+function renderEnquiries(){
+  let enqs=getData('enquiries');
+  const status=(document.getElementById('enq-filter-status')||{}).value||'';
+  if(status) enqs=enqs.filter(e=>e.status===status);
+  enqs.sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const tbody=document.getElementById('enquiries-body');
+  const empty=document.getElementById('enquiries-empty');
+  if(!enqs.length){ tbody.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  tbody.innerHTML=enqs.map(e=>`
+    <tr>
+      <td class="td-name">${e.name}</td>
+      <td class="td-email">${e.email||'—'}</td>
+      <td><span class="badge badge-grey">${e.source}</span></td>
+      <td style="font-size:0.82rem;color:var(--muted);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${e.message||'—'}</td>
+      <td><span class="badge ${STATUS_BADGE[e.status]||'badge-grey'}">${e.status}</span></td>
+      <td style="color:var(--muted);font-size:0.8rem;">${fmtDate(e.date)}</td>
+      <td><div style="display:flex;gap:6px;">
+        <button class="action-btn" onclick="editEnquiry('${e.id}')">Edit</button>
+        ${e.phone?`<a href="https://wa.me/${e.phone.replace(/\D/g,'')}" target="_blank" class="action-btn success">WA</a>`:''}
+      </div></td>
+    </tr>`).join('');
+  updateBadges();
+}
+
+function filterEnquiries(){ renderEnquiries(); }
+
+function openAddEnquiry(){
+  document.getElementById('enquiry-modal-title').textContent='Log Enquiry';
+  document.getElementById('enquiry-edit-id').value='';
+  document.getElementById('enquiry-delete-btn').style.display='none';
+  ['e-name','e-email','e-message'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('e-source').value='whatsapp';
+  document.getElementById('e-status').value='new';
+  document.getElementById('modal-enquiry').classList.add('open');
+}
+
+function editEnquiry(id){
+  const e=getData('enquiries').find(x=>x.id===id);
+  if(!e) return;
+  document.getElementById('enquiry-modal-title').textContent='Edit Enquiry';
+  document.getElementById('enquiry-edit-id').value=id;
+  document.getElementById('enquiry-delete-btn').style.display='block';
+  document.getElementById('e-name').value=e.name||'';
+  document.getElementById('e-email').value=e.email||'';
+  document.getElementById('e-source').value=e.source||'whatsapp';
+  document.getElementById('e-status').value=e.status||'new';
+  document.getElementById('e-message').value=e.message||'';
+  document.getElementById('modal-enquiry').classList.add('open');
+}
+
+function saveEnquiry(){
+  const name=document.getElementById('e-name').value.trim();
+  if(!name){ showToast('Name is required','error'); return; }
+  const id=document.getElementById('enquiry-edit-id').value;
+  const enqs=getData('enquiries');
+  const record={
+    id:id||uid(),name,
+    email:document.getElementById('e-email').value.trim(),
+    source:document.getElementById('e-source').value,
+    status:document.getElementById('e-status').value,
+    message:document.getElementById('e-message').value.trim(),
+    date:id?(enqs.find(e=>e.id===id)||{}).date||new Date().toISOString():new Date().toISOString()
+  };
+  if(id){ const i=enqs.findIndex(e=>e.id===id); if(i>=0) enqs[i]=record; else enqs.push(record); }
+  else enqs.push(record);
+  setData('enquiries',enqs);
+  closeModal('modal-enquiry');
+  renderEnquiries();
+  renderDashboard();
+  showToast(id?'Enquiry updated':'Enquiry logged','success');
+}
+
+function deleteCurrentEnquiry(){
+  const id=document.getElementById('enquiry-edit-id').value;
+  if(!id||!confirm('Delete this enquiry?')) return;
+  setData('enquiries',getData('enquiries').filter(e=>e.id!==id));
+  closeModal('modal-enquiry');
+  renderEnquiries();
+  updateBadges();
+  showToast('Enquiry deleted','');
+}
+
+// ===== SESSIONS =====
+function renderSessions(){
+  let sessions=getData('sessions');
+  const status=(document.getElementById('session-filter-status')||{}).value||'';
+  if(status) sessions=sessions.filter(s=>s.status===status);
+  sessions.sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const students=getData('students');
+  const tbody=document.getElementById('sessions-body');
+  const empty=document.getElementById('sessions-empty');
+  if(!sessions.length){ tbody.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  tbody.innerHTML=sessions.map(s=>{
+    const st=students.find(x=>x.id===s.studentId)||{};
+    return `<tr>
+      <td class="td-name">${st.fname?st.fname+' '+st.lname:'Unknown'}</td>
+      <td style="font-size:0.82rem;">${COURSE_LABELS[st.course]||st.course||'—'}</td>
+      <td style="font-size:0.82rem;">${fmtDateTime(s.date)}</td>
+      <td style="font-size:0.82rem;">${s.duration||60} min</td>
+      <td><span class="badge ${STATUS_BADGE[s.status]||'badge-grey'}">${s.status}</span></td>
+      <td style="font-size:0.8rem;color:var(--muted);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.notes||'—'}</td>
+      <td><button class="action-btn" onclick="editSession('${s.id}')">Edit</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function filterSessions(){ renderSessions(); }
+
+function openAddSession(){
+  const students=getData('students');
+  const sel=document.getElementById('ss-student');
+  sel.innerHTML='<option value="">Select student…</option>'+students.map(s=>`<option value="${s.id}">${s.fname} ${s.lname}</option>`).join('');
+  document.getElementById('session-modal-title').textContent='Log Session';
+  document.getElementById('session-edit-id').value='';
+  document.getElementById('session-delete-btn').style.display='none';
+  document.getElementById('ss-date').value=new Date().toISOString().slice(0,16);
+  document.getElementById('ss-duration').value='60';
+  document.getElementById('ss-status').value='completed';
+  document.getElementById('ss-platform').value='Zoom';
+  document.getElementById('ss-notes').value='';
+  document.getElementById('modal-session').classList.add('open');
+}
+
+function logSessionForStudent(studentId){
+  openAddSession();
+  setTimeout(()=>document.getElementById('ss-student').value=studentId,50);
+}
+
+function editSession(id){
+  const s=getData('sessions').find(x=>x.id===id);
+  if(!s) return;
+  openAddSession();
+  setTimeout(()=>{
+    document.getElementById('session-modal-title').textContent='Edit Session';
+    document.getElementById('session-edit-id').value=id;
+    document.getElementById('session-delete-btn').style.display='block';
+    document.getElementById('ss-student').value=s.studentId||'';
+    document.getElementById('ss-date').value=s.date?s.date.slice(0,16):'';
+    document.getElementById('ss-duration').value=s.duration||60;
+    document.getElementById('ss-status').value=s.status||'completed';
+    document.getElementById('ss-platform').value=s.platform||'Zoom';
+    document.getElementById('ss-notes').value=s.notes||'';
+  },50);
+}
+
+function saveSession(){
+  const studentId=document.getElementById('ss-student').value;
+  const date=document.getElementById('ss-date').value;
+  if(!studentId||!date){ showToast('Student and date are required','error'); return; }
+  const id=document.getElementById('session-edit-id').value;
+  const sessions=getData('sessions');
+  const record={
+    id:id||uid(),studentId,
+    date:new Date(date).toISOString(),
+    duration:parseInt(document.getElementById('ss-duration').value)||60,
+    status:document.getElementById('ss-status').value,
+    platform:document.getElementById('ss-platform').value,
+    notes:document.getElementById('ss-notes').value.trim()
+  };
+  if(id){ const i=sessions.findIndex(s=>s.id===id); if(i>=0) sessions[i]=record; else sessions.push(record); }
+  else sessions.push(record);
+  setData('sessions',sessions);
+  closeModal('modal-session');
+  renderSessions();
+  renderDashboard();
+  showToast(id?'Session updated':'Session logged','success');
+}
+
+function deleteCurrentSession(){
+  const id=document.getElementById('session-edit-id').value;
+  if(!id||!confirm('Delete this session?')) return;
+  setData('sessions',getData('sessions').filter(s=>s.id!==id));
+  closeModal('modal-session');
+  renderSessions();
+  showToast('Session deleted','');
+}
+
+// ===== COURSES =====
+function renderCourseOverview(){
+  const students=getData('students');
+  const courses=[
+    {id:'arabic-beginners',title:'Arabic for Beginners',titleAr:'عربية للمبتدئين',emoji:'📖',color:getComputedStyle(document.documentElement).getPropertyValue('--red')},
+    {id:'arabic-intermediate',title:'Intermediate Arabic',titleAr:'عربية متوسطة',emoji:'📚',color:'#f97316'},
+    {id:'maths-kids',title:'Magic Maths for Kids',titleAr:'رياضيات للأطفال',emoji:'🔢',color:'#3b82f6'},
+    {id:'maths-teens',title:'Maths for Teens',titleAr:'رياضيات للمراهقين',emoji:'📐',color:'#8b5cf6'},
+    {id:'mental-arithmetic',title:'Mental Arithmetic',titleAr:'حساب ذهني',emoji:'🧮',color:'#22c55e'},
+    {id:'quran',title:'Quran Memorisation',titleAr:'تحفيظ القرآن',emoji:'🕌',color:'#f59e0b'},
+    {id:'kufic',title:'Kufic Calligraphy',titleAr:'الخط الكوفي',emoji:'✍️',color:'#ec4899'},
+    {id:'all-subjects',title:'All Subjects G1–6',titleAr:'كافة المواد',emoji:'📚',color:'#14b8a6'},
+  ];
+  document.getElementById('courses-overview').innerHTML=courses.map(c=>{
+    const enrolled=students.filter(s=>s.status==='active'&&s.course===c.id).length;
+    const total=students.filter(s=>s.course===c.id).length;
+    const rev=students.filter(s=>s.status==='active'&&s.course===c.id).reduce((sum,s)=>sum+(parseFloat(s.fee)||149),0);
+    return `<div class="table-card" style="padding:22px;">
+      <div style="font-size:2rem;margin-bottom:12px;">${c.emoji}</div>
+      <div style="font-size:1rem;font-weight:800;margin-bottom:2px;letter-spacing:-0.02em;">${c.title}</div>
+      <div style="font-size:0.8rem;color:var(--muted);direction:rtl;text-align:right;margin-bottom:16px;">${c.titleAr}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="background:var(--bg);border-radius:8px;padding:10px;text-align:center;">
+          <div style="font-size:1.4rem;font-weight:800;">${enrolled}</div>
+          <div style="font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;">Active</div>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;padding:10px;text-align:center;">
+          <div style="font-size:1.4rem;font-weight:800;">${total}</div>
+          <div style="font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;">Total</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;font-size:0.82rem;color:var(--muted);">Monthly revenue: <strong style="color:var(--text);">£${rev}</strong></div>
+      <button class="btn btn-primary" style="width:100%;margin-top:14px;" onclick="showSection('students');document.getElementById('student-filter-course').value='${c.id}';filterStudents();">View Students</button>
+    </div>`;
+  }).join('');
+}
+
+// ===== REVENUE =====
+function renderRevenue(){
+  const students=getData('students');
+  const active=students.filter(s=>s.status==='active');
+  const monthly=active.reduce((sum,s)=>sum+(parseFloat(s.fee)||149),0);
+  document.getElementById('rev-monthly').textContent='£'+monthly.toLocaleString();
+  document.getElementById('rev-annual').textContent='£'+(monthly*12).toLocaleString();
+  document.getElementById('rev-subs').textContent=active.length;
+  document.getElementById('rev-avg').textContent=active.length?'£'+Math.round(monthly/active.length):'£0';
+  const courseCounts={};
+  active.forEach(s=>{const c=s.course||'other';courseCounts[c]=(courseCounts[c]||0)+(parseFloat(s.fee)||149);});
+  const maxRev=Math.max(...Object.values(courseCounts),1);
+  document.getElementById('revenue-bars').innerHTML=Object.entries(courseCounts).map(([c,r])=>`
+    <div class="mini-bar-row">
+      <span class="mini-bar-label">${(COURSE_LABELS[c]||c).slice(0,18)}</span>
+      <div class="mini-bar-track"><div class="mini-bar-fill" style="width:${Math.round(r/maxRev*100)}%"></div></div>
+      <span class="mini-bar-value" style="width:50px;">£${r}</span>
+    </div>`).join('')||'<p style="color:var(--muted);font-size:0.85rem;">No active subscriptions yet</p>';
+}
+
+// ===== STRIPE SETTINGS =====
+function loadStripeSettings(){
+  const urls=JSON.parse(localStorage.getItem('stripe_urls')||'{}');
+  document.getElementById('stripe-arabic-beg').textContent=urls.beg?'✅ Set':'Not set';
+  document.getElementById('stripe-arabic-int').textContent=urls.int?'✅ Set':'Not set';
+  document.getElementById('stripe-maths-kids').textContent=urls.kids?'✅ Set':'Not set';
+  document.getElementById('stripe-maths-teens').textContent=urls.teens?'✅ Set':'Not set';
+}
+
+function openStripeSettings(){
+  const urls=JSON.parse(localStorage.getItem('stripe_urls')||'{}');
+  document.getElementById('stripe-beg-url').value=urls.beg||'';
+  document.getElementById('stripe-int-url').value=urls.int||'';
+  document.getElementById('stripe-kids-url').value=urls.kids||'';
+  document.getElementById('stripe-teens-url').value=urls.teens||'';
+  document.getElementById('modal-stripe').classList.add('open');
+}
+
+function saveStripeUrls(){
+  const urls={
+    beg:document.getElementById('stripe-beg-url').value.trim(),
+    int:document.getElementById('stripe-int-url').value.trim(),
+    kids:document.getElementById('stripe-kids-url').value.trim(),
+    teens:document.getElementById('stripe-teens-url').value.trim()
+  };
+  localStorage.setItem('stripe_urls',JSON.stringify(urls));
+  closeModal('modal-stripe');
+  loadStripeSettings();
+  showToast('Stripe URLs saved. Remember to also update them in index.html','success');
+}
+
+// ===== EXPORT CSV =====
+function exportCSV(rows,headers,filename){
+  const csv=[headers.join(','),...rows.map(r=>r.map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(','))].join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download=filename;a.click();
+}
+
+function exportStudentsCSV(){
+  const students=getData('students');
+  exportCSV(
+    students.map(s=>[s.fname,s.lname,s.email,s.phone,s.age,COURSE_LABELS[s.course]||s.course,s.status,'£'+s.fee,s.start,s.country,s.notes,fmtDate(s.addedAt)]),
+    ['First Name','Last Name','Email','Phone','Age Group','Course','Status','Fee','Start Date','Country','Notes','Added'],
+    'ranem-students-'+new Date().toISOString().slice(0,10)+'.csv'
+  );
+  showToast('Students exported as CSV','success');
+}
+
+function exportEnquiriesCSV(){
+  const enqs=getData('enquiries');
+  exportCSV(
+    enqs.map(e=>[e.name,e.email,e.source,e.status,e.message,fmtDate(e.date)]),
+    ['Name','Email','Source','Status','Message','Date'],
+    'ranem-enquiries-'+new Date().toISOString().slice(0,10)+'.csv'
+  );
+  showToast('Enquiries exported as CSV','success');
+}
+
+// ===== GLOBAL SEARCH =====
+function globalSearch(q){
+  if(!q){ renderStudents(); return; }
+  showSection('students');
+  document.getElementById('student-search').value=q;
+  filterStudents();
+}
+
+// ===== BADGES =====
+function updateBadges(){
+  const students=getData('students');
+  const openEnq=getData('enquiries').filter(e=>e.status==='new').length;
+  document.getElementById('badge-students').textContent=students.length;
+  document.getElementById('badge-enquiries').textContent=openEnq;
+  document.getElementById('badge-enquiries').style.display=openEnq?'':'none';
+}
+
+// ===== UTILS =====
+function fmtDate(iso){ if(!iso) return '—'; const d=new Date(iso); return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); }
+function fmtDateTime(iso){ if(!iso) return '—'; const d=new Date(iso); return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}); }
+function fmtDateRelative(d){
+  const now=new Date(),diff=now-d,m=60000,h=3600000,day=86400000;
+  if(diff<m) return 'Just now';
+  if(diff<h) return Math.floor(diff/m)+'m ago';
+  if(diff<day) return Math.floor(diff/h)+'h ago';
+  if(diff<day*7) return Math.floor(diff/day)+'d ago';
+  return fmtDate(d.toISOString());
+}
+
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open')); });
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{ if(e.target===o) o.classList.remove('open'); }));
+
+function showToast(msg,type){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast '+(type||'');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+function confirmClearData(){
+  if(!confirm('Delete ALL students, enquiries and sessions? This cannot be undone.')) return;
+  ['students','enquiries','sessions'].forEach(k=>localStorage.removeItem(k));
+  initAdmin();
+  showToast('All data cleared','');
+}
+
+// ===== AUTO-CHECK LOGIN =====
+if(localStorage.getItem('admin_session')){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('admin-app').style.display='block';
+  initAdmin();
+}
+</script>
+</body>
+</html>
