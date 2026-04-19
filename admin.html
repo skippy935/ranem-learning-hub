@@ -280,6 +280,27 @@ tr:hover td{background:rgba(255,255,255,0.02);}
 .toast.success{border-left:3px solid var(--green);}
 .toast.error{border-left:3px solid #f87171;}
 
+/* CALENDAR */
+.cal-toolbar{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
+.cal-month-label{font-size:1.25rem;font-weight:800;letter-spacing:-0.03em;min-width:180px;text-align:center;}
+.cal-grid-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.cal-dow-headers{display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1px solid var(--border);}
+.cal-dow-headers div{padding:10px 8px;text-align:center;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);}
+.cal-day{min-height:100px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);padding:7px 6px;cursor:pointer;transition:background 0.15s;vertical-align:top;}
+.cal-day:nth-child(7n){border-right:none;}
+.cal-day:hover{background:rgba(255,255,255,0.025);}
+.cal-day.other-month{opacity:0.28;pointer-events:none;}
+.cal-day.today .cal-day-num{background:var(--red);color:#fff;border-radius:50%;}
+.cal-day-num{font-size:0.78rem;font-weight:600;color:var(--muted);width:24px;height:24px;display:flex;align-items:center;justify-content:center;margin-bottom:5px;}
+.cal-event{font-size:0.68rem;font-weight:600;padding:2px 6px;border-radius:4px;margin-bottom:3px;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;transition:opacity 0.15s;line-height:1.5;}
+.cal-event:hover{opacity:0.75;}
+.cal-event.scheduled{background:var(--blue-light);color:var(--blue);}
+.cal-event.completed{background:var(--green-light);color:var(--green);}
+.cal-event.cancelled{background:rgba(248,113,113,0.1);color:#f87171;}
+.cal-more{font-size:0.68rem;color:var(--muted);padding:1px 4px;}
+@media(max-width:700px){.cal-day{min-height:60px;padding:4px 3px;}.cal-event{display:none;}.cal-day.has-events::after{content:'•';color:var(--red);display:block;text-align:center;font-size:1.1rem;line-height:1;}}
+
 /* RESPONSIVE */
 @media(max-width:768px){
   .sidebar{transform:translateX(-100%);}
@@ -347,7 +368,10 @@ tr:hover td{background:rgba(255,255,255,0.02);}
           <span class="nav-item-badge" id="badge-enquiries" style="background:var(--amber);">0</span>
         </button>
         <button class="nav-item" onclick="showSection('sessions')" id="nav-sessions">
-          <span class="nav-item-icon">📅</span> Sessions
+          <span class="nav-item-icon">📋</span> Sessions
+        </button>
+        <button class="nav-item" onclick="showSection('calendar')" id="nav-calendar">
+          <span class="nav-item-icon">🗓️</span> Calendar
         </button>
         <div class="nav-section-label">Management</div>
         <button class="nav-item" onclick="showSection('courses')" id="nav-courses">
@@ -579,6 +603,28 @@ tr:hover td{background:rgba(255,255,255,0.02);}
             <div class="empty-state-icon">📅</div>
             <p>No sessions logged yet.</p>
           </div>
+        </div>
+      </div>
+
+      <!-- CALENDAR -->
+      <div class="page-content hidden" id="section-calendar">
+        <div class="cal-toolbar">
+          <button class="topbar-btn" onclick="calPrev()">← Prev</button>
+          <span class="cal-month-label" id="cal-month-label"></span>
+          <button class="topbar-btn" onclick="calNext()">Next →</button>
+          <button class="topbar-btn" onclick="calGoToday()">Today</button>
+          <button class="topbar-btn primary" onclick="openAddSession()" style="margin-left:auto;">+ Book Session</button>
+        </div>
+        <div class="cal-grid-wrap">
+          <div class="cal-dow-headers">
+            <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
+        </div>
+        <div style="display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--muted);"><span style="width:10px;height:10px;background:var(--blue);border-radius:2px;display:inline-block;"></span> Scheduled</div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--muted);"><span style="width:10px;height:10px;background:var(--green);border-radius:2px;display:inline-block;"></span> Completed</div>
+          <div style="display:flex;align-items:center;gap:6px;font-size:0.78rem;color:var(--muted);"><span style="width:10px;height:10px;background:#f87171;border-radius:2px;display:inline-block;"></span> Cancelled</div>
         </div>
       </div>
 
@@ -916,12 +962,13 @@ function showSection(name){
   document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
   document.getElementById('section-'+name).classList.remove('hidden');
   document.getElementById('nav-'+name).classList.add('active');
-  const titles={dashboard:'Dashboard',students:'Students',enquiries:'Enquiries',sessions:'Sessions',courses:'Courses',revenue:'Revenue',settings:'Settings'};
+  const titles={dashboard:'Dashboard',students:'Students',enquiries:'Enquiries',sessions:'Sessions',calendar:'Calendar',courses:'Courses',revenue:'Revenue',settings:'Settings'};
   document.getElementById('topbar-title').textContent = titles[name]||name;
   if(name==='dashboard') renderDashboard();
   if(name==='students') renderStudents();
   if(name==='enquiries') renderEnquiries();
   if(name==='sessions') renderSessions();
+  if(name==='calendar') renderCalendar();
   if(name==='courses') renderCourseOverview();
   if(name==='revenue') renderRevenue();
 }
@@ -1445,6 +1492,70 @@ function confirmClearData(){
   initAdmin();
   showToast('All data cleared','');
 }
+
+// ===== CALENDAR =====
+let calDate = new Date();
+
+function renderCalendar(){
+  const year = calDate.getFullYear();
+  const month = calDate.getMonth();
+  document.getElementById('cal-month-label').textContent =
+    calDate.toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+
+  const sessions = getData('sessions');
+  const students = getData('students');
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month+1, 0);
+  const startOffset = (firstDay.getDay()+6) % 7; // Mon=0
+  const today = new Date();
+  const todayStr = today.toDateString();
+  const totalCells = Math.ceil((startOffset + lastDay.getDate()) / 7) * 7;
+  let html = '';
+
+  for(let i = 0; i < totalCells; i++){
+    const dayNum = i - startOffset + 1;
+    const cellDate = new Date(year, month, dayNum);
+    const isOther = dayNum < 1 || dayNum > lastDay.getDate();
+    const isToday = cellDate.toDateString() === todayStr;
+    const dateStr = cellDate.toISOString().split('T')[0];
+
+    const daySessions = sessions.filter(s=>{
+      const d = new Date(s.date);
+      return d.getFullYear()===cellDate.getFullYear() &&
+             d.getMonth()===cellDate.getMonth() &&
+             d.getDate()===cellDate.getDate();
+    }).sort((a,b)=>new Date(a.date)-new Date(b.date));
+
+    const show = daySessions.slice(0,3);
+    const extra = daySessions.length - 3;
+    const hasEvents = daySessions.length > 0;
+
+    const events = show.map(s=>{
+      const st = students.find(x=>x.id===s.studentId);
+      const name = st ? st.fname : '?';
+      const time = new Date(s.date).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+      return `<div class="cal-event ${s.status}" onclick="event.stopPropagation();editSession('${s.id}')" title="${name} — ${COURSE_LABELS[st&&st.course]||''}">${time} ${name}</div>`;
+    }).join('');
+    const moreHtml = extra > 0 ? `<div class="cal-more">+${extra} more</div>` : '';
+    const click = isOther ? '' : `onclick="calDayClick('${dateStr}')"`;
+    const cls = ['cal-day', isOther?'other-month':'', isToday?'today':'', (!isOther&&hasEvents)?'has-events':''].filter(Boolean).join(' ');
+
+    html += `<div class="${cls}" ${click}>
+      <div class="cal-day-num">${cellDate.getDate()}</div>
+      ${isOther ? '' : events + moreHtml}
+    </div>`;
+  }
+  document.getElementById('cal-grid').innerHTML = html;
+}
+
+function calDayClick(dateStr){
+  openAddSession();
+  setTimeout(()=>{ document.getElementById('ss-date').value = dateStr+'T09:00'; }, 60);
+}
+
+function calPrev(){ calDate.setMonth(calDate.getMonth()-1); renderCalendar(); }
+function calNext(){ calDate.setMonth(calDate.getMonth()+1); renderCalendar(); }
+function calGoToday(){ calDate = new Date(); renderCalendar(); }
 
 // ===== AUTO-CHECK LOGIN =====
 if(localStorage.getItem('admin_session')){
